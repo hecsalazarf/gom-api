@@ -6,9 +6,26 @@
   "configurations": [
     {
       "type": "node",
+      "request": "attach",
+      "name": "Attach to Nestjs debug",
+      "port": 9229,
+      "restart": true,
+      // "preLaunchTask": "nestjs:debug",
+      // "stopOnEntry": false,
+      "protocol": "inspector"
+    },
+    {
+      "type": "node",
       "request": "launch",
-      "name": "Launch Program",
-      "program": "${workspaceFolder}/src/main.ts"
+      "name": "Launch Nestjs debug",
+      "cwd": "${workspaceRoot}",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [ "run", "start:debug" ],
+      "protocol": "auto",
+      "restart": true,
+      "port": 9229,
+      "autoAttachChildProcesses": true,
+      
     }
   ]
 }

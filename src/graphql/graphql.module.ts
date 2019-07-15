@@ -1,8 +1,7 @@
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
-import { BpModule } from './graphql/bp/bp.module';
-import { UserModule } from './graphql/user/user.module';
-import { AppModule } from './app.module';
+import { BpModule } from './bp/bp.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [

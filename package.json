@@ -22,10 +22,15 @@
   "dependencies": {
     "@nestjs/common": "^6.0.0",
     "@nestjs/core": "^6.0.0",
+    "@nestjs/graphql": "^6.4.0",
     "@nestjs/platform-express": "^6.0.0",
+    "apollo-server-express": "^2.6.9",
+    "graphql": "^14.4.2",
+    "graphql-tools": "^4.0.5",
     "reflect-metadata": "^0.1.12",
     "rimraf": "^2.6.2",
-    "rxjs": "^6.3.3"
+    "rxjs": "^6.3.3",
+    "type-graphql": "^0.17.4"
   },
   "devDependencies": {
     "@nestjs/testing": "^6.0.0",
@@ -41,7 +46,7 @@
     "ts-jest": "24.0.2",
     "ts-node": "8.1.0",
     "tsconfig-paths": "3.8.0",
-    "tslint": "5.16.0",
+    "tslint": "^5.18.0",
     "typescript": "3.4.3",
     "wait-on": "^3.2.0"
   },

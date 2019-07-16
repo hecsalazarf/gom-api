@@ -1,5 +1,14 @@
+import { Injectable, NestMiddleware } from '@nestjs/common';
+import { ConfigService } from '../config/config.service';
 import * as cookieParser from 'cookie-parser';
 
-export function cookie() {
-  return cookieParser(['hola', 'mundo']);
+@Injectable()
+export class CookieMiddleware implements NestMiddleware {
+    constructor(private readonly config: ConfigService) {}
+
+    use: () => any = this.cookie();
+
+    private cookie(): () => any {
+      return cookieParser(this.config.get('keys'));
+    }
 }

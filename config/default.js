@@ -1,6 +1,6 @@
 module.exports = {
   session: {
-    key: 'session-id',
+    name: 'session-id',
     maxAge: 3600 * 1000, // 24 * 3600 * 1000, // 1 day
     httpOnly: true,
     encrypt: true,

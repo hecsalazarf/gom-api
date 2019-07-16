@@ -2,36 +2,24 @@ import { Injectable, HttpService, HttpStatus, HttpException } from '@nestjs/comm
 import { CredentialsDto } from './dto/credentials.dto';
 import * as Jwt from 'jsonwebtoken';
 import * as jwksRsa from 'jwks-rsa';
+import { ConfigService } from '../config/config.service';
 
 @Injectable()
 export class AuthService {
   private readonly jwksClient: any;
-  constructor(private readonly httpService: HttpService) {
-    this.jwksClient = jwksRsa({
-      strictSsl: true,
-      cache: true,
-      cacheMaxEntries: 5, // Default value
-      // cacheMaxAge: ms('10h'), // Default value
-      jwksUri: 'https://arkio.auth0.com/.well-known/jwks.json',
-    });
-  }
+  private readonly tokenRequestOptions: object;
 
-  private getKey(header, callback) {
-    this.jwksClient.getSigningKey(header.kid, (err, key) => {
-      callback(err, key.publicKey || key.rsaPublicKey);
-    });
+  constructor(private readonly httpService: HttpService, private readonly config: ConfigService) {
+    this.jwksClient = this.createJwks();
+    this.tokenRequestOptions = this.getTokenRequestOptions();
   }
 
   public async requestToken({ username, password }: CredentialsDto): Promise<any> {
     let result;
     try {
-      result = await this.httpService.post('https://arkio.auth0.com/' + 'oauth/token',
+      result = await this.httpService.post(this.config.get('auth0.url') + 'oauth/token',
         {
-          grant_type: 'password',
-          client_id: 'tk37Qxx0ozSe3k2W9THkVnuj35eU7FDo',
-          client_secret: '43TAIqHtRt40d2-d8ZltJW_0_YJ4WURo5zgTFS_dthPqZpPvCPZJ9GA8FI35dCZx',
-          audience: 'http://dev.api.gom',
-          scope: 'openid',
+          ...this.tokenRequestOptions,
           username,
           password,
         },
@@ -73,4 +61,31 @@ export class AuthService {
   public decode(token: string): any {
     return Jwt.decode(token);
   }
+
+  private createJwks(): any {
+    return jwksRsa({
+      strictSsl: true,
+      cache: true,
+      cacheMaxEntries: 5, // Default value
+      // cacheMaxAge: ms('10h'), // Default value
+      jwksUri: this.config.get('auth0.jwksEndpoint'),
+    });
+  }
+
+  private getTokenRequestOptions(): any {
+    return {
+      grant_type: this.config.get('auth0.grantType'),
+      client_id: this.config.get('auth0.clientId'),
+      client_secret: this.config.get('auth0.clientSecret'),
+      audience: this.config.get('auth0.audience'),
+      scope: this.config.get('auth0.scope'),
+    };
+  }
+
+  private getKey(header, callback) {
+    this.jwksClient.getSigningKey(header.kid, (err, key) => {
+      callback(err, key.publicKey || key.rsaPublicKey);
+    });
+  }
+
 }

@@ -14,4 +14,10 @@ module.exports = {
       signed: false,
     },
   },
+  csrf: {
+    cookie: {
+      name: 'csrf-token',
+      secure: false,
+    }
+  }
 }

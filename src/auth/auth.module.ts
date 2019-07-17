@@ -1,7 +1,9 @@
-import { Module, /* NestModule, MiddlewareConsumer, */ HttpModule } from '@nestjs/common';
+import { Module, NestModule, MiddlewareConsumer, HttpModule } from '@nestjs/common';
 import { ConfigModule } from '../config/config.module';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
+import { CsrfMiddleware } from '../middleware/csrf.middleware';
+import { CsrfgenMiddleware } from '../middleware/csrfgen.middleware';
 
 @Module({
   imports: [HttpModule, ConfigModule],
@@ -9,10 +11,10 @@ import { AuthService } from './auth.service';
   providers: [AuthService],
   exports: [AuthService],
 })
-export class AuthModule /* implements NestModule */ {
-  /* configure(consumer: MiddlewareConsumer) {
+export class AuthModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
     consumer
-      .apply(CookieMiddleware, SessionMiddleware)
+      .apply(CsrfMiddleware, CsrfgenMiddleware)
       .forRoutes(AuthController);
-  } */
+  }
 }

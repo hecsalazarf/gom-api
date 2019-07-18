@@ -1,0 +1,76 @@
+type Bp {
+  uid: ID! @id
+  name1: String!
+  name2: String
+  lastName1: String
+  lastName2: String
+  phone: String
+  email: String @unique
+  orders: [Order!] @relation(name: "BpOrder", onDelete: CASCADE)
+  customerOf: [User!]! @relation(name: "CustomerOf", onDelete: SET_NULL)
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime @updatedAt
+  createdBy: String
+  updatedBy: String
+}
+
+type User {
+  uid: ID! @id
+  role: String
+  orders: [Order!] @relation(name: "UserOrder", onDelete: CASCADE)
+  customers: [Bp!] @relation(name: "CustomerOf", link: TABLE, onDelete: CASCADE)
+}
+
+enum OrderStage {
+  OPEN
+  WON
+  CLOSED
+  IN_PROCESS
+}
+
+type Order {
+  uid: ID! @id
+  name: String!
+  stage: OrderStage @default(value: OPEN)
+  issuedTo: Bp! @relation(name: "BpOrder", link: INLINE, onDelete: SET_NULL)
+  assignedTo: User! @relation(name: "UserOrder", link: INLINE, onDelete: SET_NULL)
+  items: [Item!]! @relation(name: "OrderItem", onDelete: CASCADE)
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime @updatedAt
+  createdBy: String!
+  updatedBy: String
+}
+
+type Item {
+  uid: ID! @id
+  code: String
+  quantity: Float
+  description: String
+  provider: String
+  order: Order! @relation(name: "OrderItem", link: INLINE, onDelete: SET_NULL)
+  pricing: [Price!]! @relation(name: "ItemPrices", onDelete: CASCADE)
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime @updatedAt
+  createdBy: String!
+  updatedBy: String
+}
+
+enum PriceType {
+  GENERAL
+}
+
+enum Currency {
+  MXN
+}
+
+type Price {
+  uid: ID! @id
+  type: PriceType @default(value: GENERAL)
+  amount: Float!
+  currency: Currency!
+  item: Item! @relation(name: "ItemPrices", link: INLINE, onDelete: SET_NULL)
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime @updatedAt
+  createdBy: String!
+  updatedBy: String
+}

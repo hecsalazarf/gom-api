@@ -5,6 +5,7 @@ import { ConfigModule } from './config/config.module';
 import { SessionMiddleware } from './middleware/session.middleware';
 import { CookieMiddleware } from './middleware/cookie.middleware';
 import { CatchallFilter } from './efilters/catchall.filter';
+import { GraphqlModule } from './graphql/graphql.module';
 
 @Module({
   providers: [
@@ -17,7 +18,7 @@ import { CatchallFilter } from './efilters/catchall.filter';
       useClass: CatchallFilter,
     },
   ],
-  imports: [AuthModule, ConfigModule],
+  imports: [AuthModule, ConfigModule, GraphqlModule],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

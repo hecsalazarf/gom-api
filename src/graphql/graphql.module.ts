@@ -1,22 +1,16 @@
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { BpModule } from './bp/bp.module';
-import { UserModule } from './user/user.module';
+import { PrismaModule } from './prisma/prisma.module';
+import { GraphqlOptions } from './graphql.options';
 
 @Module({
   imports: [
     BpModule,
-    UserModule,
-    GraphQLModule.forRoot({
-      autoSchemaFile: './src/graphql/schema.gql',
-      include: [BpModule],
-      path: '/graphql',
+    GraphQLModule.forRootAsync({
+      useClass: GraphqlOptions,
     }),
-    GraphQLModule.forRoot({
-      autoSchemaFile: './src/graphql/schema.gql',
-      include: [UserModule],
-      path: '/graphqlalt', // alternative endpoint
-    }),
+    PrismaModule,
   ],
 })
 export class GraphqlModule {}

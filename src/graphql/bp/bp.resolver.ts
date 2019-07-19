@@ -1,20 +1,29 @@
-import { Args, Query, Resolver } from '@nestjs/graphql';
-import { NotFoundException } from '@nestjs/common';
-import { Bp } from './models/bp';
+import { Args, Info, Query, Resolver, Mutation } from '@nestjs/graphql';
+import { Bp } from './model/bp';
+import { PrismaService } from '../prisma/prisma.service';
+import { BpConnection } from '../graphql.schema';
 
-@Resolver(of => Bp)
+@Resolver('Bp')
 export class BpResolver {
-  // constructor(private readonly recipesService: RecipesService) {}
+  constructor(private readonly prisma: PrismaService) {}
 
-  @Query(returns => Bp)
-  async bp(@Args('id') id: string): Promise<Bp> {
-    const bp = id;
-    if (!bp) {
-      throw new NotFoundException(id);
-    }
-    return {
-      id,
-      name: 'Paco',
-    };
+  @Query('bp')
+  async getBp(@Args() args: any, @Info() info: any): Promise<Bp> {
+    return await this.prisma.query.bp(args, info);
+  }
+
+  @Query('bpsConnection')
+  async getBps(@Args() args: any, @Info() info: any): Promise<BpConnection> {
+    return await this.prisma.query.bpsConnection(args, info);
+  }
+
+  @Mutation('createBp')
+  async createBp(@Args() args: any, @Info() info: any): Promise<Bp> {
+    return await this.prisma.mutation.createBp(args, info);
+  }
+
+  @Mutation('updateBp')
+  async updateBp(@Args() args: any, @Info() info: any): Promise<Bp> {
+    return await this.prisma.mutation.updateBp(args, info);
   }
 }

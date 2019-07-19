@@ -8,7 +8,7 @@ type Bp {
   email: String @unique
   orders: [Order!] @relation(name: "BpOrder", onDelete: CASCADE)
   customerOf: [User!]! @relation(name: "CustomerOf", onDelete: SET_NULL)
-  createdAt: DateTime! @createdAt
+  createdAt: DateTime @createdAt
   updatedAt: DateTime @updatedAt
   createdBy: String
   updatedBy: String
@@ -16,9 +16,12 @@ type Bp {
 
 type User {
   uid: ID! @id
+  extUid: String @unique
   role: String
   orders: [Order!] @relation(name: "UserOrder", onDelete: CASCADE)
   customers: [Bp!] @relation(name: "CustomerOf", link: TABLE, onDelete: CASCADE)
+  createdAt: DateTime @createdAt
+  updatedAt: DateTime @updatedAt
 }
 
 enum OrderStage {
@@ -35,9 +38,9 @@ type Order {
   issuedTo: Bp! @relation(name: "BpOrder", link: INLINE, onDelete: SET_NULL)
   assignedTo: User! @relation(name: "UserOrder", link: INLINE, onDelete: SET_NULL)
   items: [Item!]! @relation(name: "OrderItem", onDelete: CASCADE)
-  createdAt: DateTime! @createdAt
+  createdAt: DateTime @createdAt
   updatedAt: DateTime @updatedAt
-  createdBy: String!
+  createdBy: String
   updatedBy: String
 }
 
@@ -49,7 +52,7 @@ type Item {
   provider: String
   order: Order! @relation(name: "OrderItem", link: INLINE, onDelete: SET_NULL)
   pricing: [Price!]! @relation(name: "ItemPrices", onDelete: CASCADE)
-  createdAt: DateTime! @createdAt
+  createdAt: DateTime @createdAt
   updatedAt: DateTime @updatedAt
   createdBy: String!
   updatedBy: String
@@ -69,7 +72,7 @@ type Price {
   amount: Float!
   currency: Currency!
   item: Item! @relation(name: "ItemPrices", link: INLINE, onDelete: SET_NULL)
-  createdAt: DateTime! @createdAt
+  createdAt: DateTime @createdAt
   updatedAt: DateTime @updatedAt
   createdBy: String!
   updatedBy: String

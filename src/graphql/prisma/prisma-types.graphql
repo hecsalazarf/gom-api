@@ -1,5 +1,5 @@
 # source: http://localhost:4466
-# timestamp: Wed Jul 17 2019 19:26:56 GMT-0500 (Central Daylight Time)
+# timestamp: Fri Jul 19 2019 11:40:37 GMT-0500 (Central Daylight Time)
 
 type AggregateBp {
   count: Int!
@@ -36,7 +36,7 @@ type Bp {
   email: String
   orders(where: OrderWhereInput, orderBy: OrderOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Order!]
   customerOf(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
-  createdAt: DateTime!
+  createdAt: DateTime
   updatedAt: DateTime
   createdBy: String
   updatedBy: String
@@ -144,7 +144,7 @@ type BpPreviousValues {
   lastName2: String
   phone: String
   email: String
-  createdAt: DateTime!
+  createdAt: DateTime
   updatedAt: DateTime
   createdBy: String
   updatedBy: String
@@ -1141,7 +1141,7 @@ type Item {
   provider: String
   order: Order!
   pricing(where: PriceWhereInput, orderBy: PriceOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Price!]
-  createdAt: DateTime!
+  createdAt: DateTime
   updatedAt: DateTime
   createdBy: String!
   updatedBy: String
@@ -1237,7 +1237,7 @@ type ItemPreviousValues {
   quantity: Float
   description: String
   provider: String
-  createdAt: DateTime!
+  createdAt: DateTime
   updatedAt: DateTime
   createdBy: String!
   updatedBy: String
@@ -2069,9 +2069,9 @@ type Order {
   issuedTo: Bp!
   assignedTo: User!
   items(where: ItemWhereInput, orderBy: ItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Item!]
-  createdAt: DateTime!
+  createdAt: DateTime
   updatedAt: DateTime
-  createdBy: String!
+  createdBy: String
   updatedBy: String
 }
 
@@ -2089,7 +2089,7 @@ input OrderCreateInput {
   uid: ID
   name: String!
   stage: OrderStage
-  createdBy: String!
+  createdBy: String
   updatedBy: String
   issuedTo: BpCreateOneWithoutOrdersInput!
   assignedTo: UserCreateOneWithoutOrdersInput!
@@ -2115,7 +2115,7 @@ input OrderCreateWithoutAssignedToInput {
   uid: ID
   name: String!
   stage: OrderStage
-  createdBy: String!
+  createdBy: String
   updatedBy: String
   issuedTo: BpCreateOneWithoutOrdersInput!
   items: ItemCreateManyWithoutOrderInput
@@ -2125,7 +2125,7 @@ input OrderCreateWithoutIssuedToInput {
   uid: ID
   name: String!
   stage: OrderStage
-  createdBy: String!
+  createdBy: String
   updatedBy: String
   assignedTo: UserCreateOneWithoutOrdersInput!
   items: ItemCreateManyWithoutOrderInput
@@ -2135,7 +2135,7 @@ input OrderCreateWithoutItemsInput {
   uid: ID
   name: String!
   stage: OrderStage
-  createdBy: String!
+  createdBy: String
   updatedBy: String
   issuedTo: BpCreateOneWithoutOrdersInput!
   assignedTo: UserCreateOneWithoutOrdersInput!
@@ -2171,9 +2171,9 @@ type OrderPreviousValues {
   uid: ID!
   name: String!
   stage: OrderStage
-  createdAt: DateTime!
+  createdAt: DateTime
   updatedAt: DateTime
-  createdBy: String!
+  createdBy: String
   updatedBy: String
 }
 
@@ -2815,7 +2815,7 @@ type Price {
   amount: Float!
   currency: Currency!
   item: Item!
-  createdAt: DateTime!
+  createdAt: DateTime
   updatedAt: DateTime
   createdBy: String!
   updatedBy: String
@@ -2888,7 +2888,7 @@ type PricePreviousValues {
   type: PriceType
   amount: Float!
   currency: Currency!
-  createdAt: DateTime!
+  createdAt: DateTime
   updatedAt: DateTime
   createdBy: String!
   updatedBy: String
@@ -3469,9 +3469,12 @@ type Subscription {
 
 type User {
   uid: ID!
+  extUid: String
   role: String
   orders(where: OrderWhereInput, orderBy: OrderOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Order!]
   customers(where: BpWhereInput, orderBy: BpOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Bp!]
+  createdAt: DateTime
+  updatedAt: DateTime
 }
 
 """A connection to a list of items."""
@@ -3486,6 +3489,7 @@ type UserConnection {
 
 input UserCreateInput {
   uid: ID
+  extUid: String
   role: String
   orders: OrderCreateManyWithoutAssignedToInput
   customers: BpCreateManyWithoutCustomerOfInput
@@ -3503,12 +3507,14 @@ input UserCreateOneWithoutOrdersInput {
 
 input UserCreateWithoutCustomersInput {
   uid: ID
+  extUid: String
   role: String
   orders: OrderCreateManyWithoutAssignedToInput
 }
 
 input UserCreateWithoutOrdersInput {
   uid: ID
+  extUid: String
   role: String
   customers: BpCreateManyWithoutCustomerOfInput
 }
@@ -3525,13 +3531,22 @@ type UserEdge {
 enum UserOrderByInput {
   uid_ASC
   uid_DESC
+  extUid_ASC
+  extUid_DESC
   role_ASC
   role_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
 }
 
 type UserPreviousValues {
   uid: ID!
+  extUid: String
   role: String
+  createdAt: DateTime
+  updatedAt: DateTime
 }
 
 input UserScalarWhereInput {
@@ -3583,6 +3598,46 @@ input UserScalarWhereInput {
 
   """All values not ending with the given string."""
   uid_not_ends_with: ID
+  extUid: String
+
+  """All values that are not equal to given value."""
+  extUid_not: String
+
+  """All values that are contained in given list."""
+  extUid_in: [String!]
+
+  """All values that are not contained in given list."""
+  extUid_not_in: [String!]
+
+  """All values less than the given value."""
+  extUid_lt: String
+
+  """All values less than or equal the given value."""
+  extUid_lte: String
+
+  """All values greater than the given value."""
+  extUid_gt: String
+
+  """All values greater than or equal the given value."""
+  extUid_gte: String
+
+  """All values containing the given string."""
+  extUid_contains: String
+
+  """All values not containing the given string."""
+  extUid_not_contains: String
+
+  """All values starting with the given string."""
+  extUid_starts_with: String
+
+  """All values not starting with the given string."""
+  extUid_not_starts_with: String
+
+  """All values ending with the given string."""
+  extUid_ends_with: String
+
+  """All values not ending with the given string."""
+  extUid_not_ends_with: String
   role: String
 
   """All values that are not equal to given value."""
@@ -3623,6 +3678,50 @@ input UserScalarWhereInput {
 
   """All values not ending with the given string."""
   role_not_ends_with: String
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
 }
 
 type UserSubscriptionPayload {
@@ -3663,16 +3762,19 @@ input UserSubscriptionWhereInput {
 }
 
 input UserUpdateInput {
+  extUid: String
   role: String
   orders: OrderUpdateManyWithoutAssignedToInput
   customers: BpUpdateManyWithoutCustomerOfInput
 }
 
 input UserUpdateManyDataInput {
+  extUid: String
   role: String
 }
 
 input UserUpdateManyMutationInput {
+  extUid: String
   role: String
 }
 
@@ -3701,11 +3803,13 @@ input UserUpdateOneRequiredWithoutOrdersInput {
 }
 
 input UserUpdateWithoutCustomersDataInput {
+  extUid: String
   role: String
   orders: OrderUpdateManyWithoutAssignedToInput
 }
 
 input UserUpdateWithoutOrdersDataInput {
+  extUid: String
   role: String
   customers: BpUpdateManyWithoutCustomerOfInput
 }
@@ -3775,6 +3879,46 @@ input UserWhereInput {
 
   """All values not ending with the given string."""
   uid_not_ends_with: ID
+  extUid: String
+
+  """All values that are not equal to given value."""
+  extUid_not: String
+
+  """All values that are contained in given list."""
+  extUid_in: [String!]
+
+  """All values that are not contained in given list."""
+  extUid_not_in: [String!]
+
+  """All values less than the given value."""
+  extUid_lt: String
+
+  """All values less than or equal the given value."""
+  extUid_lte: String
+
+  """All values greater than the given value."""
+  extUid_gt: String
+
+  """All values greater than or equal the given value."""
+  extUid_gte: String
+
+  """All values containing the given string."""
+  extUid_contains: String
+
+  """All values not containing the given string."""
+  extUid_not_contains: String
+
+  """All values starting with the given string."""
+  extUid_starts_with: String
+
+  """All values not starting with the given string."""
+  extUid_not_starts_with: String
+
+  """All values ending with the given string."""
+  extUid_ends_with: String
+
+  """All values not ending with the given string."""
+  extUid_not_ends_with: String
   role: String
 
   """All values that are not equal to given value."""
@@ -3815,6 +3959,50 @@ input UserWhereInput {
 
   """All values not ending with the given string."""
   role_not_ends_with: String
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
   orders_every: OrderWhereInput
   orders_some: OrderWhereInput
   orders_none: OrderWhereInput
@@ -3825,4 +4013,5 @@ input UserWhereInput {
 
 input UserWhereUniqueInput {
   uid: ID
+  extUid: String
 }

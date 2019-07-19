@@ -1,6 +1,6 @@
 endpoint: http://localhost:4466
 datamodel: datamodel.prisma
 secret: "12345" #dev only
-generate:
-  - generator: typescript-client
-    output: ./generated/prisma-client-ts/
+# generate:
+#   - generator: typescript-client
+#     output: ./generated/prisma-client-ts/

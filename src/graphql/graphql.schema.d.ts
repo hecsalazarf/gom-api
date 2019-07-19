@@ -111,8 +111,14 @@ export enum PriceType {
 export enum UserOrderByInput {
     uid_ASC = "uid_ASC",
     uid_DESC = "uid_DESC",
+    extUid_ASC = "extUid_ASC",
+    extUid_DESC = "extUid_DESC",
     role_ASC = "role_ASC",
-    role_DESC = "role_DESC"
+    role_DESC = "role_DESC",
+    createdAt_ASC = "createdAt_ASC",
+    createdAt_DESC = "createdAt_DESC",
+    updatedAt_ASC = "updatedAt_ASC",
+    updatedAt_DESC = "updatedAt_DESC"
 }
 
 export class BpCreateInput {
@@ -966,7 +972,7 @@ export class OrderCreateInput {
     uid?: string;
     name: string;
     stage?: OrderStage;
-    createdBy: string;
+    createdBy?: string;
     updatedBy?: string;
     issuedTo: BpCreateOneWithoutOrdersInput;
     assignedTo: UserCreateOneWithoutOrdersInput;
@@ -992,7 +998,7 @@ export class OrderCreateWithoutAssignedToInput {
     uid?: string;
     name: string;
     stage?: OrderStage;
-    createdBy: string;
+    createdBy?: string;
     updatedBy?: string;
     issuedTo: BpCreateOneWithoutOrdersInput;
     items?: ItemCreateManyWithoutOrderInput;
@@ -1002,7 +1008,7 @@ export class OrderCreateWithoutIssuedToInput {
     uid?: string;
     name: string;
     stage?: OrderStage;
-    createdBy: string;
+    createdBy?: string;
     updatedBy?: string;
     assignedTo: UserCreateOneWithoutOrdersInput;
     items?: ItemCreateManyWithoutOrderInput;
@@ -1012,7 +1018,7 @@ export class OrderCreateWithoutItemsInput {
     uid?: string;
     name: string;
     stage?: OrderStage;
-    createdBy: string;
+    createdBy?: string;
     updatedBy?: string;
     issuedTo: BpCreateOneWithoutOrdersInput;
     assignedTo: UserCreateOneWithoutOrdersInput;
@@ -1579,6 +1585,7 @@ export class PriceWhereUniqueInput {
 
 export class UserCreateInput {
     uid?: string;
+    extUid?: string;
     role?: string;
     orders?: OrderCreateManyWithoutAssignedToInput;
     customers?: BpCreateManyWithoutCustomerOfInput;
@@ -1596,12 +1603,14 @@ export class UserCreateOneWithoutOrdersInput {
 
 export class UserCreateWithoutCustomersInput {
     uid?: string;
+    extUid?: string;
     role?: string;
     orders?: OrderCreateManyWithoutAssignedToInput;
 }
 
 export class UserCreateWithoutOrdersInput {
     uid?: string;
+    extUid?: string;
     role?: string;
     customers?: BpCreateManyWithoutCustomerOfInput;
 }
@@ -1624,6 +1633,20 @@ export class UserScalarWhereInput {
     uid_not_starts_with?: string;
     uid_ends_with?: string;
     uid_not_ends_with?: string;
+    extUid?: string;
+    extUid_not?: string;
+    extUid_in?: string[];
+    extUid_not_in?: string[];
+    extUid_lt?: string;
+    extUid_lte?: string;
+    extUid_gt?: string;
+    extUid_gte?: string;
+    extUid_contains?: string;
+    extUid_not_contains?: string;
+    extUid_starts_with?: string;
+    extUid_not_starts_with?: string;
+    extUid_ends_with?: string;
+    extUid_not_ends_with?: string;
     role?: string;
     role_not?: string;
     role_in?: string[];
@@ -1638,6 +1661,22 @@ export class UserScalarWhereInput {
     role_not_starts_with?: string;
     role_ends_with?: string;
     role_not_ends_with?: string;
+    createdAt?: DateTime;
+    createdAt_not?: DateTime;
+    createdAt_in?: DateTime[];
+    createdAt_not_in?: DateTime[];
+    createdAt_lt?: DateTime;
+    createdAt_lte?: DateTime;
+    createdAt_gt?: DateTime;
+    createdAt_gte?: DateTime;
+    updatedAt?: DateTime;
+    updatedAt_not?: DateTime;
+    updatedAt_in?: DateTime[];
+    updatedAt_not_in?: DateTime[];
+    updatedAt_lt?: DateTime;
+    updatedAt_lte?: DateTime;
+    updatedAt_gt?: DateTime;
+    updatedAt_gte?: DateTime;
 }
 
 export class UserSubscriptionWhereInput {
@@ -1652,16 +1691,19 @@ export class UserSubscriptionWhereInput {
 }
 
 export class UserUpdateInput {
+    extUid?: string;
     role?: string;
     orders?: OrderUpdateManyWithoutAssignedToInput;
     customers?: BpUpdateManyWithoutCustomerOfInput;
 }
 
 export class UserUpdateManyDataInput {
+    extUid?: string;
     role?: string;
 }
 
 export class UserUpdateManyMutationInput {
+    extUid?: string;
     role?: string;
 }
 
@@ -1690,11 +1732,13 @@ export class UserUpdateOneRequiredWithoutOrdersInput {
 }
 
 export class UserUpdateWithoutCustomersDataInput {
+    extUid?: string;
     role?: string;
     orders?: OrderUpdateManyWithoutAssignedToInput;
 }
 
 export class UserUpdateWithoutOrdersDataInput {
+    extUid?: string;
     role?: string;
     customers?: BpUpdateManyWithoutCustomerOfInput;
 }
@@ -1733,6 +1777,20 @@ export class UserWhereInput {
     uid_not_starts_with?: string;
     uid_ends_with?: string;
     uid_not_ends_with?: string;
+    extUid?: string;
+    extUid_not?: string;
+    extUid_in?: string[];
+    extUid_not_in?: string[];
+    extUid_lt?: string;
+    extUid_lte?: string;
+    extUid_gt?: string;
+    extUid_gte?: string;
+    extUid_contains?: string;
+    extUid_not_contains?: string;
+    extUid_starts_with?: string;
+    extUid_not_starts_with?: string;
+    extUid_ends_with?: string;
+    extUid_not_ends_with?: string;
     role?: string;
     role_not?: string;
     role_in?: string[];
@@ -1747,6 +1805,22 @@ export class UserWhereInput {
     role_not_starts_with?: string;
     role_ends_with?: string;
     role_not_ends_with?: string;
+    createdAt?: DateTime;
+    createdAt_not?: DateTime;
+    createdAt_in?: DateTime[];
+    createdAt_not_in?: DateTime[];
+    createdAt_lt?: DateTime;
+    createdAt_lte?: DateTime;
+    createdAt_gt?: DateTime;
+    createdAt_gte?: DateTime;
+    updatedAt?: DateTime;
+    updatedAt_not?: DateTime;
+    updatedAt_in?: DateTime[];
+    updatedAt_not_in?: DateTime[];
+    updatedAt_lt?: DateTime;
+    updatedAt_lte?: DateTime;
+    updatedAt_gt?: DateTime;
+    updatedAt_gte?: DateTime;
     orders_every?: OrderWhereInput;
     orders_some?: OrderWhereInput;
     orders_none?: OrderWhereInput;
@@ -1757,6 +1831,7 @@ export class UserWhereInput {
 
 export class UserWhereUniqueInput {
     uid?: string;
+    extUid?: string;
 }
 
 export interface Node {
@@ -1797,7 +1872,7 @@ export class Bp {
     email?: string;
     orders?: Order[];
     customerOf?: User[];
-    createdAt: DateTime;
+    createdAt?: DateTime;
     updatedAt?: DateTime;
     createdBy?: string;
     updatedBy?: string;
@@ -1822,7 +1897,7 @@ export class BpPreviousValues {
     lastName2?: string;
     phone?: string;
     email?: string;
-    createdAt: DateTime;
+    createdAt?: DateTime;
     updatedAt?: DateTime;
     createdBy?: string;
     updatedBy?: string;
@@ -1843,7 +1918,7 @@ export class Item {
     provider?: string;
     order: Order;
     pricing?: Price[];
-    createdAt: DateTime;
+    createdAt?: DateTime;
     updatedAt?: DateTime;
     createdBy: string;
     updatedBy?: string;
@@ -1866,7 +1941,7 @@ export class ItemPreviousValues {
     quantity?: number;
     description?: string;
     provider?: string;
-    createdAt: DateTime;
+    createdAt?: DateTime;
     updatedAt?: DateTime;
     createdBy: string;
     updatedBy?: string;
@@ -1919,9 +1994,9 @@ export class Order {
     issuedTo: Bp;
     assignedTo: User;
     items?: Item[];
-    createdAt: DateTime;
+    createdAt?: DateTime;
     updatedAt?: DateTime;
-    createdBy: string;
+    createdBy?: string;
     updatedBy?: string;
 }
 
@@ -1940,9 +2015,9 @@ export class OrderPreviousValues {
     uid: string;
     name: string;
     stage?: OrderStage;
-    createdAt: DateTime;
+    createdAt?: DateTime;
     updatedAt?: DateTime;
-    createdBy: string;
+    createdBy?: string;
     updatedBy?: string;
 }
 
@@ -1966,7 +2041,7 @@ export class Price {
     amount: number;
     currency: Currency;
     item: Item;
-    createdAt: DateTime;
+    createdAt?: DateTime;
     updatedAt?: DateTime;
     createdBy: string;
     updatedBy?: string;
@@ -1988,7 +2063,7 @@ export class PricePreviousValues {
     type?: PriceType;
     amount: number;
     currency: Currency;
-    createdAt: DateTime;
+    createdAt?: DateTime;
     updatedAt?: DateTime;
     createdBy: string;
     updatedBy?: string;
@@ -2030,9 +2105,12 @@ export abstract class ISubscription {
 
 export class User {
     uid: string;
+    extUid?: string;
     role?: string;
     orders?: Order[];
     customers?: Bp[];
+    createdAt?: DateTime;
+    updatedAt?: DateTime;
 }
 
 export class UserConnection {
@@ -2048,7 +2126,10 @@ export class UserEdge {
 
 export class UserPreviousValues {
     uid: string;
+    extUid?: string;
     role?: string;
+    createdAt?: DateTime;
+    updatedAt?: DateTime;
 }
 
 export class UserSubscriptionPayload {

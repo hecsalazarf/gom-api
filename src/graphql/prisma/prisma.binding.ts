@@ -128,7 +128,7 @@ type Bp {
   email: String
   orders(where: OrderWhereInput, orderBy: OrderOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Order!]
   customerOf(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
-  createdAt: DateTime!
+  createdAt: DateTime
   updatedAt: DateTime
   createdBy: String
   updatedBy: String
@@ -236,7 +236,7 @@ type BpPreviousValues {
   lastName2: String
   phone: String
   email: String
-  createdAt: DateTime!
+  createdAt: DateTime
   updatedAt: DateTime
   createdBy: String
   updatedBy: String
@@ -1233,7 +1233,7 @@ type Item {
   provider: String
   order: Order!
   pricing(where: PriceWhereInput, orderBy: PriceOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Price!]
-  createdAt: DateTime!
+  createdAt: DateTime
   updatedAt: DateTime
   createdBy: String!
   updatedBy: String
@@ -1329,7 +1329,7 @@ type ItemPreviousValues {
   quantity: Float
   description: String
   provider: String
-  createdAt: DateTime!
+  createdAt: DateTime
   updatedAt: DateTime
   createdBy: String!
   updatedBy: String
@@ -2161,9 +2161,9 @@ type Order {
   issuedTo: Bp!
   assignedTo: User!
   items(where: ItemWhereInput, orderBy: ItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Item!]
-  createdAt: DateTime!
+  createdAt: DateTime
   updatedAt: DateTime
-  createdBy: String!
+  createdBy: String
   updatedBy: String
 }
 
@@ -2181,7 +2181,7 @@ input OrderCreateInput {
   uid: ID
   name: String!
   stage: OrderStage
-  createdBy: String!
+  createdBy: String
   updatedBy: String
   issuedTo: BpCreateOneWithoutOrdersInput!
   assignedTo: UserCreateOneWithoutOrdersInput!
@@ -2207,7 +2207,7 @@ input OrderCreateWithoutAssignedToInput {
   uid: ID
   name: String!
   stage: OrderStage
-  createdBy: String!
+  createdBy: String
   updatedBy: String
   issuedTo: BpCreateOneWithoutOrdersInput!
   items: ItemCreateManyWithoutOrderInput
@@ -2217,7 +2217,7 @@ input OrderCreateWithoutIssuedToInput {
   uid: ID
   name: String!
   stage: OrderStage
-  createdBy: String!
+  createdBy: String
   updatedBy: String
   assignedTo: UserCreateOneWithoutOrdersInput!
   items: ItemCreateManyWithoutOrderInput
@@ -2227,7 +2227,7 @@ input OrderCreateWithoutItemsInput {
   uid: ID
   name: String!
   stage: OrderStage
-  createdBy: String!
+  createdBy: String
   updatedBy: String
   issuedTo: BpCreateOneWithoutOrdersInput!
   assignedTo: UserCreateOneWithoutOrdersInput!
@@ -2263,9 +2263,9 @@ type OrderPreviousValues {
   uid: ID!
   name: String!
   stage: OrderStage
-  createdAt: DateTime!
+  createdAt: DateTime
   updatedAt: DateTime
-  createdBy: String!
+  createdBy: String
   updatedBy: String
 }
 
@@ -2907,7 +2907,7 @@ type Price {
   amount: Float!
   currency: Currency!
   item: Item!
-  createdAt: DateTime!
+  createdAt: DateTime
   updatedAt: DateTime
   createdBy: String!
   updatedBy: String
@@ -2980,7 +2980,7 @@ type PricePreviousValues {
   type: PriceType
   amount: Float!
   currency: Currency!
-  createdAt: DateTime!
+  createdAt: DateTime
   updatedAt: DateTime
   createdBy: String!
   updatedBy: String
@@ -3561,9 +3561,12 @@ type Subscription {
 
 type User {
   uid: ID!
+  extUid: String
   role: String
   orders(where: OrderWhereInput, orderBy: OrderOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Order!]
   customers(where: BpWhereInput, orderBy: BpOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Bp!]
+  createdAt: DateTime
+  updatedAt: DateTime
 }
 
 """A connection to a list of items."""
@@ -3578,6 +3581,7 @@ type UserConnection {
 
 input UserCreateInput {
   uid: ID
+  extUid: String
   role: String
   orders: OrderCreateManyWithoutAssignedToInput
   customers: BpCreateManyWithoutCustomerOfInput
@@ -3595,12 +3599,14 @@ input UserCreateOneWithoutOrdersInput {
 
 input UserCreateWithoutCustomersInput {
   uid: ID
+  extUid: String
   role: String
   orders: OrderCreateManyWithoutAssignedToInput
 }
 
 input UserCreateWithoutOrdersInput {
   uid: ID
+  extUid: String
   role: String
   customers: BpCreateManyWithoutCustomerOfInput
 }
@@ -3617,13 +3623,22 @@ type UserEdge {
 enum UserOrderByInput {
   uid_ASC
   uid_DESC
+  extUid_ASC
+  extUid_DESC
   role_ASC
   role_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
 }
 
 type UserPreviousValues {
   uid: ID!
+  extUid: String
   role: String
+  createdAt: DateTime
+  updatedAt: DateTime
 }
 
 input UserScalarWhereInput {
@@ -3675,6 +3690,46 @@ input UserScalarWhereInput {
 
   """All values not ending with the given string."""
   uid_not_ends_with: ID
+  extUid: String
+
+  """All values that are not equal to given value."""
+  extUid_not: String
+
+  """All values that are contained in given list."""
+  extUid_in: [String!]
+
+  """All values that are not contained in given list."""
+  extUid_not_in: [String!]
+
+  """All values less than the given value."""
+  extUid_lt: String
+
+  """All values less than or equal the given value."""
+  extUid_lte: String
+
+  """All values greater than the given value."""
+  extUid_gt: String
+
+  """All values greater than or equal the given value."""
+  extUid_gte: String
+
+  """All values containing the given string."""
+  extUid_contains: String
+
+  """All values not containing the given string."""
+  extUid_not_contains: String
+
+  """All values starting with the given string."""
+  extUid_starts_with: String
+
+  """All values not starting with the given string."""
+  extUid_not_starts_with: String
+
+  """All values ending with the given string."""
+  extUid_ends_with: String
+
+  """All values not ending with the given string."""
+  extUid_not_ends_with: String
   role: String
 
   """All values that are not equal to given value."""
@@ -3715,6 +3770,50 @@ input UserScalarWhereInput {
 
   """All values not ending with the given string."""
   role_not_ends_with: String
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
 }
 
 type UserSubscriptionPayload {
@@ -3755,16 +3854,19 @@ input UserSubscriptionWhereInput {
 }
 
 input UserUpdateInput {
+  extUid: String
   role: String
   orders: OrderUpdateManyWithoutAssignedToInput
   customers: BpUpdateManyWithoutCustomerOfInput
 }
 
 input UserUpdateManyDataInput {
+  extUid: String
   role: String
 }
 
 input UserUpdateManyMutationInput {
+  extUid: String
   role: String
 }
 
@@ -3793,11 +3895,13 @@ input UserUpdateOneRequiredWithoutOrdersInput {
 }
 
 input UserUpdateWithoutCustomersDataInput {
+  extUid: String
   role: String
   orders: OrderUpdateManyWithoutAssignedToInput
 }
 
 input UserUpdateWithoutOrdersDataInput {
+  extUid: String
   role: String
   customers: BpUpdateManyWithoutCustomerOfInput
 }
@@ -3867,6 +3971,46 @@ input UserWhereInput {
 
   """All values not ending with the given string."""
   uid_not_ends_with: ID
+  extUid: String
+
+  """All values that are not equal to given value."""
+  extUid_not: String
+
+  """All values that are contained in given list."""
+  extUid_in: [String!]
+
+  """All values that are not contained in given list."""
+  extUid_not_in: [String!]
+
+  """All values less than the given value."""
+  extUid_lt: String
+
+  """All values less than or equal the given value."""
+  extUid_lte: String
+
+  """All values greater than the given value."""
+  extUid_gt: String
+
+  """All values greater than or equal the given value."""
+  extUid_gte: String
+
+  """All values containing the given string."""
+  extUid_contains: String
+
+  """All values not containing the given string."""
+  extUid_not_contains: String
+
+  """All values starting with the given string."""
+  extUid_starts_with: String
+
+  """All values not starting with the given string."""
+  extUid_not_starts_with: String
+
+  """All values ending with the given string."""
+  extUid_ends_with: String
+
+  """All values not ending with the given string."""
+  extUid_not_ends_with: String
   role: String
 
   """All values that are not equal to given value."""
@@ -3907,6 +4051,50 @@ input UserWhereInput {
 
   """All values not ending with the given string."""
   role_not_ends_with: String
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
   orders_every: OrderWhereInput
   orders_some: OrderWhereInput
   orders_none: OrderWhereInput
@@ -3917,6 +4105,7 @@ input UserWhereInput {
 
 input UserWhereUniqueInput {
   uid: ID
+  extUid: String
 }
 `
 
@@ -4015,8 +4204,14 @@ export type PriceType =   'GENERAL'
 
 export type UserOrderByInput =   'uid_ASC' |
   'uid_DESC' |
+  'extUid_ASC' |
+  'extUid_DESC' |
   'role_ASC' |
-  'role_DESC'
+  'role_DESC' |
+  'createdAt_ASC' |
+  'createdAt_DESC' |
+  'updatedAt_ASC' |
+  'updatedAt_DESC'
 
 export interface BpCreateInput {
   uid?: ID_Input | null
@@ -4869,7 +5064,7 @@ export interface OrderCreateInput {
   uid?: ID_Input | null
   name: String
   stage?: OrderStage | null
-  createdBy: String
+  createdBy?: String | null
   updatedBy?: String | null
   issuedTo: BpCreateOneWithoutOrdersInput
   assignedTo: UserCreateOneWithoutOrdersInput
@@ -4895,7 +5090,7 @@ export interface OrderCreateWithoutAssignedToInput {
   uid?: ID_Input | null
   name: String
   stage?: OrderStage | null
-  createdBy: String
+  createdBy?: String | null
   updatedBy?: String | null
   issuedTo: BpCreateOneWithoutOrdersInput
   items?: ItemCreateManyWithoutOrderInput | null
@@ -4905,7 +5100,7 @@ export interface OrderCreateWithoutIssuedToInput {
   uid?: ID_Input | null
   name: String
   stage?: OrderStage | null
-  createdBy: String
+  createdBy?: String | null
   updatedBy?: String | null
   assignedTo: UserCreateOneWithoutOrdersInput
   items?: ItemCreateManyWithoutOrderInput | null
@@ -4915,7 +5110,7 @@ export interface OrderCreateWithoutItemsInput {
   uid?: ID_Input | null
   name: String
   stage?: OrderStage | null
-  createdBy: String
+  createdBy?: String | null
   updatedBy?: String | null
   issuedTo: BpCreateOneWithoutOrdersInput
   assignedTo: UserCreateOneWithoutOrdersInput
@@ -5482,6 +5677,7 @@ export interface PriceWhereUniqueInput {
 
 export interface UserCreateInput {
   uid?: ID_Input | null
+  extUid?: String | null
   role?: String | null
   orders?: OrderCreateManyWithoutAssignedToInput | null
   customers?: BpCreateManyWithoutCustomerOfInput | null
@@ -5499,12 +5695,14 @@ export interface UserCreateOneWithoutOrdersInput {
 
 export interface UserCreateWithoutCustomersInput {
   uid?: ID_Input | null
+  extUid?: String | null
   role?: String | null
   orders?: OrderCreateManyWithoutAssignedToInput | null
 }
 
 export interface UserCreateWithoutOrdersInput {
   uid?: ID_Input | null
+  extUid?: String | null
   role?: String | null
   customers?: BpCreateManyWithoutCustomerOfInput | null
 }
@@ -5527,6 +5725,20 @@ export interface UserScalarWhereInput {
   uid_not_starts_with?: ID_Input | null
   uid_ends_with?: ID_Input | null
   uid_not_ends_with?: ID_Input | null
+  extUid?: String | null
+  extUid_not?: String | null
+  extUid_in?: String[] | String | null
+  extUid_not_in?: String[] | String | null
+  extUid_lt?: String | null
+  extUid_lte?: String | null
+  extUid_gt?: String | null
+  extUid_gte?: String | null
+  extUid_contains?: String | null
+  extUid_not_contains?: String | null
+  extUid_starts_with?: String | null
+  extUid_not_starts_with?: String | null
+  extUid_ends_with?: String | null
+  extUid_not_ends_with?: String | null
   role?: String | null
   role_not?: String | null
   role_in?: String[] | String | null
@@ -5541,6 +5753,22 @@ export interface UserScalarWhereInput {
   role_not_starts_with?: String | null
   role_ends_with?: String | null
   role_not_ends_with?: String | null
+  createdAt?: DateTime | null
+  createdAt_not?: DateTime | null
+  createdAt_in?: DateTime[] | DateTime | null
+  createdAt_not_in?: DateTime[] | DateTime | null
+  createdAt_lt?: DateTime | null
+  createdAt_lte?: DateTime | null
+  createdAt_gt?: DateTime | null
+  createdAt_gte?: DateTime | null
+  updatedAt?: DateTime | null
+  updatedAt_not?: DateTime | null
+  updatedAt_in?: DateTime[] | DateTime | null
+  updatedAt_not_in?: DateTime[] | DateTime | null
+  updatedAt_lt?: DateTime | null
+  updatedAt_lte?: DateTime | null
+  updatedAt_gt?: DateTime | null
+  updatedAt_gte?: DateTime | null
 }
 
 export interface UserSubscriptionWhereInput {
@@ -5555,16 +5783,19 @@ export interface UserSubscriptionWhereInput {
 }
 
 export interface UserUpdateInput {
+  extUid?: String | null
   role?: String | null
   orders?: OrderUpdateManyWithoutAssignedToInput | null
   customers?: BpUpdateManyWithoutCustomerOfInput | null
 }
 
 export interface UserUpdateManyDataInput {
+  extUid?: String | null
   role?: String | null
 }
 
 export interface UserUpdateManyMutationInput {
+  extUid?: String | null
   role?: String | null
 }
 
@@ -5593,11 +5824,13 @@ export interface UserUpdateOneRequiredWithoutOrdersInput {
 }
 
 export interface UserUpdateWithoutCustomersDataInput {
+  extUid?: String | null
   role?: String | null
   orders?: OrderUpdateManyWithoutAssignedToInput | null
 }
 
 export interface UserUpdateWithoutOrdersDataInput {
+  extUid?: String | null
   role?: String | null
   customers?: BpUpdateManyWithoutCustomerOfInput | null
 }
@@ -5636,6 +5869,20 @@ export interface UserWhereInput {
   uid_not_starts_with?: ID_Input | null
   uid_ends_with?: ID_Input | null
   uid_not_ends_with?: ID_Input | null
+  extUid?: String | null
+  extUid_not?: String | null
+  extUid_in?: String[] | String | null
+  extUid_not_in?: String[] | String | null
+  extUid_lt?: String | null
+  extUid_lte?: String | null
+  extUid_gt?: String | null
+  extUid_gte?: String | null
+  extUid_contains?: String | null
+  extUid_not_contains?: String | null
+  extUid_starts_with?: String | null
+  extUid_not_starts_with?: String | null
+  extUid_ends_with?: String | null
+  extUid_not_ends_with?: String | null
   role?: String | null
   role_not?: String | null
   role_in?: String[] | String | null
@@ -5650,6 +5897,22 @@ export interface UserWhereInput {
   role_not_starts_with?: String | null
   role_ends_with?: String | null
   role_not_ends_with?: String | null
+  createdAt?: DateTime | null
+  createdAt_not?: DateTime | null
+  createdAt_in?: DateTime[] | DateTime | null
+  createdAt_not_in?: DateTime[] | DateTime | null
+  createdAt_lt?: DateTime | null
+  createdAt_lte?: DateTime | null
+  createdAt_gt?: DateTime | null
+  createdAt_gte?: DateTime | null
+  updatedAt?: DateTime | null
+  updatedAt_not?: DateTime | null
+  updatedAt_in?: DateTime[] | DateTime | null
+  updatedAt_not_in?: DateTime[] | DateTime | null
+  updatedAt_lt?: DateTime | null
+  updatedAt_lte?: DateTime | null
+  updatedAt_gt?: DateTime | null
+  updatedAt_gte?: DateTime | null
   orders_every?: OrderWhereInput | null
   orders_some?: OrderWhereInput | null
   orders_none?: OrderWhereInput | null
@@ -5660,6 +5923,7 @@ export interface UserWhereInput {
 
 export interface UserWhereUniqueInput {
   uid?: ID_Input | null
+  extUid?: String | null
 }
 
 /*
@@ -5704,7 +5968,7 @@ export interface Bp {
   email?: String | null
   orders?: Array<Order> | null
   customerOf?: Array<User> | null
-  createdAt: DateTime
+  createdAt?: DateTime | null
   updatedAt?: DateTime | null
   createdBy?: String | null
   updatedBy?: String | null
@@ -5737,7 +6001,7 @@ export interface BpPreviousValues {
   lastName2?: String | null
   phone?: String | null
   email?: String | null
-  createdAt: DateTime
+  createdAt?: DateTime | null
   updatedAt?: DateTime | null
   createdBy?: String | null
   updatedBy?: String | null
@@ -5758,7 +6022,7 @@ export interface Item {
   provider?: String | null
   order: Order
   pricing?: Array<Price> | null
-  createdAt: DateTime
+  createdAt?: DateTime | null
   updatedAt?: DateTime | null
   createdBy: String
   updatedBy?: String | null
@@ -5789,7 +6053,7 @@ export interface ItemPreviousValues {
   quantity?: Float | null
   description?: String | null
   provider?: String | null
-  createdAt: DateTime
+  createdAt?: DateTime | null
   updatedAt?: DateTime | null
   createdBy: String
   updatedBy?: String | null
@@ -5809,9 +6073,9 @@ export interface Order {
   issuedTo: Bp
   assignedTo: User
   items?: Array<Item> | null
-  createdAt: DateTime
+  createdAt?: DateTime | null
   updatedAt?: DateTime | null
-  createdBy: String
+  createdBy?: String | null
   updatedBy?: String | null
 }
 
@@ -5838,9 +6102,9 @@ export interface OrderPreviousValues {
   uid: ID_Output
   name: String
   stage?: OrderStage | null
-  createdAt: DateTime
+  createdAt?: DateTime | null
   updatedAt?: DateTime | null
-  createdBy: String
+  createdBy?: String | null
   updatedBy?: String | null
 }
 
@@ -5868,7 +6132,7 @@ export interface Price {
   amount: Float
   currency: Currency
   item: Item
-  createdAt: DateTime
+  createdAt?: DateTime | null
   updatedAt?: DateTime | null
   createdBy: String
   updatedBy?: String | null
@@ -5898,7 +6162,7 @@ export interface PricePreviousValues {
   type?: PriceType | null
   amount: Float
   currency: Currency
-  createdAt: DateTime
+  createdAt?: DateTime | null
   updatedAt?: DateTime | null
   createdBy: String
   updatedBy?: String | null
@@ -5913,9 +6177,12 @@ export interface PriceSubscriptionPayload {
 
 export interface User {
   uid: ID_Output
+  extUid?: String | null
   role?: String | null
   orders?: Array<Order> | null
   customers?: Array<Bp> | null
+  createdAt?: DateTime | null
+  updatedAt?: DateTime | null
 }
 
 /*
@@ -5939,7 +6206,10 @@ export interface UserEdge {
 
 export interface UserPreviousValues {
   uid: ID_Output
+  extUid?: String | null
   role?: String | null
+  createdAt?: DateTime | null
+  updatedAt?: DateTime | null
 }
 
 export interface UserSubscriptionPayload {

@@ -594,7 +594,7 @@ export class ItemCreateInput {
     quantity?: number;
     description?: string;
     provider?: string;
-    createdBy: string;
+    createdBy?: string;
     updatedBy?: string;
     order: OrderCreateOneWithoutItemsInput;
     pricing?: PriceCreateManyWithoutItemInput;
@@ -616,7 +616,7 @@ export class ItemCreateWithoutOrderInput {
     quantity?: number;
     description?: string;
     provider?: string;
-    createdBy: string;
+    createdBy?: string;
     updatedBy?: string;
     pricing?: PriceCreateManyWithoutItemInput;
 }
@@ -627,7 +627,7 @@ export class ItemCreateWithoutPricingInput {
     quantity?: number;
     description?: string;
     provider?: string;
-    createdBy: string;
+    createdBy?: string;
     updatedBy?: string;
     order: OrderCreateOneWithoutItemsInput;
 }
@@ -1327,7 +1327,7 @@ export class PriceCreateInput {
     type?: PriceType;
     amount: number;
     currency: Currency;
-    createdBy: string;
+    createdBy?: string;
     updatedBy?: string;
     item: ItemCreateOneWithoutPricingInput;
 }
@@ -1342,7 +1342,7 @@ export class PriceCreateWithoutItemInput {
     type?: PriceType;
     amount: number;
     currency: Currency;
-    createdBy: string;
+    createdBy?: string;
     updatedBy?: string;
 }
 
@@ -1920,7 +1920,7 @@ export class Item {
     pricing?: Price[];
     createdAt?: DateTime;
     updatedAt?: DateTime;
-    createdBy: string;
+    createdBy?: string;
     updatedBy?: string;
 }
 
@@ -1943,7 +1943,7 @@ export class ItemPreviousValues {
     provider?: string;
     createdAt?: DateTime;
     updatedAt?: DateTime;
-    createdBy: string;
+    createdBy?: string;
     updatedBy?: string;
 }
 
@@ -2043,7 +2043,7 @@ export class Price {
     item: Item;
     createdAt?: DateTime;
     updatedAt?: DateTime;
-    createdBy: string;
+    createdBy?: string;
     updatedBy?: string;
 }
 
@@ -2065,7 +2065,7 @@ export class PricePreviousValues {
     currency: Currency;
     createdAt?: DateTime;
     updatedAt?: DateTime;
-    createdBy: string;
+    createdBy?: string;
     updatedBy?: string;
 }
 

@@ -1235,7 +1235,7 @@ type Item {
   pricing(where: PriceWhereInput, orderBy: PriceOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Price!]
   createdAt: DateTime
   updatedAt: DateTime
-  createdBy: String!
+  createdBy: String
   updatedBy: String
 }
 
@@ -1255,7 +1255,7 @@ input ItemCreateInput {
   quantity: Float
   description: String
   provider: String
-  createdBy: String!
+  createdBy: String
   updatedBy: String
   order: OrderCreateOneWithoutItemsInput!
   pricing: PriceCreateManyWithoutItemInput
@@ -1277,7 +1277,7 @@ input ItemCreateWithoutOrderInput {
   quantity: Float
   description: String
   provider: String
-  createdBy: String!
+  createdBy: String
   updatedBy: String
   pricing: PriceCreateManyWithoutItemInput
 }
@@ -1288,7 +1288,7 @@ input ItemCreateWithoutPricingInput {
   quantity: Float
   description: String
   provider: String
-  createdBy: String!
+  createdBy: String
   updatedBy: String
   order: OrderCreateOneWithoutItemsInput!
 }
@@ -1331,7 +1331,7 @@ type ItemPreviousValues {
   provider: String
   createdAt: DateTime
   updatedAt: DateTime
-  createdBy: String!
+  createdBy: String
   updatedBy: String
 }
 
@@ -2909,7 +2909,7 @@ type Price {
   item: Item!
   createdAt: DateTime
   updatedAt: DateTime
-  createdBy: String!
+  createdBy: String
   updatedBy: String
 }
 
@@ -2928,7 +2928,7 @@ input PriceCreateInput {
   type: PriceType
   amount: Float!
   currency: Currency!
-  createdBy: String!
+  createdBy: String
   updatedBy: String
   item: ItemCreateOneWithoutPricingInput!
 }
@@ -2943,7 +2943,7 @@ input PriceCreateWithoutItemInput {
   type: PriceType
   amount: Float!
   currency: Currency!
-  createdBy: String!
+  createdBy: String
   updatedBy: String
 }
 
@@ -2982,7 +2982,7 @@ type PricePreviousValues {
   currency: Currency!
   createdAt: DateTime
   updatedAt: DateTime
-  createdBy: String!
+  createdBy: String
   updatedBy: String
 }
 
@@ -4686,7 +4686,7 @@ export interface ItemCreateInput {
   quantity?: Float | null
   description?: String | null
   provider?: String | null
-  createdBy: String
+  createdBy?: String | null
   updatedBy?: String | null
   order: OrderCreateOneWithoutItemsInput
   pricing?: PriceCreateManyWithoutItemInput | null
@@ -4708,7 +4708,7 @@ export interface ItemCreateWithoutOrderInput {
   quantity?: Float | null
   description?: String | null
   provider?: String | null
-  createdBy: String
+  createdBy?: String | null
   updatedBy?: String | null
   pricing?: PriceCreateManyWithoutItemInput | null
 }
@@ -4719,7 +4719,7 @@ export interface ItemCreateWithoutPricingInput {
   quantity?: Float | null
   description?: String | null
   provider?: String | null
-  createdBy: String
+  createdBy?: String | null
   updatedBy?: String | null
   order: OrderCreateOneWithoutItemsInput
 }
@@ -5419,7 +5419,7 @@ export interface PriceCreateInput {
   type?: PriceType | null
   amount: Float
   currency: Currency
-  createdBy: String
+  createdBy?: String | null
   updatedBy?: String | null
   item: ItemCreateOneWithoutPricingInput
 }
@@ -5434,7 +5434,7 @@ export interface PriceCreateWithoutItemInput {
   type?: PriceType | null
   amount: Float
   currency: Currency
-  createdBy: String
+  createdBy?: String | null
   updatedBy?: String | null
 }
 
@@ -6024,7 +6024,7 @@ export interface Item {
   pricing?: Array<Price> | null
   createdAt?: DateTime | null
   updatedAt?: DateTime | null
-  createdBy: String
+  createdBy?: String | null
   updatedBy?: String | null
 }
 
@@ -6055,7 +6055,7 @@ export interface ItemPreviousValues {
   provider?: String | null
   createdAt?: DateTime | null
   updatedAt?: DateTime | null
-  createdBy: String
+  createdBy?: String | null
   updatedBy?: String | null
 }
 
@@ -6134,7 +6134,7 @@ export interface Price {
   item: Item
   createdAt?: DateTime | null
   updatedAt?: DateTime | null
-  createdBy: String
+  createdBy?: String | null
   updatedBy?: String | null
 }
 
@@ -6164,7 +6164,7 @@ export interface PricePreviousValues {
   currency: Currency
   createdAt?: DateTime | null
   updatedAt?: DateTime | null
-  createdBy: String
+  createdBy?: String | null
   updatedBy?: String | null
 }
 

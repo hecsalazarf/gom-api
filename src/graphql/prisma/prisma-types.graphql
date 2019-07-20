@@ -1,5 +1,5 @@
 # source: http://localhost:4466
-# timestamp: Fri Jul 19 2019 11:40:37 GMT-0500 (Central Daylight Time)
+# timestamp: Fri Jul 19 2019 16:40:01 GMT-0500 (Central Daylight Time)
 
 type AggregateBp {
   count: Int!
@@ -1143,7 +1143,7 @@ type Item {
   pricing(where: PriceWhereInput, orderBy: PriceOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Price!]
   createdAt: DateTime
   updatedAt: DateTime
-  createdBy: String!
+  createdBy: String
   updatedBy: String
 }
 
@@ -1163,7 +1163,7 @@ input ItemCreateInput {
   quantity: Float
   description: String
   provider: String
-  createdBy: String!
+  createdBy: String
   updatedBy: String
   order: OrderCreateOneWithoutItemsInput!
   pricing: PriceCreateManyWithoutItemInput
@@ -1185,7 +1185,7 @@ input ItemCreateWithoutOrderInput {
   quantity: Float
   description: String
   provider: String
-  createdBy: String!
+  createdBy: String
   updatedBy: String
   pricing: PriceCreateManyWithoutItemInput
 }
@@ -1196,7 +1196,7 @@ input ItemCreateWithoutPricingInput {
   quantity: Float
   description: String
   provider: String
-  createdBy: String!
+  createdBy: String
   updatedBy: String
   order: OrderCreateOneWithoutItemsInput!
 }
@@ -1239,7 +1239,7 @@ type ItemPreviousValues {
   provider: String
   createdAt: DateTime
   updatedAt: DateTime
-  createdBy: String!
+  createdBy: String
   updatedBy: String
 }
 
@@ -2817,7 +2817,7 @@ type Price {
   item: Item!
   createdAt: DateTime
   updatedAt: DateTime
-  createdBy: String!
+  createdBy: String
   updatedBy: String
 }
 
@@ -2836,7 +2836,7 @@ input PriceCreateInput {
   type: PriceType
   amount: Float!
   currency: Currency!
-  createdBy: String!
+  createdBy: String
   updatedBy: String
   item: ItemCreateOneWithoutPricingInput!
 }
@@ -2851,7 +2851,7 @@ input PriceCreateWithoutItemInput {
   type: PriceType
   amount: Float!
   currency: Currency!
-  createdBy: String!
+  createdBy: String
   updatedBy: String
 }
 
@@ -2890,7 +2890,7 @@ type PricePreviousValues {
   currency: Currency!
   createdAt: DateTime
   updatedAt: DateTime
-  createdBy: String!
+  createdBy: String
   updatedBy: String
 }
 

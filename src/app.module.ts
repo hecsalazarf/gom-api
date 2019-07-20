@@ -2,8 +2,7 @@ import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
 import { APP_FILTER } from '@nestjs/core';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from './config/config.module';
-import { SessionMiddleware } from './middleware/session.middleware';
-import { CookieMiddleware } from './middleware/cookie.middleware';
+import { SessionMiddleware, CookieMiddleware } from './middleware';
 import { CatchallFilter } from './efilters/catchall.filter';
 import { GraphqlModule } from './graphql/graphql.module';
 

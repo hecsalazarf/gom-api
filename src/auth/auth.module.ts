@@ -2,8 +2,7 @@ import { Module, NestModule, MiddlewareConsumer, HttpModule } from '@nestjs/comm
 import { ConfigModule } from '../config/config.module';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { CsrfMiddleware } from '../middleware/csrf.middleware';
-import { CsrfgenMiddleware } from '../middleware/csrfgen.middleware';
+import { CsrfMiddleware, CsrfgenMiddleware } from '../middleware';
 
 @Module({
   imports: [HttpModule, ConfigModule],

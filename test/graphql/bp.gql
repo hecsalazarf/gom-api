@@ -1,0 +1,79 @@
+query BpPag ($where: BpWhereInput, $orderBy: BpOrderByInput, $first: Int, $skip: Int) {
+  bpsConnection(where: $where, orderBy: $orderBy, first: $first, skip: $skip) {
+    pageInfo {
+      hasNextPage
+      startCursor
+      endCursor
+    }
+    edges {
+      node {
+        uid
+        name1
+        lastName1
+        email
+        phone
+      }
+    }
+  }
+}
+
+{
+  "where": {
+    "customerOf_some": {
+      "uid": "cjy98owqr04xg08187dp9tvls"
+    }
+  },
+  "first": 5,
+  "orderBy": "createdAt_DESC"
+}
+
+# Write your query or mutation here
+query ReadBP ($where: BpWhereUniqueInput!) {
+  bp(where: $where) {
+    uid
+    name1
+    lastName1
+    phone
+    email
+  }
+}
+
+{
+  "where": {
+    "uid": "cjyacw19f01jw0801pfhf0ruw"
+  }
+}
+
+mutation CreateBp ($data: BpCreateInput!) {
+  createBp(data: $data) {
+    uid
+  }
+}
+
+{
+  "data": {
+    "name1": "Lalo",
+    "lastName1": "Ruiz",
+    "customerOf": {
+      "connect": {
+        "uid": "cjy7um1uj008d0753wpjixzup"
+      }
+    }
+  }
+}
+
+mutation updateBp ($data: BpUpdateInput! $where: BpWhereUniqueInput!) {
+  updateBp(data: $data, where: $where) {
+    uid
+  }
+}
+
+{
+  "data": {
+    "name1": "Lalito",
+    "phone": "552145336"
+  },
+  "where": {
+    "uid": "cjy9enn0m002f0801htg40rs7"
+  }
+}

@@ -1,0 +1,179 @@
+
+mutation CreateOrder ($data: OrderCreateInput!) {
+  createOrder(data: $data) {
+    uid
+    name
+    stage
+    createdAt
+    issuedTo {
+      uid
+      name1
+      lastName1
+    }
+  }
+}
+
+{
+  "data": {
+    "name": "Pedido 20",
+    "issuedTo": {
+      "connect": {
+        "uid": "cjy9enn0m002f0801htg40rs7"
+      }
+    },
+    "assignedTo": {
+      "connect": {
+        "uid": "cjy98owqr04xg08187dp9tvls"
+      }
+    },
+    "items": {
+      "create": [
+        {
+        	"createdBy": "hector",
+        	"description": "Queso",
+        	"quantity": 1,
+        	"pricing": {
+          	"create": {
+            	"createdBy": "hector",
+            	"currency": "MXN",
+            	"amount": 525.35
+          	}
+        	}
+        },
+        {
+        	"createdBy": "hector",
+        	"description": "Carne",
+        	"quantity": 2,
+        	"pricing": {
+          	"create": {
+            	"createdBy": "hector",
+            	"currency": "MXN",
+            	"amount": 85.39
+          	}
+        	}
+        }
+      ]
+    },
+    "createdBy": "hector"
+  }
+}
+
+query ReadOrder ($where: OrderWhereUniqueInput!) {
+  order(where: $where) {
+    uid
+    name
+    stage
+    createdAt
+    updatedAt
+    items {
+      uid
+      code
+      quantity
+      description
+      provider
+      pricing {
+        uid
+        amount
+        currency
+        type
+      }
+    }
+    issuedTo {
+      uid
+      name1
+      name2
+      lastName1
+      lastName2
+    }
+  }
+}
+
+{
+  "where": {
+    "uid": "cjy9hiqyz003c0801qmddlx1d"
+  }
+}
+
+mutation UpdateOrder ($data: OrderUpdateInput!, $where: OrderWhereUniqueInput!) {
+  updateOrder(data: $data, where: $where) {
+    uid,
+    name,
+    stage
+    assignedTo {
+      uid
+    },
+    issuedTo {
+      uid
+      name1
+    }
+  }
+}
+
+{
+  "data": {
+    "name": "Pedido 20+",
+    "stage": "IN_PROCESS",
+    "items": {
+      "create": {
+        "description": "Soda fria",
+        "quantity": 1,
+        "createdBy": "hector",
+        "pricing": {
+          "create": {
+            "amount": 20.54,
+            "currency": "MXN",
+            "createdBy": "hector"
+          }
+        }
+      },
+      "update": {
+        "where": {
+          "uid": "cjy9hiqzn003d0801g53v7zp9"
+        },
+        "data": {
+          "description": "Queso manchego"
+        }
+      },
+      "delete": {
+        "uid": "cjy9hir0m003f0801yvowo10b"
+      }
+    }
+  },
+  "where": {
+    "uid": "cjy9hiqyz003c0801qmddlx1d"
+  }
+}
+
+
+query OrderPag ($where: OrderWhereInput, $orderBy: OrderOrderByInput, $first: Int, $skip: Int) {
+  ordersConnection(where: $where, orderBy: $orderBy, first: $first, skip: $skip) {
+    pageInfo {
+      hasNextPage
+      startCursor
+      endCursor
+    },
+    edges {
+      node {
+        uid
+        name
+        stage
+        createdAt
+        issuedTo {
+          uid
+          name1
+          lastName1
+        }
+      }
+    }
+  }
+}
+
+{
+  "where": {
+    "assignedTo": {
+      "uid": "auth0|5cbf89f3937ebc119aa3570a"
+    }
+  },
+  "first": 5,
+  "orderBy": "createdAt_DESC"
+}

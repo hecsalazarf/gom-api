@@ -3,7 +3,7 @@ import { APP_FILTER } from '@nestjs/core';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from './config/config.module';
 import { SessionMiddleware, CookieMiddleware } from './middleware';
-import { CatchallFilter } from './efilters/catchall.filter';
+import { CatchallFilter } from './app.filter';
 import { GraphqlModule } from './graphql/graphql.module';
 
 @Module({

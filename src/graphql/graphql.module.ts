@@ -4,24 +4,28 @@ import { BpModule } from './bp/bp.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { GraphqlOptions } from './graphql.options';
 import { OrderModule } from './order/order.module';
-import { CsrfMiddleware } from '../middleware';
+import { CsrfMiddleware, AuthMiddleware } from '../middleware';
 import { ConfigModule } from '../config/config.module';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
   imports: [
     GraphQLModule.forRootAsync({
       useClass: GraphqlOptions,
+      imports: [
+        BpModule,
+        OrderModule,
+      ],
     }),
     ConfigModule,
     PrismaModule,
-    BpModule,
-    OrderModule,
+    AuthModule,
   ],
 })
 export class GraphqlModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
-      .apply(CsrfMiddleware)
+      .apply(CsrfMiddleware, AuthMiddleware)
       .forRoutes('graphql');
   }
 }

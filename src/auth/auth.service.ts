@@ -46,9 +46,9 @@ export class AuthService {
     return result.data;
   }
 
-  public verify(token: string, options: object): Promise<object> {
+  public verify(token: string, options: object): Promise<any> {
     return new Promise((resolve, reject) => {
-      Jwt.verify(token, this.getKey, options, (err: object, decoded: object) => {
+      Jwt.verify(token, this.getKey.bind(this), options, (err: object, decoded: object) => {
         if (err) {
           reject(err);
         } else {

@@ -11,5 +11,4 @@ definitionsFactory.generate({
   typePaths: ['./src/graphql/prisma/*.graphql'],
   path: join(process.cwd(), 'src/graphql/graphql.schema.d.ts'),
   outputAs: 'class',
-  watch: true,
 });

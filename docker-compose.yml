@@ -6,6 +6,7 @@ services:
     ports:
       - '4466:4466'
     environment:
+      JAVA_OPTS: '-Xmx500m -Xms256m'
       PRISMA_CONFIG: |
         port: 4466
         databases:
@@ -15,9 +16,15 @@ services:
             port: 5432
             user: prisma
             password: prisma
+    deploy:
+      resources:
+        limits:
+          memory: 500M
   postgres:
     image: postgres:11.4-alpine
     restart: always
+    ports:
+      - '5432:5432'
     environment:
       POSTGRES_USER: prisma
       POSTGRES_PASSWORD: prisma

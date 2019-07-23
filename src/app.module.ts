@@ -3,18 +3,18 @@ import { APP_FILTER } from '@nestjs/core';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from './config/config.module';
 import { SessionMiddleware, CookieMiddleware } from './middleware';
-import { CatchallFilter } from './app.filter';
+import { CatchAllFilter } from './app.filter';
 import { GraphqlModule } from './graphql/graphql.module';
 
 @Module({
   providers: [
     {
       /*
-        Global-scoped exception filter registered this way, allows to perform
-        dependancy injection. See more https://docs.nestjs.com/exception-filters
+      * Global-scoped exception filter registered this way, allows to perform
+      * dependancy injection. See more https://docs.nestjs.com/exception-filters
       */
       provide: APP_FILTER,
-      useClass: CatchallFilter,
+      useClass: CatchAllFilter,
     },
   ],
   imports: [AuthModule, ConfigModule, GraphqlModule],

@@ -1,12 +1,9 @@
 import { UseFilters, UseInterceptors, UseGuards } from '@nestjs/common';
 import { Resolver, Query, Args, Mutation, Info } from '@nestjs/graphql';
 import { PrismaService } from '../prisma/prisma.service';
-import { OrderConnection } from '../graphql.schema';
+import { OrderConnection } from '../../graphql.schema';
 import { Order } from './model/order';
-import { GraphqlFilter } from '../graphql.filter';
-import { AuditInterceptor } from '../audit.interceptor';
-import { Permission } from '../permission.decorator';
-import { PermissionGuard } from '../permission.guard';
+import { AuditInterceptor, Permission, PermissionGuard, GraphqlFilter } from '../../graphql.common';
 
 @Resolver('Order')
 @UseGuards(PermissionGuard)

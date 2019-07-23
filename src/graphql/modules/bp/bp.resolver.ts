@@ -2,11 +2,8 @@ import { Args, Info, Query, Resolver, Mutation } from '@nestjs/graphql';
 import { UseInterceptors, UseGuards, UseFilters } from '@nestjs/common';
 import { Bp } from './model/bp';
 import { PrismaService } from '../prisma/prisma.service';
-import { BpConnection } from '../graphql.schema';
-import { AuditInterceptor } from '../audit.interceptor';
-import { Permission } from '../permission.decorator';
-import { PermissionGuard } from '../permission.guard';
-import { GraphqlFilter } from '../graphql.filter';
+import { BpConnection } from '../../graphql.schema';
+import { AuditInterceptor, Permission, PermissionGuard, GraphqlFilter } from '../../graphql.common';
 
 @Resolver('Bp')
 @UseFilters(GraphqlFilter)

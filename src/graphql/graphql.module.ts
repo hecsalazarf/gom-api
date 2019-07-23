@@ -1,10 +1,9 @@
 import { Module, MiddlewareConsumer, NestModule } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { GraphqlOptions } from './graphql.options';
-import { BpModule } from './bp/bp.module';
-import { OrderModule } from './order/order.module';
+import { BpModule, OrderModule } from './modules';
 import { CsrfMiddleware, AuthMiddleware } from '../middleware';
-import { AuthModule } from 'src/auth/auth.module';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
   imports: [

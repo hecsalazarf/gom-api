@@ -8,7 +8,7 @@ import { ConfigService } from '../config/config.service';
 export class AuthController {
   private readonly cookieOptions: object;
 
-  constructor(private readonly authService: AuthService, private readonly config: ConfigService) {
+  constructor(private readonly auth: AuthService, private readonly config: ConfigService) {
     this.cookieOptions = (({maxAge, httpOnly, signed}) => ({maxAge, httpOnly, signed}))(this.config.get('accessToken.options'));
   }
 
@@ -16,13 +16,12 @@ export class AuthController {
   async signIn(@Body(new ValidationPipe()) body: CredentialsDto, @Req() req: any, @Res() res: Response): Promise<void | object> {
     if (req.session.isNew) {
       /* With the given credential request the JWT */
-      const token = await this.authService.requestToken(body);
-
-       /*
-       * The JWT is splitted in two parts. The header and the payload
-       * are stored in the access_token cookie.
-       * The signature is stored in the session cookie which is signed.
-       */
+      const token = await this.auth.requestToken(body);
+      /*
+      * The JWT is splitted in two parts. The header and the payload
+      * are stored in the access_token cookie.
+      * The signature is stored in the session cookie which is signed.
+      */
       const index = token.access_token.lastIndexOf('.');
       /* Create session */
       req.session.access_token_sign = token.access_token.slice(index + 1);
@@ -30,7 +29,7 @@ export class AuthController {
       res.cookie(this.config.get('accessToken.cookieName'), token.access_token.slice(0, index), this.cookieOptions);
       /* After a login, refresh the CSRF token */
       res.cookie(this.config.get('csrf.cookie.name'), req.csrfToken(), { secure: this.config.get('csrf.cookie.secure') });
-      const { nickname, name, picture, email, sub } = this.authService.decode(token.id_token);
+      const { nickname, name, picture, email, sub } = this.auth.decode(token.id_token);
       res.status(HttpStatus.OK);
       res.send({ nickname, name, picture, email, sub });
     } else {

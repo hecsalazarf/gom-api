@@ -23,7 +23,7 @@ export class AuthMiddleware implements NestMiddleware {
       });
       req.user = {
         id: decoded.sub,
-        permissions: decoded.permissions,
+        ability: this.auth.buildAbility(decoded), // create user ability
       };
       next();
     } catch (error) {

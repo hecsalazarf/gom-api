@@ -4,7 +4,6 @@ import { GraphqlOptions } from './graphql.options';
 import { BpModule } from './bp/bp.module';
 import { OrderModule } from './order/order.module';
 import { CsrfMiddleware, AuthMiddleware } from '../middleware';
-import { ConfigModule } from '../config/config.module';
 import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
@@ -16,7 +15,6 @@ import { AuthModule } from 'src/auth/auth.module';
         OrderModule,
       ],
     }),
-    ConfigModule,
     AuthModule,
   ],
 })

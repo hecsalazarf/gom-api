@@ -8,6 +8,9 @@ export class GraphqlOptions implements GqlOptionsFactory {
     return {
       typePaths: ['./**/*.graphql'],
       path: '/graphql', // endpoint
+      context: ({ req }) => ({
+        user: req.user, // add user got from AuthMiddleware to context
+      }),
       /*
       * With an existing HTTP server (created with createServer),
       * we can add subscriptions using the installSubscriptionHandlers.

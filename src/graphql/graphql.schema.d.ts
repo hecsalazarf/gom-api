@@ -8,6 +8,8 @@
 export enum BpOrderByInput {
     uid_ASC = "uid_ASC",
     uid_DESC = "uid_DESC",
+    extUid_ASC = "extUid_ASC",
+    extUid_DESC = "extUid_DESC",
     name1_ASC = "name1_ASC",
     name1_DESC = "name1_DESC",
     name2_ASC = "name2_ASC",
@@ -123,6 +125,7 @@ export enum UserOrderByInput {
 
 export class BpCreateInput {
     uid?: string;
+    extUid?: string;
     name1: string;
     name2?: string;
     lastName1?: string;
@@ -147,6 +150,7 @@ export class BpCreateOneWithoutOrdersInput {
 
 export class BpCreateWithoutCustomerOfInput {
     uid?: string;
+    extUid?: string;
     name1: string;
     name2?: string;
     lastName1?: string;
@@ -160,6 +164,7 @@ export class BpCreateWithoutCustomerOfInput {
 
 export class BpCreateWithoutOrdersInput {
     uid?: string;
+    extUid?: string;
     name1: string;
     name2?: string;
     lastName1?: string;
@@ -189,6 +194,20 @@ export class BpScalarWhereInput {
     uid_not_starts_with?: string;
     uid_ends_with?: string;
     uid_not_ends_with?: string;
+    extUid?: string;
+    extUid_not?: string;
+    extUid_in?: string[];
+    extUid_not_in?: string[];
+    extUid_lt?: string;
+    extUid_lte?: string;
+    extUid_gt?: string;
+    extUid_gte?: string;
+    extUid_contains?: string;
+    extUid_not_contains?: string;
+    extUid_starts_with?: string;
+    extUid_not_starts_with?: string;
+    extUid_ends_with?: string;
+    extUid_not_ends_with?: string;
     name1?: string;
     name1_not?: string;
     name1_in?: string[];
@@ -331,6 +350,7 @@ export class BpSubscriptionWhereInput {
 }
 
 export class BpUpdateInput {
+    extUid?: string;
     name1?: string;
     name2?: string;
     lastName1?: string;
@@ -344,6 +364,7 @@ export class BpUpdateInput {
 }
 
 export class BpUpdateManyDataInput {
+    extUid?: string;
     name1?: string;
     name2?: string;
     lastName1?: string;
@@ -355,6 +376,7 @@ export class BpUpdateManyDataInput {
 }
 
 export class BpUpdateManyMutationInput {
+    extUid?: string;
     name1?: string;
     name2?: string;
     lastName1?: string;
@@ -390,6 +412,7 @@ export class BpUpdateOneRequiredWithoutOrdersInput {
 }
 
 export class BpUpdateWithoutCustomerOfDataInput {
+    extUid?: string;
     name1?: string;
     name2?: string;
     lastName1?: string;
@@ -402,6 +425,7 @@ export class BpUpdateWithoutCustomerOfDataInput {
 }
 
 export class BpUpdateWithoutOrdersDataInput {
+    extUid?: string;
     name1?: string;
     name2?: string;
     lastName1?: string;
@@ -447,6 +471,20 @@ export class BpWhereInput {
     uid_not_starts_with?: string;
     uid_ends_with?: string;
     uid_not_ends_with?: string;
+    extUid?: string;
+    extUid_not?: string;
+    extUid_in?: string[];
+    extUid_not_in?: string[];
+    extUid_lt?: string;
+    extUid_lte?: string;
+    extUid_gt?: string;
+    extUid_gte?: string;
+    extUid_contains?: string;
+    extUid_not_contains?: string;
+    extUid_starts_with?: string;
+    extUid_not_starts_with?: string;
+    extUid_ends_with?: string;
+    extUid_not_ends_with?: string;
     name1?: string;
     name1_not?: string;
     name1_in?: string[];
@@ -585,7 +623,7 @@ export class BpWhereInput {
 
 export class BpWhereUniqueInput {
     uid?: string;
-    email?: string;
+    extUid?: string;
 }
 
 export class ItemCreateInput {
@@ -1864,6 +1902,7 @@ export class BatchPayload {
 
 export class Bp {
     uid: string;
+    extUid?: string;
     name1: string;
     name2?: string;
     lastName1?: string;
@@ -1891,6 +1930,7 @@ export class BpEdge {
 
 export class BpPreviousValues {
     uid: string;
+    extUid?: string;
     name1: string;
     name2?: string;
     lastName1?: string;

@@ -1,5 +1,5 @@
-# source: http://localhost:4466
-# timestamp: Fri Jul 19 2019 16:40:01 GMT-0500 (Central Daylight Time)
+# source: http://172.18.0.1:4466
+# timestamp: Wed Jul 24 2019 21:55:49 GMT-0500 (Central Daylight Time)
 
 type AggregateBp {
   count: Int!
@@ -28,6 +28,7 @@ type BatchPayload {
 
 type Bp {
   uid: ID!
+  extUid: ID
   name1: String!
   name2: String
   lastName1: String
@@ -54,6 +55,7 @@ type BpConnection {
 
 input BpCreateInput {
   uid: ID
+  extUid: ID
   name1: String!
   name2: String
   lastName1: String
@@ -78,6 +80,7 @@ input BpCreateOneWithoutOrdersInput {
 
 input BpCreateWithoutCustomerOfInput {
   uid: ID
+  extUid: ID
   name1: String!
   name2: String
   lastName1: String
@@ -91,6 +94,7 @@ input BpCreateWithoutCustomerOfInput {
 
 input BpCreateWithoutOrdersInput {
   uid: ID
+  extUid: ID
   name1: String!
   name2: String
   lastName1: String
@@ -114,6 +118,8 @@ type BpEdge {
 enum BpOrderByInput {
   uid_ASC
   uid_DESC
+  extUid_ASC
+  extUid_DESC
   name1_ASC
   name1_DESC
   name2_ASC
@@ -138,6 +144,7 @@ enum BpOrderByInput {
 
 type BpPreviousValues {
   uid: ID!
+  extUid: ID
   name1: String!
   name2: String
   lastName1: String
@@ -199,6 +206,46 @@ input BpScalarWhereInput {
 
   """All values not ending with the given string."""
   uid_not_ends_with: ID
+  extUid: ID
+
+  """All values that are not equal to given value."""
+  extUid_not: ID
+
+  """All values that are contained in given list."""
+  extUid_in: [ID!]
+
+  """All values that are not contained in given list."""
+  extUid_not_in: [ID!]
+
+  """All values less than the given value."""
+  extUid_lt: ID
+
+  """All values less than or equal the given value."""
+  extUid_lte: ID
+
+  """All values greater than the given value."""
+  extUid_gt: ID
+
+  """All values greater than or equal the given value."""
+  extUid_gte: ID
+
+  """All values containing the given string."""
+  extUid_contains: ID
+
+  """All values not containing the given string."""
+  extUid_not_contains: ID
+
+  """All values starting with the given string."""
+  extUid_starts_with: ID
+
+  """All values not starting with the given string."""
+  extUid_not_starts_with: ID
+
+  """All values ending with the given string."""
+  extUid_ends_with: ID
+
+  """All values not ending with the given string."""
+  extUid_not_ends_with: ID
   name1: String
 
   """All values that are not equal to given value."""
@@ -603,6 +650,7 @@ input BpSubscriptionWhereInput {
 }
 
 input BpUpdateInput {
+  extUid: ID
   name1: String
   name2: String
   lastName1: String
@@ -616,6 +664,7 @@ input BpUpdateInput {
 }
 
 input BpUpdateManyDataInput {
+  extUid: ID
   name1: String
   name2: String
   lastName1: String
@@ -627,6 +676,7 @@ input BpUpdateManyDataInput {
 }
 
 input BpUpdateManyMutationInput {
+  extUid: ID
   name1: String
   name2: String
   lastName1: String
@@ -662,6 +712,7 @@ input BpUpdateOneRequiredWithoutOrdersInput {
 }
 
 input BpUpdateWithoutCustomerOfDataInput {
+  extUid: ID
   name1: String
   name2: String
   lastName1: String
@@ -674,6 +725,7 @@ input BpUpdateWithoutCustomerOfDataInput {
 }
 
 input BpUpdateWithoutOrdersDataInput {
+  extUid: ID
   name1: String
   name2: String
   lastName1: String
@@ -750,6 +802,46 @@ input BpWhereInput {
 
   """All values not ending with the given string."""
   uid_not_ends_with: ID
+  extUid: ID
+
+  """All values that are not equal to given value."""
+  extUid_not: ID
+
+  """All values that are contained in given list."""
+  extUid_in: [ID!]
+
+  """All values that are not contained in given list."""
+  extUid_not_in: [ID!]
+
+  """All values less than the given value."""
+  extUid_lt: ID
+
+  """All values less than or equal the given value."""
+  extUid_lte: ID
+
+  """All values greater than the given value."""
+  extUid_gt: ID
+
+  """All values greater than or equal the given value."""
+  extUid_gte: ID
+
+  """All values containing the given string."""
+  extUid_contains: ID
+
+  """All values not containing the given string."""
+  extUid_not_contains: ID
+
+  """All values starting with the given string."""
+  extUid_starts_with: ID
+
+  """All values not starting with the given string."""
+  extUid_not_starts_with: ID
+
+  """All values ending with the given string."""
+  extUid_ends_with: ID
+
+  """All values not ending with the given string."""
+  extUid_not_ends_with: ID
   name1: String
 
   """All values that are not equal to given value."""
@@ -1124,7 +1216,7 @@ input BpWhereInput {
 
 input BpWhereUniqueInput {
   uid: ID
-  email: String
+  extUid: ID
 }
 
 enum Currency {

@@ -1,11 +1,12 @@
 type Bp {
   uid: ID! @id
+  extUid: ID @unique
   name1: String!
   name2: String
   lastName1: String
   lastName2: String
   phone: String
-  email: String @unique
+  email: String
   orders: [Order!] @relation(name: "BpOrder", onDelete: CASCADE)
   customerOf: [User!]! @relation(name: "CustomerOf", onDelete: SET_NULL)
   createdAt: DateTime @createdAt

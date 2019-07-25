@@ -120,6 +120,7 @@ type BatchPayload {
 
 type Bp {
   uid: ID!
+  extUid: ID
   name1: String!
   name2: String
   lastName1: String
@@ -146,6 +147,7 @@ type BpConnection {
 
 input BpCreateInput {
   uid: ID
+  extUid: ID
   name1: String!
   name2: String
   lastName1: String
@@ -170,6 +172,7 @@ input BpCreateOneWithoutOrdersInput {
 
 input BpCreateWithoutCustomerOfInput {
   uid: ID
+  extUid: ID
   name1: String!
   name2: String
   lastName1: String
@@ -183,6 +186,7 @@ input BpCreateWithoutCustomerOfInput {
 
 input BpCreateWithoutOrdersInput {
   uid: ID
+  extUid: ID
   name1: String!
   name2: String
   lastName1: String
@@ -206,6 +210,8 @@ type BpEdge {
 enum BpOrderByInput {
   uid_ASC
   uid_DESC
+  extUid_ASC
+  extUid_DESC
   name1_ASC
   name1_DESC
   name2_ASC
@@ -230,6 +236,7 @@ enum BpOrderByInput {
 
 type BpPreviousValues {
   uid: ID!
+  extUid: ID
   name1: String!
   name2: String
   lastName1: String
@@ -291,6 +298,46 @@ input BpScalarWhereInput {
 
   """All values not ending with the given string."""
   uid_not_ends_with: ID
+  extUid: ID
+
+  """All values that are not equal to given value."""
+  extUid_not: ID
+
+  """All values that are contained in given list."""
+  extUid_in: [ID!]
+
+  """All values that are not contained in given list."""
+  extUid_not_in: [ID!]
+
+  """All values less than the given value."""
+  extUid_lt: ID
+
+  """All values less than or equal the given value."""
+  extUid_lte: ID
+
+  """All values greater than the given value."""
+  extUid_gt: ID
+
+  """All values greater than or equal the given value."""
+  extUid_gte: ID
+
+  """All values containing the given string."""
+  extUid_contains: ID
+
+  """All values not containing the given string."""
+  extUid_not_contains: ID
+
+  """All values starting with the given string."""
+  extUid_starts_with: ID
+
+  """All values not starting with the given string."""
+  extUid_not_starts_with: ID
+
+  """All values ending with the given string."""
+  extUid_ends_with: ID
+
+  """All values not ending with the given string."""
+  extUid_not_ends_with: ID
   name1: String
 
   """All values that are not equal to given value."""
@@ -695,6 +742,7 @@ input BpSubscriptionWhereInput {
 }
 
 input BpUpdateInput {
+  extUid: ID
   name1: String
   name2: String
   lastName1: String
@@ -708,6 +756,7 @@ input BpUpdateInput {
 }
 
 input BpUpdateManyDataInput {
+  extUid: ID
   name1: String
   name2: String
   lastName1: String
@@ -719,6 +768,7 @@ input BpUpdateManyDataInput {
 }
 
 input BpUpdateManyMutationInput {
+  extUid: ID
   name1: String
   name2: String
   lastName1: String
@@ -754,6 +804,7 @@ input BpUpdateOneRequiredWithoutOrdersInput {
 }
 
 input BpUpdateWithoutCustomerOfDataInput {
+  extUid: ID
   name1: String
   name2: String
   lastName1: String
@@ -766,6 +817,7 @@ input BpUpdateWithoutCustomerOfDataInput {
 }
 
 input BpUpdateWithoutOrdersDataInput {
+  extUid: ID
   name1: String
   name2: String
   lastName1: String
@@ -842,6 +894,46 @@ input BpWhereInput {
 
   """All values not ending with the given string."""
   uid_not_ends_with: ID
+  extUid: ID
+
+  """All values that are not equal to given value."""
+  extUid_not: ID
+
+  """All values that are contained in given list."""
+  extUid_in: [ID!]
+
+  """All values that are not contained in given list."""
+  extUid_not_in: [ID!]
+
+  """All values less than the given value."""
+  extUid_lt: ID
+
+  """All values less than or equal the given value."""
+  extUid_lte: ID
+
+  """All values greater than the given value."""
+  extUid_gt: ID
+
+  """All values greater than or equal the given value."""
+  extUid_gte: ID
+
+  """All values containing the given string."""
+  extUid_contains: ID
+
+  """All values not containing the given string."""
+  extUid_not_contains: ID
+
+  """All values starting with the given string."""
+  extUid_starts_with: ID
+
+  """All values not starting with the given string."""
+  extUid_not_starts_with: ID
+
+  """All values ending with the given string."""
+  extUid_ends_with: ID
+
+  """All values not ending with the given string."""
+  extUid_not_ends_with: ID
   name1: String
 
   """All values that are not equal to given value."""
@@ -1216,7 +1308,7 @@ input BpWhereInput {
 
 input BpWhereUniqueInput {
   uid: ID
-  email: String
+  extUid: ID
 }
 
 enum Currency {
@@ -4117,6 +4209,8 @@ export const Prisma = makePrismaBindingClass<BindingConstructor<Prisma>>({typeDe
 
 export type BpOrderByInput =   'uid_ASC' |
   'uid_DESC' |
+  'extUid_ASC' |
+  'extUid_DESC' |
   'name1_ASC' |
   'name1_DESC' |
   'name2_ASC' |
@@ -4215,6 +4309,7 @@ export type UserOrderByInput =   'uid_ASC' |
 
 export interface BpCreateInput {
   uid?: ID_Input | null
+  extUid?: ID_Input | null
   name1: String
   name2?: String | null
   lastName1?: String | null
@@ -4239,6 +4334,7 @@ export interface BpCreateOneWithoutOrdersInput {
 
 export interface BpCreateWithoutCustomerOfInput {
   uid?: ID_Input | null
+  extUid?: ID_Input | null
   name1: String
   name2?: String | null
   lastName1?: String | null
@@ -4252,6 +4348,7 @@ export interface BpCreateWithoutCustomerOfInput {
 
 export interface BpCreateWithoutOrdersInput {
   uid?: ID_Input | null
+  extUid?: ID_Input | null
   name1: String
   name2?: String | null
   lastName1?: String | null
@@ -4281,6 +4378,20 @@ export interface BpScalarWhereInput {
   uid_not_starts_with?: ID_Input | null
   uid_ends_with?: ID_Input | null
   uid_not_ends_with?: ID_Input | null
+  extUid?: ID_Input | null
+  extUid_not?: ID_Input | null
+  extUid_in?: ID_Output[] | ID_Output | null
+  extUid_not_in?: ID_Output[] | ID_Output | null
+  extUid_lt?: ID_Input | null
+  extUid_lte?: ID_Input | null
+  extUid_gt?: ID_Input | null
+  extUid_gte?: ID_Input | null
+  extUid_contains?: ID_Input | null
+  extUid_not_contains?: ID_Input | null
+  extUid_starts_with?: ID_Input | null
+  extUid_not_starts_with?: ID_Input | null
+  extUid_ends_with?: ID_Input | null
+  extUid_not_ends_with?: ID_Input | null
   name1?: String | null
   name1_not?: String | null
   name1_in?: String[] | String | null
@@ -4423,6 +4534,7 @@ export interface BpSubscriptionWhereInput {
 }
 
 export interface BpUpdateInput {
+  extUid?: ID_Input | null
   name1?: String | null
   name2?: String | null
   lastName1?: String | null
@@ -4436,6 +4548,7 @@ export interface BpUpdateInput {
 }
 
 export interface BpUpdateManyDataInput {
+  extUid?: ID_Input | null
   name1?: String | null
   name2?: String | null
   lastName1?: String | null
@@ -4447,6 +4560,7 @@ export interface BpUpdateManyDataInput {
 }
 
 export interface BpUpdateManyMutationInput {
+  extUid?: ID_Input | null
   name1?: String | null
   name2?: String | null
   lastName1?: String | null
@@ -4482,6 +4596,7 @@ export interface BpUpdateOneRequiredWithoutOrdersInput {
 }
 
 export interface BpUpdateWithoutCustomerOfDataInput {
+  extUid?: ID_Input | null
   name1?: String | null
   name2?: String | null
   lastName1?: String | null
@@ -4494,6 +4609,7 @@ export interface BpUpdateWithoutCustomerOfDataInput {
 }
 
 export interface BpUpdateWithoutOrdersDataInput {
+  extUid?: ID_Input | null
   name1?: String | null
   name2?: String | null
   lastName1?: String | null
@@ -4539,6 +4655,20 @@ export interface BpWhereInput {
   uid_not_starts_with?: ID_Input | null
   uid_ends_with?: ID_Input | null
   uid_not_ends_with?: ID_Input | null
+  extUid?: ID_Input | null
+  extUid_not?: ID_Input | null
+  extUid_in?: ID_Output[] | ID_Output | null
+  extUid_not_in?: ID_Output[] | ID_Output | null
+  extUid_lt?: ID_Input | null
+  extUid_lte?: ID_Input | null
+  extUid_gt?: ID_Input | null
+  extUid_gte?: ID_Input | null
+  extUid_contains?: ID_Input | null
+  extUid_not_contains?: ID_Input | null
+  extUid_starts_with?: ID_Input | null
+  extUid_not_starts_with?: ID_Input | null
+  extUid_ends_with?: ID_Input | null
+  extUid_not_ends_with?: ID_Input | null
   name1?: String | null
   name1_not?: String | null
   name1_in?: String[] | String | null
@@ -4677,7 +4807,7 @@ export interface BpWhereInput {
 
 export interface BpWhereUniqueInput {
   uid?: ID_Input | null
-  email?: String | null
+  extUid?: ID_Input | null
 }
 
 export interface ItemCreateInput {
@@ -5960,6 +6090,7 @@ export interface BatchPayload {
 
 export interface Bp {
   uid: ID_Output
+  extUid?: ID_Output | null
   name1: String
   name2?: String | null
   lastName1?: String | null
@@ -5995,6 +6126,7 @@ export interface BpEdge {
 
 export interface BpPreviousValues {
   uid: ID_Output
+  extUid?: ID_Output | null
   name1: String
   name2?: String | null
   lastName1?: String | null

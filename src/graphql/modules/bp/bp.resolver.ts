@@ -4,12 +4,16 @@ import { Bp } from './model/bp';
 import { PrismaService } from '../prisma/prisma.service';
 import { BpConnection } from '../../graphql.schema';
 import { AuditInterceptor, Permission, PermissionGuard, GraphqlFilter } from '../../graphql.common';
+import { UtilsService } from 'src/utils/utils.service';
 
 @Resolver('Bp')
 @UseFilters(GraphqlFilter)
 @UseGuards(PermissionGuard)
 export class BpResolver {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly utils: UtilsService,
+  ) {}
 
   @Query('bp')
   @Permission('read:bp')
@@ -27,6 +31,7 @@ export class BpResolver {
   @Permission('create:bp')
   @UseInterceptors(AuditInterceptor)
   async createBp(@Args() args: any, @Info() info: any): Promise<Bp> {
+    args.data.extUid = await this.utils.genBase64Id(10); // generate uid for anonymous session
     return await this.prisma.mutation.createBp(args, info);
   }
 

@@ -1,7 +1,7 @@
 import { Args, Info, Query, Resolver, Mutation } from '@nestjs/graphql';
 import { UseInterceptors, UseGuards, UseFilters } from '@nestjs/common';
 import { Bp } from './model/bp';
-import { PrismaService } from '../prisma/prisma.service';
+import { PrismaService } from '../../../db/prisma/prisma.service';
 import { BpConnection } from '../../graphql.schema';
 import { AuditInterceptor, Permission, PermissionGuard, GraphqlFilter } from '../../graphql.common';
 import { UtilsService } from '../../../utils/utils.service';

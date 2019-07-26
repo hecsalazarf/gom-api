@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { BpResolver } from './bp.resolver';
-import { PrismaModule } from './../prisma/prisma.module';
+import { PrismaModule } from '../../../db/prisma/prisma.module';
 import { UtilsModule } from '../../../utils/utils.module';
 
 @Module({

@@ -4,7 +4,7 @@ import { Bp } from './model/bp';
 import { PrismaService } from '../prisma/prisma.service';
 import { BpConnection } from '../../graphql.schema';
 import { AuditInterceptor, Permission, PermissionGuard, GraphqlFilter } from '../../graphql.common';
-import { UtilsService } from 'src/utils/utils.service';
+import { UtilsService } from '../../../utils/utils.service';
 
 @Resolver('Bp')
 @UseFilters(GraphqlFilter)

@@ -1,14 +1,20 @@
-import { Controller, Get, Post, Body, Res, Req, HttpStatus, HttpCode, ValidationPipe } from '@nestjs/common';
-import { CredentialsDto } from './dto/credentials.dto';
+import { Controller, Get, Post, Body, Res, Req, HttpStatus, HttpCode, ValidationPipe, Query, UseInterceptors } from '@nestjs/common';
+import { BadRequestException } from '@nestjs/common';
+import { CredentialsDto } from './dto';
 import { Response } from 'express';
 import { AuthService } from './auth.service';
 import { ConfigService } from '../config/config.service';
+import { PrismaService } from '../db/prisma/prisma.service';
+import { BpInfoInterceptor } from './interceptors';
 
 @Controller('auth')
 export class AuthController {
   private readonly cookieOptions: object;
 
-  constructor(private readonly auth: AuthService, private readonly config: ConfigService) {
+  constructor(
+    private readonly auth: AuthService,
+    private readonly config: ConfigService,
+    private readonly prisma: PrismaService) {
     this.cookieOptions = (({maxAge, httpOnly, signed}) => ({maxAge, httpOnly, signed}))(this.config.get('accessToken.options'));
   }
 
@@ -50,5 +56,16 @@ export class AuthController {
     return {
       success: true,
     };
+  }
+
+  @Get('bp')
+  @HttpCode(HttpStatus.OK)
+  @UseInterceptors(BpInfoInterceptor)
+  async getBpInfo(@Query() args: any): Promise<any> {
+    const out = await this.prisma.query.bp(args, '{ phone }'); // retrieve only phone number
+    if (!out) {
+      throw new BadRequestException('BP not found');
+    }
+    return out;
   }
 }

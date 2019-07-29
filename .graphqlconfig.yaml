@@ -1,10 +1,10 @@
 projects:
   gom-api:
-    schemaPath: src/graphql/modules/prisma/prisma-types.graphql
+    schemaPath: src/db/prisma/prisma-types.graphql
     extensions:
       prisma: prisma/prisma.yml
       codegen:
         - generator: prisma-binding
           language: typescript
           output:
-            binding: src/graphql/modules/prisma/prisma.binding.ts
+            binding: src/db/prisma/prisma.binding.ts

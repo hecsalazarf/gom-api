@@ -25,7 +25,7 @@ export class Auth0Service {
       cache: true,
       cacheMaxEntries: 5, // Default value
       // cacheMaxAge: ms('10h'), // Default value
-      jwksUri: this.config.get('auth0.jwksEndpoint'),
+      jwksUri: this.config.get('auth.auth0.jwksEndpoint'),
     });
   }
 
@@ -35,11 +35,11 @@ export class Auth0Service {
    */
   private getTokenRequestOptions(): any {
     return {
-      grant_type: this.config.get('auth0.grantType'),
-      client_id: this.config.get('auth0.clientId'),
-      client_secret: this.config.get('auth0.clientSecret'),
-      audience: this.config.get('auth0.audience'),
-      scope: this.config.get('auth0.scope'),
+      grant_type: this.config.get('auth.auth0.grantType'),
+      client_id: this.config.get('auth.auth0.clientId'),
+      client_secret: this.config.get('auth.auth0.clientSecret'),
+      audience: this.config.get('auth.auth0.audience'),
+      scope: this.config.get('auth.auth0.scope'),
     };
   }
 
@@ -51,7 +51,7 @@ export class Auth0Service {
   public async requestToken({ username, password }: CredentialsDto): Promise<any> {
     let result;
     try {
-      result = await this.httpService.post(this.config.get('auth0.url') + 'oauth/token',
+      result = await this.httpService.post(this.config.get('auth.auth0.url') + 'oauth/token',
         {
           ...this.tokenRequestOptions,
           username,

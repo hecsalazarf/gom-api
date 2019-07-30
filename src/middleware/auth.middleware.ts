@@ -8,8 +8,8 @@ export class AuthMiddleware implements NestMiddleware {
   private readonly audience: string;
   private readonly cookie: string;
   constructor(private readonly auth: AuthService, private readonly config: ConfigService) {
-    this.audience = config.get('auth0.audience');
-    this.issuer = config.get('auth0.issuer');
+    this.audience = config.get('auth.auth0.audience');
+    this.issuer = config.get('auth.auth0.issuer');
     this.cookie = config.get('accessToken.cookieName');
   }
 

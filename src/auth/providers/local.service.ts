@@ -5,12 +5,20 @@ import { PrismaService } from '../../db/prisma/prisma.service';
 import { CredentialsDto } from '../dto';
 import { Bp } from '../../db/prisma/prisma.binding';
 
+const SIGNING_ALG = 'HS256';
+
 @Injectable()
 export class LocalAuthService {
-
+  private readonly tokenOptions: any;
   constructor(
     private readonly config: ConfigService,
     private readonly prisma: PrismaService) {
+      this.tokenOptions = {
+        algorithm: SIGNING_ALG,
+        expiresIn: this.config.get('accessToken.options.maxAge') / 1000, // in seconds
+        audience: this.config.get('auth.local.audience'),
+        issuer: this.config.get('auth.local.issuer'),
+      };
   }
 
   /**
@@ -37,9 +45,12 @@ export class LocalAuthService {
    * @return {any} Payload.
    */
   private createAccessPayload(bp: Bp): any {
+    /*
+    * The payload is VERY static due to the current requirements,
+    * however, this should't be the correct design
+    */
     return {
       sub: bp.uid,
-      // exp: Date.now() + exp,
       gty: 'phone',
       permissions: [
         'create:order',
@@ -71,16 +82,12 @@ export class LocalAuthService {
    */
   private sign(payload: any): Promise<string> {
     return new Promise((resolve, reject) => {
-      Jwt.sign(payload, this.config.get('keys')[0], {
-        algorithm: 'HS256',
-        expiresIn: '1h',
-        audience: this.config.get('auth0.audience'),
-        issuer: 'https://api.gom.com/',
-      }, (error, encoded) => {
-        if (error) {
-          reject(error);
-        }
-        resolve(encoded);
+      Jwt.sign(payload, this.config.get('keys')[0], this.tokenOptions,
+        (error, encoded) => {
+          if (error) {
+            reject(error);
+          }
+          resolve(encoded);
       });
     });
   }

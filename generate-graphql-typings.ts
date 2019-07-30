@@ -8,7 +8,7 @@ import { join } from 'path';
 
 const definitionsFactory = new GraphQLDefinitionsFactory();
 definitionsFactory.generate({
-  typePaths: ['./src/graphql/modules/prisma/*.graphql'],
+  typePaths: ['./src/db/prisma/*.graphql'],
   path: join(process.cwd(), 'src/graphql/graphql.schema.d.ts'),
   outputAs: 'class',
 });

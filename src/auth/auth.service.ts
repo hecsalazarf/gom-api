@@ -1,55 +1,36 @@
-import { Injectable, HttpService, HttpStatus, HttpException } from '@nestjs/common';
+import { Injectable, HttpService, HttpStatus, HttpException, ForbiddenException } from '@nestjs/common';
 import { Ability, RawRule } from '@casl/ability';
-import { CredentialsDto } from './dto/credentials.dto';
+import { CredentialsDto, PASSWORD_GTYPE, PHONE_GTYPE } from './dto/credentials.dto';
 import * as Jwt from 'jsonwebtoken';
 import * as jwksRsa from 'jwks-rsa';
 import { ConfigService } from '../config/config.service';
+import { LocalAuthService } from './services/local.service';
 
 @Injectable()
 export class AuthService {
   private readonly jwksClient: any;
   private readonly tokenRequestOptions: object;
 
-  constructor(private readonly httpService: HttpService, private readonly config: ConfigService) {
+  constructor(
+    private readonly httpService: HttpService,
+    private readonly config: ConfigService,
+    private readonly localAuth: LocalAuthService) {
     this.jwksClient = this.createJwks();
     this.tokenRequestOptions = this.getTokenRequestOptions();
   }
 
   /**
-   * Request token to the Auth0 service, given user credentials.
+   * Request token
    * @param {object} credentials Username and password.
    * @return {Promise<any>} Token.
    */
-  public async requestToken({ username, password }: CredentialsDto): Promise<any> {
-    let result;
-    try {
-      result = await this.httpService.post(this.config.get('auth0.url') + 'oauth/token',
-        {
-          ...this.tokenRequestOptions,
-          username,
-          password,
-        },
-        {
-          responseType: 'json',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        },
-      ).toPromise();
-    } catch (err) {
-      if (err.response) {
-        throw new HttpException({
-          code: err.response.data.error,
-          message: err.response.data.error_description,
-        }, err.response.status);
-      }
-      throw new HttpException({
-        code: 'oauth_service_error',
-        message: 'Oauth service not available',
-      }, HttpStatus.INTERNAL_SERVER_ERROR);
+  public requestToken(credentials: CredentialsDto): Promise<any> {
+    if (credentials.grantType === PASSWORD_GTYPE) {
+      return this.requestAuth0Token(credentials);
     }
-
-    return result.data;
+    if (credentials.grantType === PHONE_GTYPE) {
+      return this.localAuth.generateToken(credentials);
+    }
   }
 
   /**
@@ -136,4 +117,40 @@ export class AuthService {
     });
   }
 
+  /**
+   * Request token to the Auth0 service, given user credentials.
+   * @param {object} credentials Username and password.
+   * @return {Promise<any>} Token.
+   */
+  private async requestAuth0Token({ username, password }: CredentialsDto): Promise<any> {
+    let result;
+    try {
+      result = await this.httpService.post(this.config.get('auth0.url') + 'oauth/token',
+        {
+          ...this.tokenRequestOptions,
+          username,
+          password,
+        },
+        {
+          responseType: 'json',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      ).toPromise();
+    } catch (err) {
+      if (err.response) {
+        throw new HttpException({
+          code: err.response.data.error,
+          message: err.response.data.error_description,
+        }, err.response.status);
+      }
+      throw new HttpException({
+        code: 'oauth_service_error',
+        message: 'Oauth service not available',
+      }, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    return result.data;
+  }
 }

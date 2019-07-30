@@ -21,6 +21,9 @@ export class BpInfoInterceptor implements NestInterceptor {
     };
     return next
       .handle()
-      .pipe(map(ev => ({ phoneLast: ev.phone.slice(-4) }))); // return last 4 digits only
+      .pipe(map(ev => ({
+        phoneLast: ev.phone.slice(-4), // return last 4 digits only
+        customerOf: ev.customerOf[0].business, // return the first record (business name)
+      })));
   }
 }

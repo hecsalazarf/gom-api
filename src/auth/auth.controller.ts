@@ -62,7 +62,7 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @UseInterceptors(BpInfoInterceptor)
   async getBpInfo(@Query() args: any): Promise<any> {
-    const out = await this.prisma.query.bp(args, '{ phone }'); // retrieve only phone number
+    const out = await this.prisma.query.bp(args, '{ phone customerOf { business } }'); // retrieve only phone number
     if (!out) {
       throw new BadRequestException('BP not found');
     }

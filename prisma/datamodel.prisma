@@ -18,6 +18,7 @@ type Bp {
 type User {
   uid: ID! @id
   extUid: String @unique
+  business: String!
   role: String
   orders: [Order!] @relation(name: "UserOrder", onDelete: CASCADE)
   customers: [Bp!] @relation(name: "CustomerOf", link: TABLE, onDelete: CASCADE)

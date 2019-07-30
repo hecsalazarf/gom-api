@@ -115,6 +115,8 @@ export enum UserOrderByInput {
     uid_DESC = "uid_DESC",
     extUid_ASC = "extUid_ASC",
     extUid_DESC = "extUid_DESC",
+    business_ASC = "business_ASC",
+    business_DESC = "business_DESC",
     role_ASC = "role_ASC",
     role_DESC = "role_DESC",
     createdAt_ASC = "createdAt_ASC",
@@ -1624,6 +1626,7 @@ export class PriceWhereUniqueInput {
 export class UserCreateInput {
     uid?: string;
     extUid?: string;
+    business: string;
     role?: string;
     orders?: OrderCreateManyWithoutAssignedToInput;
     customers?: BpCreateManyWithoutCustomerOfInput;
@@ -1642,6 +1645,7 @@ export class UserCreateOneWithoutOrdersInput {
 export class UserCreateWithoutCustomersInput {
     uid?: string;
     extUid?: string;
+    business: string;
     role?: string;
     orders?: OrderCreateManyWithoutAssignedToInput;
 }
@@ -1649,6 +1653,7 @@ export class UserCreateWithoutCustomersInput {
 export class UserCreateWithoutOrdersInput {
     uid?: string;
     extUid?: string;
+    business: string;
     role?: string;
     customers?: BpCreateManyWithoutCustomerOfInput;
 }
@@ -1685,6 +1690,20 @@ export class UserScalarWhereInput {
     extUid_not_starts_with?: string;
     extUid_ends_with?: string;
     extUid_not_ends_with?: string;
+    business?: string;
+    business_not?: string;
+    business_in?: string[];
+    business_not_in?: string[];
+    business_lt?: string;
+    business_lte?: string;
+    business_gt?: string;
+    business_gte?: string;
+    business_contains?: string;
+    business_not_contains?: string;
+    business_starts_with?: string;
+    business_not_starts_with?: string;
+    business_ends_with?: string;
+    business_not_ends_with?: string;
     role?: string;
     role_not?: string;
     role_in?: string[];
@@ -1730,6 +1749,7 @@ export class UserSubscriptionWhereInput {
 
 export class UserUpdateInput {
     extUid?: string;
+    business?: string;
     role?: string;
     orders?: OrderUpdateManyWithoutAssignedToInput;
     customers?: BpUpdateManyWithoutCustomerOfInput;
@@ -1737,11 +1757,13 @@ export class UserUpdateInput {
 
 export class UserUpdateManyDataInput {
     extUid?: string;
+    business?: string;
     role?: string;
 }
 
 export class UserUpdateManyMutationInput {
     extUid?: string;
+    business?: string;
     role?: string;
 }
 
@@ -1771,12 +1793,14 @@ export class UserUpdateOneRequiredWithoutOrdersInput {
 
 export class UserUpdateWithoutCustomersDataInput {
     extUid?: string;
+    business?: string;
     role?: string;
     orders?: OrderUpdateManyWithoutAssignedToInput;
 }
 
 export class UserUpdateWithoutOrdersDataInput {
     extUid?: string;
+    business?: string;
     role?: string;
     customers?: BpUpdateManyWithoutCustomerOfInput;
 }
@@ -1829,6 +1853,20 @@ export class UserWhereInput {
     extUid_not_starts_with?: string;
     extUid_ends_with?: string;
     extUid_not_ends_with?: string;
+    business?: string;
+    business_not?: string;
+    business_in?: string[];
+    business_not_in?: string[];
+    business_lt?: string;
+    business_lte?: string;
+    business_gt?: string;
+    business_gte?: string;
+    business_contains?: string;
+    business_not_contains?: string;
+    business_starts_with?: string;
+    business_not_starts_with?: string;
+    business_ends_with?: string;
+    business_not_ends_with?: string;
     role?: string;
     role_not?: string;
     role_in?: string[];
@@ -2146,6 +2184,7 @@ export abstract class ISubscription {
 export class User {
     uid: string;
     extUid?: string;
+    business: string;
     role?: string;
     orders?: Order[];
     customers?: Bp[];
@@ -2167,6 +2206,7 @@ export class UserEdge {
 export class UserPreviousValues {
     uid: string;
     extUid?: string;
+    business: string;
     role?: string;
     createdAt?: DateTime;
     updatedAt?: DateTime;

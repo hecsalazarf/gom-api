@@ -3654,6 +3654,7 @@ type Subscription {
 type User {
   uid: ID!
   extUid: String
+  business: String!
   role: String
   orders(where: OrderWhereInput, orderBy: OrderOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Order!]
   customers(where: BpWhereInput, orderBy: BpOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Bp!]
@@ -3674,6 +3675,7 @@ type UserConnection {
 input UserCreateInput {
   uid: ID
   extUid: String
+  business: String!
   role: String
   orders: OrderCreateManyWithoutAssignedToInput
   customers: BpCreateManyWithoutCustomerOfInput
@@ -3692,6 +3694,7 @@ input UserCreateOneWithoutOrdersInput {
 input UserCreateWithoutCustomersInput {
   uid: ID
   extUid: String
+  business: String!
   role: String
   orders: OrderCreateManyWithoutAssignedToInput
 }
@@ -3699,6 +3702,7 @@ input UserCreateWithoutCustomersInput {
 input UserCreateWithoutOrdersInput {
   uid: ID
   extUid: String
+  business: String!
   role: String
   customers: BpCreateManyWithoutCustomerOfInput
 }
@@ -3717,6 +3721,8 @@ enum UserOrderByInput {
   uid_DESC
   extUid_ASC
   extUid_DESC
+  business_ASC
+  business_DESC
   role_ASC
   role_DESC
   createdAt_ASC
@@ -3728,6 +3734,7 @@ enum UserOrderByInput {
 type UserPreviousValues {
   uid: ID!
   extUid: String
+  business: String!
   role: String
   createdAt: DateTime
   updatedAt: DateTime
@@ -3822,6 +3829,46 @@ input UserScalarWhereInput {
 
   """All values not ending with the given string."""
   extUid_not_ends_with: String
+  business: String
+
+  """All values that are not equal to given value."""
+  business_not: String
+
+  """All values that are contained in given list."""
+  business_in: [String!]
+
+  """All values that are not contained in given list."""
+  business_not_in: [String!]
+
+  """All values less than the given value."""
+  business_lt: String
+
+  """All values less than or equal the given value."""
+  business_lte: String
+
+  """All values greater than the given value."""
+  business_gt: String
+
+  """All values greater than or equal the given value."""
+  business_gte: String
+
+  """All values containing the given string."""
+  business_contains: String
+
+  """All values not containing the given string."""
+  business_not_contains: String
+
+  """All values starting with the given string."""
+  business_starts_with: String
+
+  """All values not starting with the given string."""
+  business_not_starts_with: String
+
+  """All values ending with the given string."""
+  business_ends_with: String
+
+  """All values not ending with the given string."""
+  business_not_ends_with: String
   role: String
 
   """All values that are not equal to given value."""
@@ -3947,6 +3994,7 @@ input UserSubscriptionWhereInput {
 
 input UserUpdateInput {
   extUid: String
+  business: String
   role: String
   orders: OrderUpdateManyWithoutAssignedToInput
   customers: BpUpdateManyWithoutCustomerOfInput
@@ -3954,11 +4002,13 @@ input UserUpdateInput {
 
 input UserUpdateManyDataInput {
   extUid: String
+  business: String
   role: String
 }
 
 input UserUpdateManyMutationInput {
   extUid: String
+  business: String
   role: String
 }
 
@@ -3988,12 +4038,14 @@ input UserUpdateOneRequiredWithoutOrdersInput {
 
 input UserUpdateWithoutCustomersDataInput {
   extUid: String
+  business: String
   role: String
   orders: OrderUpdateManyWithoutAssignedToInput
 }
 
 input UserUpdateWithoutOrdersDataInput {
   extUid: String
+  business: String
   role: String
   customers: BpUpdateManyWithoutCustomerOfInput
 }
@@ -4103,6 +4155,46 @@ input UserWhereInput {
 
   """All values not ending with the given string."""
   extUid_not_ends_with: String
+  business: String
+
+  """All values that are not equal to given value."""
+  business_not: String
+
+  """All values that are contained in given list."""
+  business_in: [String!]
+
+  """All values that are not contained in given list."""
+  business_not_in: [String!]
+
+  """All values less than the given value."""
+  business_lt: String
+
+  """All values less than or equal the given value."""
+  business_lte: String
+
+  """All values greater than the given value."""
+  business_gt: String
+
+  """All values greater than or equal the given value."""
+  business_gte: String
+
+  """All values containing the given string."""
+  business_contains: String
+
+  """All values not containing the given string."""
+  business_not_contains: String
+
+  """All values starting with the given string."""
+  business_starts_with: String
+
+  """All values not starting with the given string."""
+  business_not_starts_with: String
+
+  """All values ending with the given string."""
+  business_ends_with: String
+
+  """All values not ending with the given string."""
+  business_not_ends_with: String
   role: String
 
   """All values that are not equal to given value."""
@@ -4300,6 +4392,8 @@ export type UserOrderByInput =   'uid_ASC' |
   'uid_DESC' |
   'extUid_ASC' |
   'extUid_DESC' |
+  'business_ASC' |
+  'business_DESC' |
   'role_ASC' |
   'role_DESC' |
   'createdAt_ASC' |
@@ -5808,6 +5902,7 @@ export interface PriceWhereUniqueInput {
 export interface UserCreateInput {
   uid?: ID_Input | null
   extUid?: String | null
+  business: String
   role?: String | null
   orders?: OrderCreateManyWithoutAssignedToInput | null
   customers?: BpCreateManyWithoutCustomerOfInput | null
@@ -5826,6 +5921,7 @@ export interface UserCreateOneWithoutOrdersInput {
 export interface UserCreateWithoutCustomersInput {
   uid?: ID_Input | null
   extUid?: String | null
+  business: String
   role?: String | null
   orders?: OrderCreateManyWithoutAssignedToInput | null
 }
@@ -5833,6 +5929,7 @@ export interface UserCreateWithoutCustomersInput {
 export interface UserCreateWithoutOrdersInput {
   uid?: ID_Input | null
   extUid?: String | null
+  business: String
   role?: String | null
   customers?: BpCreateManyWithoutCustomerOfInput | null
 }
@@ -5869,6 +5966,20 @@ export interface UserScalarWhereInput {
   extUid_not_starts_with?: String | null
   extUid_ends_with?: String | null
   extUid_not_ends_with?: String | null
+  business?: String | null
+  business_not?: String | null
+  business_in?: String[] | String | null
+  business_not_in?: String[] | String | null
+  business_lt?: String | null
+  business_lte?: String | null
+  business_gt?: String | null
+  business_gte?: String | null
+  business_contains?: String | null
+  business_not_contains?: String | null
+  business_starts_with?: String | null
+  business_not_starts_with?: String | null
+  business_ends_with?: String | null
+  business_not_ends_with?: String | null
   role?: String | null
   role_not?: String | null
   role_in?: String[] | String | null
@@ -5914,6 +6025,7 @@ export interface UserSubscriptionWhereInput {
 
 export interface UserUpdateInput {
   extUid?: String | null
+  business?: String | null
   role?: String | null
   orders?: OrderUpdateManyWithoutAssignedToInput | null
   customers?: BpUpdateManyWithoutCustomerOfInput | null
@@ -5921,11 +6033,13 @@ export interface UserUpdateInput {
 
 export interface UserUpdateManyDataInput {
   extUid?: String | null
+  business?: String | null
   role?: String | null
 }
 
 export interface UserUpdateManyMutationInput {
   extUid?: String | null
+  business?: String | null
   role?: String | null
 }
 
@@ -5955,12 +6069,14 @@ export interface UserUpdateOneRequiredWithoutOrdersInput {
 
 export interface UserUpdateWithoutCustomersDataInput {
   extUid?: String | null
+  business?: String | null
   role?: String | null
   orders?: OrderUpdateManyWithoutAssignedToInput | null
 }
 
 export interface UserUpdateWithoutOrdersDataInput {
   extUid?: String | null
+  business?: String | null
   role?: String | null
   customers?: BpUpdateManyWithoutCustomerOfInput | null
 }
@@ -6013,6 +6129,20 @@ export interface UserWhereInput {
   extUid_not_starts_with?: String | null
   extUid_ends_with?: String | null
   extUid_not_ends_with?: String | null
+  business?: String | null
+  business_not?: String | null
+  business_in?: String[] | String | null
+  business_not_in?: String[] | String | null
+  business_lt?: String | null
+  business_lte?: String | null
+  business_gt?: String | null
+  business_gte?: String | null
+  business_contains?: String | null
+  business_not_contains?: String | null
+  business_starts_with?: String | null
+  business_not_starts_with?: String | null
+  business_ends_with?: String | null
+  business_not_ends_with?: String | null
   role?: String | null
   role_not?: String | null
   role_in?: String[] | String | null
@@ -6310,6 +6440,7 @@ export interface PriceSubscriptionPayload {
 export interface User {
   uid: ID_Output
   extUid?: String | null
+  business: String
   role?: String | null
   orders?: Array<Order> | null
   customers?: Array<Bp> | null
@@ -6339,6 +6470,7 @@ export interface UserEdge {
 export interface UserPreviousValues {
   uid: ID_Output
   extUid?: String | null
+  business: String
   role?: String | null
   createdAt?: DateTime | null
   updatedAt?: DateTime | null

@@ -103,5 +103,4 @@ export class LocalAuthService {
       id_token: idToken,
     };
   }
-
 }

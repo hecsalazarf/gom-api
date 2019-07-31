@@ -10,6 +10,7 @@ const SIGNING_ALG = 'HS256';
 @Injectable()
 export class LocalAuthService {
   private readonly tokenOptions: any;
+  private readonly cache: any = {};
   constructor(
     private readonly config: ConfigService,
     private readonly prisma: PrismaService) {
@@ -32,7 +33,17 @@ export class LocalAuthService {
         extUid: credentials.username,
       },
     };
-    const bp = await this.prisma.query.bp(args, '{ uid phone name1 lastName1 }'); // retrieve basic BP info
+    const query = `{
+      uid
+      phone
+      name1
+      lastName1
+      customerOf {
+        extUid
+        business
+      }
+    }`;
+    const bp = await this.prisma.query.bp(args, query); // retrieve basic BP info
     if (!bp || bp.phone !== credentials.phone) {
       throw new ForbiddenException('Invalid credentials', 'invalid_grant');
     }
@@ -72,6 +83,8 @@ export class LocalAuthService {
       sub: bp.uid,
       nickname: bp.name1,
       name: `${bp.name1} ${bp.lastName1}`,
+      seller: bp.customerOf[0].extUid,
+      business: bp.customerOf[0].business,
     };
   }
 
@@ -108,6 +121,51 @@ export class LocalAuthService {
     return {
       access_token: accessToken,
       id_token: idToken,
+    };
+  }
+
+  /**
+   * Audience getter.
+   * @return {string} Audience.
+   */
+  public get audience() {
+    if (!this.cache.audience) {
+      this.cache.audience = this.config.get('auth.local.audience');
+    }
+    return this.cache.audience;
+  }
+
+  /**
+   * Issuer getter.
+   * @return {string} Issuer.
+   */
+  public get issuer() {
+    if (!this.cache.issuer) {
+      this.cache.issuer = this.config.get('auth.local.issuer');
+    }
+    return this.cache.issuer;
+  }
+
+  /**
+   * Key getter.
+   * @return {string} Key.
+   */
+  public get key() {
+    if (!this.cache.key) {
+      this.cache.key = this.config.get('keys')[0];
+    }
+    return this.cache.key;
+  }
+
+  /**
+   * Verify options getter.
+   * @return {object} Options used during verification.
+   */
+  public get verifyOptions() {
+    return {
+      audience: this.audience,
+      issuer: this.issuer,
+      ignoreExpiration: false, // DO NOT ignore expiration
     };
   }
 }

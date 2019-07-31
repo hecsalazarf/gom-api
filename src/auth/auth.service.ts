@@ -9,7 +9,28 @@ export class AuthService {
 
   constructor(
     private readonly localAuth: LocalAuthService,
-    private readonly auth0: Auth0Service) {
+    private readonly auth0: Auth0Service) {}
+
+  /**
+   * Get auth service by Issuer
+   * @param {string} issuer Issuer.
+   * @return {any} Auth service.
+   */
+  private getServiceByIssuer(issuer): any {
+      let service: any;
+      switch (issuer) {
+        case this.auth0.issuer:
+          service = this.auth0;
+          break;
+        case this.localAuth.issuer:
+          service = this.localAuth;
+          break;
+      }
+
+      if (!service) {
+        throw new Error('Unknown issuer');
+      }
+      return service;
   }
 
   /**
@@ -27,13 +48,15 @@ export class AuthService {
   }
 
   /**
-   * Verify token with the public key provided by Auth0.
+   * Verify token with the corresponding key (local or Auth0).
    * @param {string} token Encoded token
    * @return {Promise<any>} Decoded token or error.
    */
-  public verify(token: string, options: object): Promise<any> {
+  public verify(token: string): Promise<any> {
     return new Promise((resolve, reject) => {
-      Jwt.verify(token, this.auth0.getKey.bind(this.auth0), options, (err: object, decoded: object) => {
+      const { iss } = this.decode(token); // get issuer from token
+      const service = this.getServiceByIssuer(iss); // get service based on issuer
+      Jwt.verify(token, service.key, service.verifyOptions, (err: object, decoded: object) => {
         if (err) {
           reject(err);
         } else {

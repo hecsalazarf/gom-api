@@ -5,8 +5,9 @@ import { CredentialsDto } from '../dto';
 
 @Injectable()
 export class Auth0Service {
-  private readonly jwksClient: any;
+  private readonly jwksClient: any; // JWKS client
   private readonly tokenRequestOptions: object;
+  private readonly cache: any = {}; // cached options
 
   constructor(
     private readonly httpService: HttpService,
@@ -87,10 +88,51 @@ export class Auth0Service {
    * @callback callback Callback with the key or error
    * @return {void}
    */
-  public getKey(header: any, callback: any) {
+  private getKey(header: any, callback: any) {
     this.jwksClient.getSigningKey(header.kid, (err, key) => {
       callback(err, key.publicKey || key.rsaPublicKey);
     });
   }
 
+  /**
+   * Audience getter.
+   * @return {string} Audience.
+   */
+  public get audience() {
+    if (!this.cache.audience) {
+      this.cache.audience = this.config.get('auth.auth0.audience');
+    }
+    return this.cache.audience;
+  }
+
+  /**
+   * Issuer getter.
+   * @return {string} Issuer.
+   */
+  public get issuer() {
+    if (!this.cache.issuer) {
+      this.cache.issuer = this.config.get('auth.auth0.issuer');
+    }
+    return this.cache.issuer;
+  }
+
+  /**
+   * Key getter.
+   * @return {string} Key.
+   */
+  public get key() {
+    return this.getKey.bind(this);
+  }
+
+  /**
+   * Verify options getter.
+   * @return {object} Options used during verification.
+   */
+  public get verifyOptions() {
+    return {
+      audience: this.audience,
+      issuer: this.issuer,
+      ignoreExpiration: false, // DO NOT ignore expiration
+    };
+  }
 }

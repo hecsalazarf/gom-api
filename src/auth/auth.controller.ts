@@ -33,11 +33,15 @@ export class AuthController {
       req.session.access_token_sign = token.access_token.slice(index + 1);
       /* Create the access token */
       res.cookie(this.config.get('accessToken.cookieName'), token.access_token.slice(0, index), this.cookieOptions);
+
+      /* Create the id token */
+      res.cookie('id-token', token.id_token, this.cookieOptions); // TODO
+
       /* After a login, refresh the CSRF token */
       res.cookie(this.config.get('csrf.cookie.name'), req.csrfToken(), { secure: this.config.get('csrf.cookie.secure') });
-      const { nickname, name, picture, email, sub } = this.auth.decode(token.id_token);
+      const { nickname, name, picture, email, sub, seller, business } = this.auth.decode(token.id_token);
       res.status(HttpStatus.OK);
-      res.send({ nickname, name, picture, email, sub });
+      res.send({ nickname, name, picture, email, sub, seller, business });
     } else {
       res.status(HttpStatus.NO_CONTENT).send();
     }
@@ -47,6 +51,7 @@ export class AuthController {
   async signOut(@Res() res: Response, @Req() req: any): Promise<void> {
     req.session = null;
     res.clearCookie(this.config.get('accessToken.cookieName'));
+    res.clearCookie('id-token'); // TODO
     res.status(HttpStatus.OK).send();
   }
 

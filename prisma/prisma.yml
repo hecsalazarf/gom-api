@@ -1,4 +1,4 @@
-endpoint: http://localhost:4466
+endpoint: http://172.18.0.1:4466
 datamodel: datamodel.prisma
 secret: "12345" #dev only
 # generate:

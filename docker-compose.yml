@@ -58,3 +58,20 @@ services:
       options:
         max-size: "200k"
         max-file: "10"
+  
+  redis:
+    image: redis:5.0.5-alpine
+    ports:
+      - '6379:6379'
+    deploy:
+      restart_policy:
+        condition: any
+        delay: 5s
+      replicas: 1
+    networks:
+      - gomnet
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"

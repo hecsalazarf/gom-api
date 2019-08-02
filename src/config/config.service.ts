@@ -11,4 +11,8 @@ export class ConfigService {
   public get(key: string): any {
     return this.config.get(key);
   }
+
+  public has(key: string): any {
+    return this.config.has(key);
+  }
 }

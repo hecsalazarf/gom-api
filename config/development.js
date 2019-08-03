@@ -15,5 +15,9 @@ module.exports = {
       issuer: 'https://api.gom.com/',
       audience: 'http://dev.api.gom'
     }
+  },
+  redis: {
+    port: 6379,
+    host: '172.18.0.1'
   }
 }

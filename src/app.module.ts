@@ -1,6 +1,5 @@
 import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
 import { APP_FILTER } from '@nestjs/core';
-import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from './config/config.module';
 import { SessionMiddleware, CookieMiddleware } from './middleware';
 import { CatchAllFilter } from './app.filter';
@@ -17,7 +16,7 @@ import { GraphqlModule } from './graphql/graphql.module';
       useClass: CatchAllFilter,
     },
   ],
-  imports: [AuthModule, ConfigModule, GraphqlModule],
+  imports: [ConfigModule, GraphqlModule],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

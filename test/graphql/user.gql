@@ -5,9 +5,9 @@ mutation CreateUser($data: UserCreateInput!) {
   }
 }
 
-{
-  "data": {
-    "role": "seller",
-    "extUid": "auth0|5cbf89f3937ebc119aa3570a"
-  }
-}
+# {
+#   "data": {
+#     "role": "seller",
+#     "extUid": "auth0|5cbf89f3937ebc119aa3570a"
+#   }
+# }

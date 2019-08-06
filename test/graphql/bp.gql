@@ -17,17 +17,16 @@ query BpPag ($where: BpWhereInput, $orderBy: BpOrderByInput, $first: Int, $skip:
   }
 }
 
-{
-  "where": {
-    "customerOf_some": {
-      "uid": "cjy98owqr04xg08187dp9tvls"
-    }
-  },
-  "first": 5,
-  "orderBy": "createdAt_DESC"
-}
+# {
+#   "where": {
+#     "customerOf_some": {
+#       "uid": "cjy98owqr04xg08187dp9tvls"
+#     }
+#   },
+#   "first": 5,
+#   "orderBy": "createdAt_DESC"
+# }
 
-# Write your query or mutation here
 query ReadBP ($where: BpWhereUniqueInput!) {
   bp(where: $where) {
     uid
@@ -38,11 +37,11 @@ query ReadBP ($where: BpWhereUniqueInput!) {
   }
 }
 
-{
-  "where": {
-    "uid": "cjyacw19f01jw0801pfhf0ruw"
-  }
-}
+# {
+#   "where": {
+#     "uid": "cjyacw19f01jw0801pfhf0ruw"
+#   }
+# }
 
 mutation CreateBp ($data: BpCreateInput!) {
   createBp(data: $data) {
@@ -50,17 +49,17 @@ mutation CreateBp ($data: BpCreateInput!) {
   }
 }
 
-{
-  "data": {
-    "name1": "Lalo",
-    "lastName1": "Ruiz",
-    "customerOf": {
-      "connect": {
-        "uid": "cjy7um1uj008d0753wpjixzup"
-      }
-    }
-  }
-}
+# {
+#   "data": {
+#     "name1": "Lalo",
+#     "lastName1": "Ruiz",
+#     "customerOf": {
+#       "connect": {
+#         "uid": "cjy7um1uj008d0753wpjixzup"
+#       }
+#     }
+#   }
+# }
 
 mutation updateBp ($data: BpUpdateInput! $where: BpWhereUniqueInput!) {
   updateBp(data: $data, where: $where) {
@@ -68,12 +67,12 @@ mutation updateBp ($data: BpUpdateInput! $where: BpWhereUniqueInput!) {
   }
 }
 
-{
-  "data": {
-    "name1": "Lalito",
-    "phone": "552145336"
-  },
-  "where": {
-    "uid": "cjy9enn0m002f0801htg40rs7"
-  }
-}
+# {
+#   "data": {
+#     "name1": "Lalito",
+#     "phone": "552145336"
+#   },
+#   "where": {
+#     "uid": "cjy9enn0m002f0801htg40rs7"
+#   }
+# }

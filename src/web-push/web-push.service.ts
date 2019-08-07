@@ -24,7 +24,7 @@ export class WebPushService {
     private readonly redis: RedisService,
   ) {
     if (!config.has('vapid.subject') || !config.has('vapid.publicKey') || !config.get('vapid.privateKey')) {
-      throw new Error(`${WebPushService.name} missing configuration`);
+      throw new Error(`${WebPushService.name} missing configuration`); // if no config found, throw error and stop initialization
     }
     WebPush.setVapidDetails(config.get('vapid.subject'), config.get('vapid.publicKey'), config.get('vapid.privateKey'));
   }
@@ -82,17 +82,27 @@ export class WebPushService {
           return res.endpoint;
         }
         // any other WebPushError, print it on log
-        this.logger.error(`Notification to ${res.endpoint} for user ${userId} was not sent. Status ${res.statusCode}`);
+        this.logger.warn(`Notification to ${res.endpoint} for user ${userId} was not sent. Status ${res.statusCode}`);
       } else if (res instanceof Error) {
         errorCount++; // found error
         // any other Error, print it on log
-        this.logger.error(`${res.message}. User ${userId}`);
+        this.logger.warn(`${res.message}. User ${userId}`);
       }
     }).filter(res => res); // filter undefined elements
 
     if (subsToRemove.length > 0) {
       // if there are subscriptions to remove, queue them
-      setImmediate(async () => await this.removeUserSubscriptions(userId, subsToRemove));
+      setImmediate(async () => {
+        try {
+          await this.removeUserSubscriptions(userId, subsToRemove);
+        } catch (error) {
+          // print error when execution went wrong
+          this.logger.error(`Expired subscriptions of user ${userId} were not removed`);
+          if (error.message) {
+            this.logger.error(error.message);
+          }
+        }
+      });
     }
     return errorCount;
   }
@@ -173,6 +183,9 @@ export class WebPushService {
    * or 'false' when no subscription is found. Promise rejects when all subscriptions returned with error from the Push Service
    */
   public async pushNotification(user: string, payload: string | Buffer): Promise<boolean> {
+    if (user === '') {
+      return false; // empty user, return false
+    }
     const subscriptions = await this.getUserSubscriptions(user);
     if (subscriptions.length === 0) {
       return false; // no subscriptions, return false
@@ -184,7 +197,7 @@ export class WebPushService {
     const res = await Promise.all(promises.map(p => p.catch(e => e)));
     if (this.handleErrors(res, user) === res.length) {
       // if all responses are errors, reject
-      throw new Error('Notification could not be sent');
+      throw new Error(`Notification could not be sent for user ${user}`); // TODO return error array
     }
     return true;
   }

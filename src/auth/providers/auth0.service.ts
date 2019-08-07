@@ -68,12 +68,12 @@ export class Auth0Service {
     } catch (err) {
       if (err.response) {
         throw new HttpException({
-          code: err.response.data.error,
+          error: err.response.data.error,
           message: err.response.data.error_description,
         }, err.response.status);
       }
       throw new HttpException({
-        code: 'oauth_service_error',
+        error: 'oauth_service_error',
         message: 'Oauth service not available',
       }, HttpStatus.INTERNAL_SERVER_ERROR);
     }

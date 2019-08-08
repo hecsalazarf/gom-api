@@ -11,7 +11,7 @@ export enum OrderNotifyEvents {
 interface NotificationPayload {
   title: string; // notification title
   body: string; // notification body
-  data: any;
+  data: any; // notification data
 }
 
 @Injectable()
@@ -69,6 +69,7 @@ export class OrderNotification extends EventEmitter {
       data: {
         type: 'order',
         uid: order.uid,
+        operation: OrderNotifyEvents.UPDATE,
       },
     };
     this.pushNotification(receiver, payload);
@@ -90,6 +91,7 @@ export class OrderNotification extends EventEmitter {
       data: {
         type: 'order',
         uid: order.uid,
+        operation: OrderNotifyEvents.CREATE,
       },
     };
 

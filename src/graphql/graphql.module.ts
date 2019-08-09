@@ -2,7 +2,7 @@ import { Module, MiddlewareConsumer, NestModule } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { GraphqlOptions } from './graphql.options';
 import { BpModule, OrderModule } from './modules';
-import { CsrfMiddleware, AuthMiddleware } from '../middleware';
+import { CsrfMiddleware, AuthMiddleware, SessionMiddleware } from '../middleware';
 import { AuthModule } from '../auth/auth.module';
 
 @Module({
@@ -20,7 +20,7 @@ import { AuthModule } from '../auth/auth.module';
 export class GraphqlModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
-      .apply(CsrfMiddleware, AuthMiddleware)
+      .apply(CsrfMiddleware, SessionMiddleware, AuthMiddleware)
       .forRoutes('graphql');
   }
 }

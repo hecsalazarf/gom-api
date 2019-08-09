@@ -2,7 +2,7 @@ import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
 import { WebPushService } from './web-push.service';
 import { WebPushController } from './web-push.controller';
 import { RedisModule } from '../db/redis/redis.module';
-import { CsrfMiddleware, AuthMiddleware } from '../middleware';
+import { CsrfMiddleware, AuthMiddleware, SessionMiddleware } from '../middleware';
 import { AuthModule } from '../auth/auth.module';
 import { ConfigService } from '../config/config.service';
 import { RedisService } from '../db/redis/redis.service';
@@ -33,7 +33,7 @@ const WebPushFactory = {
 export class WebPushModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
-      .apply(CsrfMiddleware, AuthMiddleware)
+      .apply(CsrfMiddleware, SessionMiddleware, AuthMiddleware)
       .forRoutes(WebPushController);
   }
 }

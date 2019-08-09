@@ -1,7 +1,7 @@
 import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
 import { APP_FILTER } from '@nestjs/core';
 import { ConfigModule } from './config/config.module';
-import { SessionMiddleware, CookieMiddleware } from './middleware';
+import { CookieMiddleware } from './middleware';
 import { CatchAllFilter } from './app.filter';
 import { GraphqlModule } from './graphql/graphql.module';
 
@@ -21,7 +21,7 @@ import { GraphqlModule } from './graphql/graphql.module';
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
-      .apply(CookieMiddleware, SessionMiddleware)
+      .apply(CookieMiddleware)
       .forRoutes('*');
   }
 }

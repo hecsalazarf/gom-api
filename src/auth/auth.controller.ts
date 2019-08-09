@@ -20,7 +20,7 @@ export class AuthController {
 
   @Post('login')
   async signIn(@Body(new ValidationPipe()) body: CredentialsDto, @Req() req: any, @Res() res: Response): Promise<void | object> {
-    if (req.session.isNew) {
+    if (!req.session.access_token_sign) {
       /* With the given credential request the JWT */
       const token = await this.auth.requestToken(body);
       /*

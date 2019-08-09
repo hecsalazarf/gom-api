@@ -9,7 +9,12 @@ export class OnRedisDestroy implements OnModuleDestroy {
 
   // app.enableShutdownHooks() must have been called to enable this hook
   async onModuleDestroy() {
-    await this.redis.quit(); // disconnect redis gracefully
-    this.logger.log('Redis gracefully disconnected');
+    const instances = this.redis.getAllInstances();
+    const promises = [];
+    instances.forEach((value, key) => {
+      this.logger.log(`Disconnecting ${key} redis instance...`);
+      promises.push(value.quit()); // disconnect redis gracefully
+    });
+    await Promise.all(promises);
   }
 }

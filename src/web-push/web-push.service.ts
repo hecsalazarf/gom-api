@@ -1,8 +1,9 @@
 import { Injectable, Logger } from '@nestjs/common';
 import * as WebPush from 'web-push';
 import { PushSubscription, WebPushError, SendResult } from 'web-push';
+import { Redis } from 'ioredis';
 import { ConfigService } from '../config/config.service';
-import { RedisService, RedisArgs } from '../db/redis/redis.service';
+import { RedisArgs } from '../db/redis/redis.service';
 
 // Push Service Status
 export enum PushServiceStatus {
@@ -15,17 +16,18 @@ export enum PushServiceStatus {
                           // before another request can be made.
 }
 
-@Injectable()
 export class WebPushService {
   private readonly logger = new Logger(WebPushService.name);
+  private redis: Redis;
 
   constructor(
-    private readonly config: ConfigService,
-    private readonly redis: RedisService,
+    redisInstance: Redis,
+    config: ConfigService,
   ) {
     if (!config.has('vapid.subject') || !config.has('vapid.publicKey') || !config.get('vapid.privateKey')) {
       throw new Error(`${WebPushService.name} missing configuration`); // if no config found, throw error and stop initialization
     }
+    this.redis = redisInstance;
     WebPush.setVapidDetails(config.get('vapid.subject'), config.get('vapid.publicKey'), config.get('vapid.privateKey'));
   }
 

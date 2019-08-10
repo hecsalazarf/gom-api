@@ -1,5 +1,5 @@
 import { UseFilters, UseInterceptors, UseGuards } from '@nestjs/common';
-import { Resolver, Query, Args, Mutation, Info, Context } from '@nestjs/graphql';
+import { Resolver, Query, Args, Mutation, Info, Context, Subscription } from '@nestjs/graphql';
 import { PrismaService } from '../../../db/prisma/prisma.service';
 import { OrderConnection } from '../../graphql.schema';
 import { Order } from './model/order';
@@ -43,5 +43,10 @@ export class OrderResolver {
     const order: Order = await this.prisma.mutation.updateOrder(args, info);
     this.notification.emit(OrderNotifyEvents.UPDATE, order, user.id);
     return order;
+  }
+
+  @Subscription('order')
+  onOrderMutation(@Args() args, @Info() info) {
+    return this.prisma.subscription.order(args, info);
   }
 }

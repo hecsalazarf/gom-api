@@ -1,21 +1,55 @@
 import { GqlOptionsFactory, GqlModuleOptions } from '@nestjs/graphql';
 import { Injectable } from '@nestjs/common';
+import { ConnectionContext } from 'subscriptions-transport-ws';
+import { SessionService } from '../auth/session/session.service';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable()
 export class GraphqlOptions implements GqlOptionsFactory {
+  constructor(
+    private readonly session: SessionService,
+    private readonly auth: AuthService,
+  ) {}
   createGqlOptions(): Promise<GqlModuleOptions> | GqlModuleOptions {
     /* These options will be passed down to the underlying Apollo instance */
     return {
       typePaths: ['./**/*.graphql'],
       path: '/graphql', // endpoint
-      context: ({ req }) => ({
-        user: req.user, // add user got from AuthMiddleware to context
-      }),
-      /*
-      * With an existing HTTP server (created with createServer),
-      * we can add subscriptions using the installSubscriptionHandlers.
-      * See more https://www.apollographql.com/docs/apollo-server/features/subscriptions/
-      */
+      context: ({ req, connection }) => {
+        // The function to create a context for subscriptions includes connection, while the function
+        // for Queries and Mutations contains the arguments for the integration, in express's case req and res.
+        if (connection) {
+          // check connection for metadata
+          return connection.context;
+        } else {
+          return {
+            user: req.user, // add user got from AuthMiddleware to context
+          };
+        }
+      },
+      subscriptions: {
+        path: '/graphql',
+        onConnect: async (connectionParams: any, websocket: any, context: ConnectionContext) => {
+          if (context.request.headers.cookie) {
+            const sessionCookie = this.session.getCookie(context.request.headers.cookie);
+            const accessToken = this.auth.getCookie(context.request.headers.cookie);
+            if (sessionCookie && accessToken) {
+              const session = await this.session.verify(sessionCookie);
+              const token = `${accessToken}.${session.access_token_sign}`;
+              const decoded = await this.auth.verify(token);
+              return {
+                user: {
+                  id: decoded.sub,
+                },
+              };
+            }
+          }
+          throw new Error('No authorization');
+        },
+      },
+      // With an existing HTTP server (created with createServer),
+      // we can add subscriptions using the installSubscriptionHandlers.
+      // See more https://www.apollographql.com/docs/apollo-server/features/subscriptions/
       installSubscriptionHandlers: true,
       resolverValidationOptions: {
         /*

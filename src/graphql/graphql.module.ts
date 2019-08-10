@@ -12,6 +12,7 @@ import { AuthModule } from '../auth/auth.module';
       imports: [
         BpModule,
         OrderModule,
+        AuthModule, // to inject dependencies in GraphqlOptions
       ],
     }),
     AuthModule,

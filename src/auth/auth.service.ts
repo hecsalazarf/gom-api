@@ -1,15 +1,22 @@
 import { Injectable } from '@nestjs/common';
 import { Ability, RawRule } from '@casl/ability';
 import * as Jwt from 'jsonwebtoken';
+import * as cookie from 'cookie';
 import { CredentialsDto, PASSWORD_GTYPE, PHONE_GTYPE } from './dto/credentials.dto';
 import { Auth0Service, LocalAuthService } from './providers';
+import { ConfigService } from '../config/config.service';
 
 @Injectable()
 export class AuthService {
 
+  private readonly cookieName: string;
   constructor(
     private readonly localAuth: LocalAuthService,
-    private readonly auth0: Auth0Service) {}
+    private readonly auth0: Auth0Service,
+    private readonly config: ConfigService,
+  ) {
+      this.cookieName = config.get('accessToken.cookieName');
+    }
 
   /**
    * Get auth service by Issuer
@@ -90,5 +97,18 @@ export class AuthService {
    */
   public decode(token: string): any {
     return Jwt.decode(token);
+  }
+
+  /**
+   * Get access token cookie from request header.
+   * @param {string} cookieHeader The cookie header from the request
+   * @returns {string} The access_token value
+   */
+  public getCookie(cookieHeader: string): string {
+    const cookies = cookie.parse(cookieHeader);
+    if (cookies[this.cookieName]) {
+      return cookies[this.cookieName];
+    }
+    return null;
   }
 }

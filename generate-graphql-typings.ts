@@ -9,6 +9,6 @@ import { join } from 'path';
 const definitionsFactory = new GraphQLDefinitionsFactory();
 definitionsFactory.generate({
   typePaths: ['./src/db/prisma/*.graphql'],
-  path: join(process.cwd(), 'src/graphql/graphql.schema.d.ts'),
+  path: join(process.cwd(), 'src/graphql/graphql.schema.ts'),
   outputAs: 'class',
 });

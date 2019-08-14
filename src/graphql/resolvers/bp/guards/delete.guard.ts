@@ -9,8 +9,7 @@ export class BpDeleteGuard implements CanActivate {
 
   /**
    * This should be the entry point for any other bussines rule associated with the
-   * deletion of a BP. If there are more rules, create seperate instances which
-   * wrap each one.
+   * deletion of a BP. If there are more rules, create a rule inside BpRulesService.
    * DO NOT CREATE MORE GUARDS RELATED TO BP DELETION BUSINESS RULES.
    */
   async canActivate(context: ExecutionContext): Promise<boolean> {

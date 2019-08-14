@@ -19,8 +19,8 @@ export class PermissionGuard implements CanActivate {
       return ability.can(defs[0], defs[1]); // check ability
     });
     if (!authorized) {
-      /* Throw error when user is unauthorized to perform the operation */
-      throw new ForbiddenError('No permission to access');
+      // Throw error when user is unauthorized to perform the operation
+      throw new ForbiddenError('No permission to perform the operation');
     }
     return true;
   }

@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../../../db/prisma/prisma.service';
+import { ActiveStatus } from '../../order/constants';
 
 @Injectable()
 export class BpRulesService {
@@ -13,7 +14,7 @@ export class BpRulesService {
         issuedTo: {
           uid: bp,
         },
-      stage_in: [ 'OPEN', 'IN_PROCESS' ],
+      stage_in: ActiveStatus,
       },
       first: 1, // we only need one
     }, '{ uid }'); // no data needed

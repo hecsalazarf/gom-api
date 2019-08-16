@@ -22,7 +22,7 @@ export class WebPushController {
     try {
       return await this.webpush.removeUserSubscriptions(req.user.id, [subs.endpoint]);
     } catch (error) {
-      throw new InternalServerErrorException('Subscription could not be stored', 'webpush_subscribe');
+      throw new InternalServerErrorException('Subscription could not be removed', 'webpush_unsubscribe');
     }
   }
 }

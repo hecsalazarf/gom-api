@@ -24,5 +24,10 @@ module.exports = {
     subject: 'https://dev.gom.com',
     privateKey: '4DztwpAycGt6VZ1EwIfxxkIWyqk65AkGWLovcQ56Ns4',
     publicKey: 'BJo1ZeE62MZqVkZN8g9TOSFXOCtxmpmejfId8JpLT5C52ASUqhabfpVpHqQrySWhD0PCgEWohR1vKpbRJ48boWA'
+  },
+  cors: {
+    whitelist: [
+      '192.168.0.2'
+    ]
   }
 }

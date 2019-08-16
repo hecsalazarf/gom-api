@@ -6,7 +6,8 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableShutdownHooks(); // Starts listening to shutdown hooks
   app.use(helmet()); // Helmet middlewares
-
+  // @ts-ignore
+  app.set('trust proxy', true);
   await app.listen(3000);
 }
 bootstrap();

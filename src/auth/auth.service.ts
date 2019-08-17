@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Ability, RawRule } from '@casl/ability';
 import * as Jwt from 'jsonwebtoken';
 import * as cookie from 'cookie';
-import { CredentialsDto, PASSWORD_GTYPE, PHONE_GTYPE } from './dto/credentials.dto';
+import { CredentialsDto, GrantTypes } from './dto/credentials.dto';
 import { Auth0Service, LocalAuthService } from './providers';
 import { ConfigService } from '../config/config.service';
 
@@ -46,10 +46,10 @@ export class AuthService {
    * @return {Promise<any>} Token.
    */
   public requestToken(credentials: CredentialsDto): Promise<any> {
-    if (credentials.grantType === PASSWORD_GTYPE) {
+    if (credentials.grantType === GrantTypes.PASSWORD) {
       return this.auth0.requestToken(credentials);
     }
-    if (credentials.grantType === PHONE_GTYPE) {
+    if (credentials.grantType === GrantTypes.PHONE) {
       return this.localAuth.generateToken(credentials);
     }
   }

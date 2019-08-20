@@ -31,7 +31,6 @@ export class AuthController {
 
     if (retrySecs > 0) {
       // Block request when login limiter policy has been reached
-      this.logger.log(`IP ${req.ip} and username ${body.username} were blocked. Too many requests`);
       res.set('Retry-After', String(retrySecs));
       throw new HttpException({ error: 'too_many_requests', statusCode: HttpStatus.TOO_MANY_REQUESTS}, HttpStatus.TOO_MANY_REQUESTS);
     }
@@ -44,7 +43,7 @@ export class AuthController {
       } catch (err) {
         if (err.status && err.status === HttpStatus.FORBIDDEN) {
           const { message, error, exists } = err.message;
-          // consume limiter points and thow an error
+            // consume limiter points and throw an error
           await this.loginLimitter.consume(body.username, req.ip, exists || false);
           throw new ForbiddenException(message, error);
         }

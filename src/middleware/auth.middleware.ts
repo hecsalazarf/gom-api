@@ -1,20 +1,14 @@
 import { Injectable, NestMiddleware, ForbiddenException } from '@nestjs/common';
 import { AuthService } from '../auth/auth.service';
-import { ConfigService } from '../config/config.service';
 
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
-  private readonly cookie: string;
 
-  constructor(
-    private readonly auth: AuthService,
-    private readonly config: ConfigService) {
-      this.cookie = config.get('accessToken.cookieName');
-  }
+  constructor(private readonly auth: AuthService) {}
 
   async use(req: any, res: any, next: () => void) {
     try {
-      const token = `${req.cookies[this.cookie]}.${req.session.access_token_sign}`;
+      const token = `${req.cookies[this.auth.accessTokenName]}.${req.session.access_token_sign}`;
       const decoded = await this.auth.verify(token);
       req.user = {
         id: decoded.sub,

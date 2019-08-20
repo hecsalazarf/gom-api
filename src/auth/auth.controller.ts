@@ -3,23 +3,19 @@ import { HttpStatus, HttpCode, ForbiddenException, BadRequestException, HttpExce
 import { CredentialsDto } from './dto';
 import { Response, Request } from 'express';
 import { AuthService } from './auth.service';
-import { ConfigService } from '../config/config.service';
 import { PrismaService } from '../db/prisma/prisma.service';
 import { BpInfoInterceptor } from './interceptors';
 import { LoginLimiterService } from './login-limiter/login-limiter.service';
 
 @Controller('auth')
 export class AuthController {
-  private readonly cookieOptions: object;
   private readonly logger: Logger;
   constructor(
     private readonly auth: AuthService,
-    private readonly config: ConfigService,
     private readonly prisma: PrismaService,
     private readonly loginLimitter: LoginLimiterService,
   ) {
     this.logger = new Logger(AuthController.name);
-    this.cookieOptions = (({maxAge, httpOnly, signed}) => ({maxAge, httpOnly, signed}))(this.config.get('accessToken.options'));
   }
 
   @Post('login')
@@ -61,14 +57,14 @@ export class AuthController {
       // Create session
       req.session.access_token_sign = token.access_token.slice(index + 1);
       // Create the access token
-      res.cookie(this.config.get('accessToken.cookieName'), token.access_token.slice(0, index), this.cookieOptions);
+      res.cookie(this.auth.accessTokenName, token.access_token.slice(0, index), this.auth.accessTokenOptions);
 
       // Create the id token
-      res.cookie('id-token', token.id_token, this.cookieOptions); // TODO
+      res.cookie('id-token', token.id_token, this.auth.accessTokenOptions); // TODO
 
       // After a login, refresh the CSRF token
-      // @ts-ignore
-      res.cookie(this.config.get('csrf.cookie.name'), req.csrfToken(), { secure: this.config.get('csrf.cookie.secure') });
+      // @ts-ignore // TODO Store token secret in session
+      // res.cookie(this.config.get('csrf.cookie.name'), req.csrfToken(), { secure: this.config.get('csrf.cookie.secure') });
       const { nickname, name, picture, email, sub, seller, business } = this.auth.decode(token.id_token);
       res.status(HttpStatus.OK);
       res.send({ nickname, name, picture, email, sub, seller, business });
@@ -81,7 +77,7 @@ export class AuthController {
   @Get('logout')
   async signOut(@Res() res: Response, @Req() req: any): Promise<void> {
     req.session = null;
-    res.clearCookie(this.config.get('accessToken.cookieName'));
+    res.clearCookie(this.auth.accessTokenName);
     res.clearCookie('id-token'); // TODO Remove
     res.status(HttpStatus.OK).send();
     this.logger.log(`User logged out from IP ${req.ip}`); // TODO Add user id to log

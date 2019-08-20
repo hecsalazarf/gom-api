@@ -33,7 +33,7 @@ const WebPushFactory = {
 export class WebPushModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
-      .apply(CsrfMiddleware, SessionMiddleware, AuthMiddleware)
+      .apply(/* CsrfMiddleware, */ SessionMiddleware, AuthMiddleware) // TODO Reactivate CSRF
       .forRoutes(WebPushController);
   }
 }

@@ -21,7 +21,7 @@ import { AuthModule } from '../auth/auth.module';
 export class GraphqlModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
-      .apply(CsrfMiddleware, SessionMiddleware, AuthMiddleware)
+      .apply(/* CsrfMiddleware,  */SessionMiddleware, AuthMiddleware) // TODO Reactivate CSRF
       .forRoutes('graphql');
   }
 }

@@ -20,7 +20,7 @@ import { LoginLimiterModule } from './login-limiter/login-limiter.module';
 export class AuthModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
-      .apply(CsrfMiddleware, CsrfgenMiddleware, SessionMiddleware)
+      .apply(/* CsrfMiddleware, CsrfgenMiddleware, */ SessionMiddleware) // TODO Reactivate CSRF
       .forRoutes(AuthController);
   }
 }

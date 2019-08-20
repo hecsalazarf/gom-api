@@ -9,13 +9,13 @@ import { ConfigService } from '../config/config.service';
 @Injectable()
 export class AuthService {
 
-  private readonly cookieName: string;
+  private readonly accessTokenConfig: any;
   constructor(
     private readonly localAuth: LocalAuthService,
     private readonly auth0: Auth0Service,
     private readonly config: ConfigService,
   ) {
-      this.cookieName = config.get('accessToken.cookieName');
+      this.accessTokenConfig = config.get('accessToken');
     }
 
   /**
@@ -106,9 +106,18 @@ export class AuthService {
    */
   public getCookie(cookieHeader: string): string {
     const cookies = cookie.parse(cookieHeader);
-    if (cookies[this.cookieName]) {
-      return cookies[this.cookieName];
+    if (cookies[this.accessTokenName]) {
+      return cookies[this.accessTokenName];
     }
     return null;
   }
+
+  public get accessTokenName(): string {
+    return this.accessTokenConfig.name;
+  }
+
+  public get accessTokenOptions(): any {
+    return this.accessTokenConfig.options;
+  }
+
 }

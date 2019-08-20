@@ -13,11 +13,11 @@ export class SessionService {
   private readonly sessionHandler: express.RequestHandler;
   private readonly redisStore: RedisStore;
   private readonly secrets: string[];
-  private readonly cookieName: string;
+  private readonly sessionConfig: any;
 
   constructor(redisInstance: Redis, config: ConfigService) {
     this.secrets = config.get('keys');
-    this.cookieName = config.get('session.name');
+    this.sessionConfig = config.get('session');
     const Store = connectRedis(session);
     // @ts-ignore // ignore types mismatch
     this.redisStore = new Store({ client: redisInstance }); // create redis store
@@ -33,14 +33,8 @@ export class SessionService {
   private createSessionHandler(config: ConfigService): express.RequestHandler {
     const options: session.SessionOptions = {
       secret: this.secrets,
-      name: this.cookieName,
-      cookie: {
-        httpOnly: config.get('session.httpOnly'),
-        maxAge: config.get('session.maxAge'),
-        // signed: config.get('session.signed'), // TBD
-        // sameSite: true, // TBD
-        // secure: true, // TBD
-      },
+      name: this.sessionConfig.name,
+      cookie: this.sessionConfig.options,
       resave: false, // Do not save back the session if it was not modified
       saveUninitialized: false, // Do not save "uninitialized" sessions
       unset: 'destroy', // The session will be destroyed (deleted) when the response ends
@@ -97,8 +91,8 @@ export class SessionService {
    */
   public getCookie(cookieHeader: string): any {
     const cookies = cookie.parse(cookieHeader);
-    if (cookies[this.cookieName]) {
-      return cookies[this.cookieName];
+    if (cookies[this.sessionConfig.name]) {
+      return cookies[this.sessionConfig.name];
     }
     return null;
   }

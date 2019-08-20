@@ -98,7 +98,7 @@ export class Auth0Service {
    * Audience getter.
    * @return {string} Audience.
    */
-  public get audience() {
+  public get audience(): string {
     if (!this.cache.audience) {
       this.cache.audience = this.config.get('auth.auth0.audience');
     }
@@ -109,7 +109,7 @@ export class Auth0Service {
    * Issuer getter.
    * @return {string} Issuer.
    */
-  public get issuer() {
+  public get issuer(): string {
     if (!this.cache.issuer) {
       this.cache.issuer = this.config.get('auth.auth0.issuer');
     }
@@ -120,7 +120,7 @@ export class Auth0Service {
    * Key getter.
    * @return {string} Key.
    */
-  public get key() {
+  public get key(): string {
     return this.getKey.bind(this);
   }
 
@@ -128,7 +128,7 @@ export class Auth0Service {
    * Verify options getter.
    * @return {object} Options used during verification.
    */
-  public get verifyOptions() {
+  public get verifyOptions(): any {
     return {
       audience: this.audience,
       issuer: this.issuer,

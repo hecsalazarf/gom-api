@@ -73,6 +73,7 @@ export class LocalAuthService {
         'read:orders',
         'role:customer',
         'update:order',
+        'subscribe:order',
       ],
     };
   }

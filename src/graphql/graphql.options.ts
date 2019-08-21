@@ -1,5 +1,5 @@
 import { GqlOptionsFactory, GqlModuleOptions } from '@nestjs/graphql';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { ConnectionContext } from 'subscriptions-transport-ws';
 import { SessionService } from '../auth/session/session.service';
 import { AuthService } from '../auth/auth.service';
@@ -34,17 +34,24 @@ export class GraphqlOptions implements GqlOptionsFactory {
             const sessionCookie = this.session.getCookie(context.request.headers.cookie);
             const accessToken = this.auth.getCookie(context.request.headers.cookie);
             if (sessionCookie && accessToken) {
-              const session = await this.session.verify(sessionCookie);
-              const token = `${accessToken}.${session.access_token_sign}`;
-              const decoded = await this.auth.verify(token);
-              return {
-                user: {
-                  id: decoded.sub,
-                },
-              };
+              try {
+                const session = await this.session.verify(sessionCookie);
+                const token = `${accessToken}.${session.access_token_sign}`;
+                const decoded = await this.auth.verify(token);
+                return {
+                  user: {
+                    id: decoded.sub,
+                    ability: this.auth.buildAbility(decoded),
+                  },
+                };
+              } catch (error) {
+                Logger.error(`${error.message} | ${context.request.headers['x-forwarded-for'] || ''}`, '', 'OnConnectWS');
+                throw new Error('No authorization to connect');
+              }
             }
           }
-          throw new Error('No authorization');
+          Logger.error(`No access token to validate | ${context.request.headers['x-forwarded-for'] || ''}`, '', 'OnConnectWS');
+          throw new Error('No authorization to connect');
         },
       },
       // With an existing HTTP server (created with createServer),

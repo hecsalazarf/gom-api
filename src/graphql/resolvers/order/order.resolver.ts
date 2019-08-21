@@ -46,6 +46,7 @@ export class OrderResolver {
   }
 
   @Subscription('order')
+  @Permission('subscribe:order')
   onOrderMutation(@Args() args, @Info() info) {
     return this.prisma.subscription.order(args, info);
   }

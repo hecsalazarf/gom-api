@@ -61,8 +61,11 @@ export class AuthService {
    */
   public verify(token: string): Promise<any> {
     return new Promise((resolve, reject) => {
-      const { iss } = this.decode(token); // get issuer from token
-      const service = this.getServiceByIssuer(iss); // get service based on issuer
+      const unverified = this.decode(token);
+      if (!unverified || !unverified.iss) {
+        reject(new Error('Token malformed'));
+      }
+      const service = this.getServiceByIssuer(unverified.iss); // get service based on issuer
       Jwt.verify(token, service.key, service.verifyOptions, (err: object, decoded: object) => {
         if (err) {
           reject(err);

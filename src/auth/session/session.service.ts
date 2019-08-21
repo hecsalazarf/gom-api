@@ -68,11 +68,11 @@ export class SessionService {
   public verify(value: string): Promise<any> {
     return new Promise((resolve, reject) => {
       if (value.substr(0, 2) !== 's:') {
-        throw new Error('Session value is not signed');
+        reject(new Error('Session value is not signed'));
       }
       const sid = this.unsigncookie(value.slice(2)); // get session id
       if (sid === false) {
-        throw new Error('Invalid signature');
+        reject(new Error('Invalid signature'));
       }
       // @ts-ignore // ignore types mismatch
       this.store.get(sid, (error, res) => {

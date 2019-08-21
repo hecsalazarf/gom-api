@@ -8,14 +8,16 @@ import { ConfigService } from '../config/config.service';
 
 @Injectable()
 export class AuthService {
-
   private readonly accessTokenConfig: any;
+  private readonly csrfConfig: any;
+
   constructor(
     private readonly localAuth: LocalAuthService,
     private readonly auth0: Auth0Service,
     private readonly config: ConfigService,
   ) {
       this.accessTokenConfig = config.get('accessToken');
+      this.csrfConfig = config.get('csrf');
     }
 
   /**
@@ -115,12 +117,25 @@ export class AuthService {
     return null;
   }
 
+  /**
+   * Access token name getter
+   */
   public get accessTokenName(): string {
     return this.accessTokenConfig.name;
   }
 
+  /**
+   * Access token options getter
+   */
   public get accessTokenOptions(): any {
     return this.accessTokenConfig.options;
+  }
+
+  /**
+   * Csrf name getter
+   */
+  public get csrfName(): string {
+    return this.csrfConfig.name;
   }
 
 }

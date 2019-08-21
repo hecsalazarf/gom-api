@@ -64,11 +64,11 @@ export class AuthController {
 
       // After a login, refresh the CSRF token
       // @ts-ignore // TODO Store token secret in session
-      // res.cookie(this.config.get('csrf.cookie.name'), req.csrfToken(), { secure: this.config.get('csrf.cookie.secure') });
+      res.cookie(this.auth.csrfName, req.csrfToken(), { secure: false });
       const { nickname, name, picture, email, sub, seller, business } = this.auth.decode(token.id_token);
       res.status(HttpStatus.OK);
       res.send({ nickname, name, picture, email, sub, seller, business });
-      this.logger.log(`User ${sub} with username ${body.username} logged in from ${req.ip}`);
+      this.logger.log(`User ${sub} logged in from ${req.ip}`);
     } else {
       res.status(HttpStatus.NO_CONTENT).send();
     }
@@ -78,6 +78,7 @@ export class AuthController {
   async signOut(@Res() res: Response, @Req() req: any): Promise<void> {
     req.session = null;
     res.clearCookie(this.auth.accessTokenName);
+    res.clearCookie(this.auth.csrfName);
     res.clearCookie('id-token'); // TODO Remove
     res.status(HttpStatus.OK).send();
     this.logger.log(`User logged out from IP ${req.ip}`); // TODO Add user id to log

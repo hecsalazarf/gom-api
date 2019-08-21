@@ -1,8 +1,9 @@
 import { Module, NestModule, MiddlewareConsumer, HttpModule } from '@nestjs/common';
+import * as csurf from 'csurf';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { LocalAuthService, Auth0Service } from './providers';
-import { CsrfMiddleware, CsrfgenMiddleware, SessionMiddleware } from '../middleware';
+import { CsrfgenMiddleware, SessionMiddleware } from '../middleware';
 import { PrismaModule } from '../db/prisma/prisma.module';
 import { SessionModule } from './session/session.module';
 import { LoginLimiterModule } from './login-limiter/login-limiter.module';
@@ -20,7 +21,7 @@ import { LoginLimiterModule } from './login-limiter/login-limiter.module';
 export class AuthModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
-      .apply(/* CsrfMiddleware, CsrfgenMiddleware, */ SessionMiddleware) // TODO Reactivate CSRF
+      .apply(SessionMiddleware, csurf(), CsrfgenMiddleware ) // TODO Reactivate CSRF
       .forRoutes(AuthController);
   }
 }

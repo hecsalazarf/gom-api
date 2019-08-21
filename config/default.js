@@ -21,9 +21,6 @@ module.exports = {
     },
   },
   csrf: {
-    cookie: {
-      name: 'csrf-token',
-      secure: false,
-    }
+    name: 'csrf-token',
   }
 }

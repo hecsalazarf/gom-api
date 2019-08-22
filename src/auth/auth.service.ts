@@ -25,7 +25,7 @@ export class AuthService {
    * @param {string} issuer Issuer.
    * @return {any} Auth service.
    */
-  private getServiceByIssuer(issuer): any {
+  private getServiceByIssuer(issuer: string): any {
       let service: any;
       switch (issuer) {
         case this.auth0.issuer:
@@ -54,6 +54,15 @@ export class AuthService {
     if (credentials.grantType === GrantTypes.PHONE) {
       return this.localAuth.generateToken(credentials);
     }
+  }
+
+  /**
+   * Refresh token (Only Auth0)
+   * @param {string} refreshToken Username and password.
+   * @return {Promise<any>} Token.
+   */
+  public refreshToken(refreshToken: string): Promise<any> {
+    return this.auth0.refreshToken(refreshToken);
   }
 
   /**

@@ -56,7 +56,7 @@ export class AuthController {
       const splitted = this.auth.splitToken(token.access_token);
       req.session.access_token_sign = splitted.signature; // Create session
       res.cookie(this.auth.accessTokenName, splitted.payload, this.auth.accessTokenOptions); // Create the access token
-
+      req.session.refresh_token = token.refresh_token || undefined; // save refresh token if it exists
       // Create the id token
       res.cookie('id-token', token.id_token, this.auth.accessTokenOptions); // TODO
 

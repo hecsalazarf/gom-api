@@ -6,14 +6,13 @@ import { CredentialsDto } from '../dto';
 @Injectable()
 export class Auth0Service {
   private readonly jwksClient: any; // JWKS client
-  private readonly tokenRequestOptions: object;
   private readonly cache: any = {}; // cached options
 
   constructor(
     private readonly httpService: HttpService,
-    private readonly config: ConfigService) {
+    private readonly config: ConfigService,
+  ) {
       this.jwksClient = this.createJwks();
-      this.tokenRequestOptions = this.getTokenRequestOptions();
   }
 
   /**
@@ -31,33 +30,39 @@ export class Auth0Service {
   }
 
   /**
-   * Factory method that creates the configuration options to request the token.
-   * @return {any} Object containing the options.
+   * Callback used during token verification that retrieves the signing key
+   * from the JWKS endpoint.
+   * @param {any} header Token header
+   * @callback callback Callback with the key or error
+   * @return {void}
    */
-  private getTokenRequestOptions(): any {
-    return {
-      grant_type: this.config.get('auth.auth0.grantType'),
-      client_id: this.config.get('auth.auth0.clientId'),
-      client_secret: this.config.get('auth.auth0.clientSecret'),
-      audience: this.config.get('auth.auth0.audience'),
-      scope: this.config.get('auth.auth0.scope'),
-    };
+  private getKey(header: any, callback: any) {
+    this.jwksClient.getSigningKey(header.kid, (err, key) => {
+      callback(err, key.publicKey || key.rsaPublicKey);
+    });
   }
 
   /**
-   * Request token to the Auth0 service, given user credentials.
-   * @param {object} credentials Username and password.
-   * @return {Promise<any>} Token.
+   * Client secret getter.
+   * @return {string} Client secret.
    */
-  public async requestToken({ username, password }: CredentialsDto): Promise<any> {
-    let result;
+  private get clientSecret(): string {
+    if (!this.cache.clientSecret) {
+      this.cache.clientSecret = this.config.get('auth.auth0.clientSecret');
+    }
+    return this.cache.clientSecret;
+  }
+
+  /**
+   * Get Oauth token from Auth0
+   * @param {any} error Token header
+   * @return {void}
+   */
+  private async getToken(params: any): Promise<any> {
+    let result: any;
     try {
-      result = await this.httpService.post(this.config.get('auth.auth0.url') + 'oauth/token',
-        {
-          ...this.tokenRequestOptions,
-          username,
-          password,
-        },
+      result = await this.httpService.post(`${this.config.get('auth.auth0.url')}oauth/token`,
+        params,
         {
           responseType: 'json',
           headers: {
@@ -65,12 +70,12 @@ export class Auth0Service {
           },
         },
       ).toPromise();
-    } catch (err) {
-      if (err.response) {
+    } catch (error) {
+      if (error.response) {
         throw new HttpException({
-          error: err.response.data.error,
-          message: err.response.data.error_description,
-        }, err.response.status);
+          error: error.response.data.error,
+          message: error.response.data.error_description,
+        }, error.response.status);
       }
       throw new HttpException({
         error: 'oauth_service_error',
@@ -82,16 +87,37 @@ export class Auth0Service {
   }
 
   /**
-   * Callback used during token verification that retrieves the signing key
-   * from the JWKS endpoint.
-   * @param {any} header Token header
-   * @callback callback Callback with the key or error
-   * @return {void}
+   * Request token to the Auth0 service, given user credentials.
+   * @param {object} credentials Username and password.
+   * @return {Promise<any>} Token.
    */
-  private getKey(header: any, callback: any) {
-    this.jwksClient.getSigningKey(header.kid, (err, key) => {
-      callback(err, key.publicKey || key.rsaPublicKey);
-    });
+  public requestToken({ username, password }: CredentialsDto): Promise<any> {
+    const params = {
+      username,
+      password,
+      grant_type: 'password',
+      client_id: this.clientId,
+      client_secret: this.clientSecret,
+      audience: this.audience,
+      scope: this.scope,
+    };
+
+    return this.getToken(params);
+  }
+
+  /**
+   * Refresh token from the Auth0 service
+   * @param {string} refreshToken Refresh token
+   * @return {Promise<any>} Token.
+   */
+  public async refreshToken(refreshToken: string): Promise<any> {
+    const params = {
+      grant_type: 'refresh_token',
+      client_id: this.clientId,
+      refresh_token: refreshToken,
+    };
+
+    return this.getToken(params);
   }
 
   /**
@@ -114,6 +140,28 @@ export class Auth0Service {
       this.cache.issuer = this.config.get('auth.auth0.issuer');
     }
     return this.cache.issuer;
+  }
+
+  /**
+   * Scope getter.
+   * @return {string} Scope.
+   */
+  public get scope(): string {
+    if (!this.cache.scope) {
+      this.cache.scope = this.config.get('auth.auth0.scope');
+    }
+    return this.cache.scope;
+  }
+
+  /**
+   * Client ID getter.
+   * @return {string} Client ID.
+   */
+  public get clientId(): string {
+    if (!this.cache.clientId) {
+      this.cache.clientId = this.config.get('auth.auth0.clientId');
+    }
+    return this.cache.clientId;
   }
 
   /**

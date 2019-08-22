@@ -74,12 +74,16 @@ export class AuthController {
 
   @Get('logout')
   async signOut(@Res() res: Response, @Req() req: any): Promise<void> {
-    req.session = null;
-    res.clearCookie(this.auth.accessTokenName);
-    res.clearCookie(this.auth.csrfName);
-    res.clearCookie('id-token'); // TODO Remove
-    res.status(HttpStatus.OK).send();
-    this.logger.log(`User logged out from IP ${req.ip}`); // TODO Add user id to log
+    if (req.session.access_token_sign) { // check there is a session
+      req.session = null;
+      res.clearCookie(this.auth.accessTokenName);
+      res.clearCookie(this.auth.csrfName);
+      res.clearCookie('id-token'); // TODO Remove
+      res.status(HttpStatus.OK).send();
+      this.logger.log(`User logged out from IP ${req.ip}`); // TODO Add user id to log
+    } else {
+      res.status(HttpStatus.NO_CONTENT).send();
+    }
   }
 
   @Get('ping')

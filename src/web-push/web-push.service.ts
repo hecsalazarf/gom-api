@@ -199,7 +199,7 @@ export class WebPushService {
     const res = await Promise.all(promises.map(p => p.catch(e => e)));
     if (this.handleErrors(res, user) === res.length) {
       // if all responses are errors, reject
-      throw new Error(`Notification could not be sent for user ${user}`); // TODO return error array
+      throw new Error(`Notification was not sent to ${user}. All subscriptions were invalid`); // TODO return error array
     }
     return true;
   }

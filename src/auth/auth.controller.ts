@@ -53,11 +53,9 @@ export class AuthController {
       // The JWT is splitted in two parts. The header and the payload
       // are stored in the access_token cookie.
       // The signature is stored in the session
-      const index = token.access_token.lastIndexOf('.');
-      // Create session
-      req.session.access_token_sign = token.access_token.slice(index + 1);
-      // Create the access token
-      res.cookie(this.auth.accessTokenName, token.access_token.slice(0, index), this.auth.accessTokenOptions);
+      const splitted = this.auth.splitToken(token.access_token);
+      req.session.access_token_sign = splitted.signature; // Create session
+      res.cookie(this.auth.accessTokenName, splitted.payload, this.auth.accessTokenOptions); // Create the access token
 
       // Create the id token
       res.cookie('id-token', token.id_token, this.auth.accessTokenOptions); // TODO

@@ -118,6 +118,20 @@ export class AuthService {
   }
 
   /**
+   * Split token into header and signature.
+   * @param {string} token Encoded token
+   * @returns {any} The splitted token
+   */
+  public splitToken(token: string): { signature: string, payload: string } {
+    const index = token.lastIndexOf('.');
+
+    return {
+      signature: token.slice(index + 1),
+      payload: token.slice(0, index),
+    };
+  }
+
+  /**
    * Access token name getter
    */
   public get accessTokenName(): string {

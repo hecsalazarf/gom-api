@@ -57,8 +57,6 @@ export class AuthController {
       req.session.access_token_sign = splitted.signature; // Create session
       res.cookie(this.auth.accessTokenName, splitted.payload, this.auth.accessTokenOptions); // Create the access token
       req.session.refresh_token = token.refresh_token || undefined; // save refresh token if it exists
-      // Create the id token
-      res.cookie('id-token', token.id_token, this.auth.accessTokenOptions); // TODO
 
       // After a login, refresh the CSRF token
       // @ts-ignore // TODO Store token secret in session
@@ -78,7 +76,6 @@ export class AuthController {
       req.session = null;
       res.clearCookie(this.auth.accessTokenName);
       res.clearCookie(this.auth.csrfName);
-      res.clearCookie('id-token'); // TODO Remove
       res.status(HttpStatus.OK).send();
       this.logger.log(`User logged out from IP ${req.ip}`); // TODO Add user id to log
     } else {

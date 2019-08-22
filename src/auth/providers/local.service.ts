@@ -62,11 +62,13 @@ export class LocalAuthService {
   private createAccessPayload(bp: Bp): any {
     /*
     * The payload is VERY static due to the current requirements,
-    * however, this should't be the correct design
+    * however, this shouldn't be the correct design
     */
     return {
       sub: bp.uid,
       gty: 'phone',
+      seller: bp.customerOf[0].extUid,
+      business: bp.customerOf[0].business,
       permissions: [
         'create:order',
         'read:order',

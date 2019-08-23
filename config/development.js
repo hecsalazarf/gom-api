@@ -15,10 +15,6 @@ module.exports = {
       audience: 'http://dev.api.gom'
     }
   },
-  redis: {
-    port: 6379,
-    host: '172.18.0.1'
-  },
   vapid: {
     subject: 'https://dev.gom.com',
     privateKey: '4DztwpAycGt6VZ1EwIfxxkIWyqk65AkGWLovcQ56Ns4',
@@ -28,5 +24,26 @@ module.exports = {
     whitelist: [
       '192.168.0.2'
     ]
+  },
+  'web-push': {
+    redis: {
+      port: 6379,
+      host: '172.18.0.1',
+      db: 1
+    }
+  },
+  session: {
+    redis: {
+      port: 6379,
+      host: '172.18.0.1',
+      db: 2
+    }
+  },
+  'login-limiter': {
+    redis: {
+      port: 6379,
+      host: '172.18.0.1',
+      db: 3
+    }
   }
 }

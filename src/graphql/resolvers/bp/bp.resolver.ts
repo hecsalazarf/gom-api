@@ -5,11 +5,11 @@ import { PrismaService } from '../../../db/prisma/prisma.service';
 import { BpConnection } from '../../graphql.schema';
 import { AuditInterceptor, Permission, PermissionGuard, GraphqlFilter } from '../../graphql.common';
 import { UtilsService } from '../../../utils/utils.service';
-import { BpDeleteGuard } from './guards/delete.guard';
+import { BpDeleteGuard, BpOwnerGuard } from './guards';
 
 @Resolver('Bp')
 @UseFilters(GraphqlFilter)
-@UseGuards(PermissionGuard)
+@UseGuards(PermissionGuard, BpOwnerGuard)
 export class BpResolver {
   private readonly logger = new Logger(BpResolver.name);
 
@@ -19,7 +19,7 @@ export class BpResolver {
   ) {}
 
   @Query('bp')
-  @Permission('read:bp')
+  @Permission('read:bp', 'own')
   async getBp(@Args() args: any, @Info() info: any): Promise<Bp> {
     return await this.prisma.query.bp(args, info);
   }
@@ -39,7 +39,7 @@ export class BpResolver {
   }
 
   @Mutation('updateBp')
-  @Permission('update:bp')
+  @Permission('update:bp', 'own')
   @UseInterceptors(AuditInterceptor)
   async updateBp(@Args() args: any, @Info() info: any): Promise<Bp> {
     return await this.prisma.mutation.updateBp(args, info);

@@ -5,9 +5,10 @@ import { OrderConnection } from '../../graphql.schema';
 import { Order } from './model/order';
 import { AuditInterceptor, Permission, PermissionGuard, GraphqlFilter } from '../../graphql.common';
 import { OrderNotification, OrderNotifyEvents } from './order.notification';
+import { OrderOwnerGuard } from './guards';
 
 @Resolver('Order')
-@UseGuards(PermissionGuard)
+@UseGuards(PermissionGuard, OrderOwnerGuard)
 @UseFilters(GraphqlFilter)
 export class OrderResolver {
   constructor(
@@ -16,7 +17,7 @@ export class OrderResolver {
   ) {}
 
   @Query('order')
-  @Permission('read:order')
+  @Permission('read:order', 'own')
   async getOrder(@Args() args: any, @Info() info: any): Promise<Order> {
     return await this.prisma.query.order(args, info);
   }
@@ -37,7 +38,7 @@ export class OrderResolver {
   }
 
   @Mutation('updateOrder')
-  @Permission('update:order')
+  @Permission('update:order', 'own')
   @UseInterceptors(AuditInterceptor)
   async updateOrder(@Args() args: any, @Info() info: any,  @Context('user') user: any): Promise<Order> {
     const order: Order = await this.prisma.mutation.updateOrder(args, info);

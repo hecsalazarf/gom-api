@@ -5,11 +5,8 @@ import { Exists } from './customs/exists';
 @Injectable()
 export class PrismaService extends Prisma {
   public readonly cexists: Exists; // custom exists
-  constructor() {
-    super({
-      endpoint: 'http://172.18.0.1:4466',
-      secret: '12345',
-    });
+  constructor(endpoint: string, secret: string) {
+    super({ endpoint, secret });
     this.cexists = new Exists(this);
   }
 }

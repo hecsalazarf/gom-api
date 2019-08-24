@@ -45,5 +45,9 @@ module.exports = {
       host: '172.18.0.1',
       db: 3
     }
+  },
+  prisma: {
+    endpoint: 'http://172.18.0.1:4466',
+    secret: '12345'
   }
 }

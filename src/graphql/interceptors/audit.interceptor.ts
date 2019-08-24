@@ -6,7 +6,7 @@ import { GqlExecutionContext } from '@nestjs/graphql';
 export class AuditInterceptor implements NestInterceptor {
 
   /*
-  * Intercept mutations to insert the user who request the operation
+  * Intercept mutations to insert the user who requested the operation
   */
   intercept(exeContext: ExecutionContext, next: CallHandler): Observable<any> {
     const exeCtx = GqlExecutionContext.create(exeContext);
@@ -14,7 +14,7 @@ export class AuditInterceptor implements NestInterceptor {
     const { user } = exeCtx.getContext();
     const { data } = exeCtx.getArgs();
 
-    if (operation === 'mutation') { // check it is a mutation
+    if (operation === 'mutation') { // check that it is a mutation
       if (fieldName.includes('create')) {
         data.createdBy = user.id; // insert user id
       }

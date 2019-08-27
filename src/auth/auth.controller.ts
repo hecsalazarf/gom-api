@@ -60,7 +60,7 @@ export class AuthController {
 
       // After a login, refresh the CSRF token
       // @ts-ignore // TODO Store token secret in session
-      res.cookie(this.auth.csrfName, req.csrfToken(), { secure: false });
+      res.cookie(this.auth.csrfName, req.csrfToken(), this.auth.csrfOptions);
       const { nickname, name, picture, email, sub, seller, business } = this.auth.decode(token.id_token);
       res.status(HttpStatus.OK);
       res.send({ nickname, name, picture, email, sub, seller, business });

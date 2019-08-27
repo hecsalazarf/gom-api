@@ -161,4 +161,11 @@ export class AuthService {
     return this.csrfConfig.name;
   }
 
+  /**
+   * Csrf options getter
+   */
+  public get csrfOptions(): string {
+    return this.csrfConfig.options;
+  }
+
 }

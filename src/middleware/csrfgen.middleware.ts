@@ -7,7 +7,7 @@ export class CsrfgenMiddleware implements NestMiddleware {
 
   use(req: any, res: any, next: () => void) {
     if (!req.cookies[this.auth.csrfName]) {
-      res.cookie(this.auth.csrfName, req.csrfToken(), { secure: false });
+      res.cookie(this.auth.csrfName, req.csrfToken(), this.auth.csrfOptions);
     }
     next();
   }

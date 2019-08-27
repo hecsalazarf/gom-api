@@ -73,11 +73,12 @@ export class AuthController {
   @Get('logout')
   async signOut(@Res() res: Response, @Req() req: any): Promise<void> {
     if (req.session.access_token_sign) { // check there is a session
+      const decoded = this.auth.decode(`${req.cookies[this.auth.accessTokenName]}.${req.session.access_token_sign}`);
       req.session = null;
       res.clearCookie(this.auth.accessTokenName);
       res.clearCookie(this.auth.csrfName);
       res.status(HttpStatus.OK).send();
-      this.logger.log(`User logged out from IP ${req.ip}`); // TODO Add user id to log
+      this.logger.log(`User ${decoded ? decoded.sub : ''} logged out from IP ${req.ip}`);
     } else {
       res.status(HttpStatus.NO_CONTENT).send();
     }

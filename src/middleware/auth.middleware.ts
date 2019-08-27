@@ -38,10 +38,6 @@ export class AuthMiddleware implements NestMiddleware {
       token = `${req.cookies[this.auth.accessTokenName]}.${req.session.access_token_sign}`;
       this.createContext(req, await this.auth.verify(token)); // create context after verifying token
     } catch (error) {
-      // throw new ForbiddenException({
-      //   code: 'jwt_error',
-      //   message: error.message,
-      // });
       if (error.name === 'TokenExpiredError' && req.session.refresh_token) {
         // refresh token to have long-lived sessions
         try {

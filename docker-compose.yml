@@ -75,3 +75,26 @@ services:
       options:
         max-size: "200k"
         max-file: "10"
+
+  api:
+    image: hecsalazarf/gom-api:0.1
+    ports:
+      - '3000:3000'
+    environment:
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      PRISMA_HOST: http://prisma:4466
+      PRISMA_SECRET: "12345"
+    deploy:
+      restart_policy:
+        condition: any
+        delay: 5s
+      replicas: 1
+    networks:
+      - gomnet
+    command: [ "pm2-runtime", "start", "ecosystem.config.js" ] #Use it only on development or staging environments
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"

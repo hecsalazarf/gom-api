@@ -6,18 +6,18 @@ import * as connectRedis from 'connect-redis';
 import * as express from 'express';
 import * as signature from 'cookie-signature';
 import * as cookie from 'cookie';
-import { ConfigService } from '../../config/config.service';
+import { SessionConfigDto } from './dto';
 
 @Injectable()
 export class SessionService {
   private readonly sessionHandler: express.RequestHandler;
   private readonly redisStore: RedisStore;
   private readonly secrets: string[];
-  private readonly sessionConfig: any;
+  private readonly sessionConfig: SessionConfigDto;
 
-  constructor(redisInstance: Redis, config: ConfigService) {
-    this.secrets = config.get('keys');
-    this.sessionConfig = config.get('session');
+  constructor(redisInstance: Redis, keys: string[], config: SessionConfigDto) {
+    this.secrets = keys;
+    this.sessionConfig = config;
     const Store = connectRedis(session);
     // @ts-ignore // ignore types mismatch
     this.redisStore = new Store({ client: redisInstance }); // create redis store
@@ -30,7 +30,7 @@ export class SessionService {
    * @returns {express.RequestHandler} Express session handler
    * @private
    */
-  private createSessionHandler(config: ConfigService): express.RequestHandler {
+  private createSessionHandler(config: SessionConfigDto): express.RequestHandler {
     const options: session.SessionOptions = {
       secret: this.secrets,
       name: this.sessionConfig.name,

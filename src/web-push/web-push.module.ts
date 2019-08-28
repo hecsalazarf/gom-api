@@ -1,4 +1,3 @@
-import * as assert from 'assert';
 import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
 import * as csurf from 'csurf';
 import { WebPushService } from './web-push.service';
@@ -8,25 +7,13 @@ import { AuthMiddleware, SessionMiddleware } from '../middleware';
 import { AuthModule } from '../auth/auth.module';
 import { ConfigService } from '../config/config.service';
 import { RedisService } from '../db/redis/redis.service';
-
-const REDIS_HOST = 'web-push.redis.host';
-const REDIS_PORT = 'web-push.redis.port';
-const REDIS_DB = 'web-push.redis.db';
+import { WebpushConfigDto } from './dto';
 
 const WebPushFactory = {
   provide: WebPushService,
   useFactory: async (config: ConfigService, redis: RedisService) => {
-    const errorMessage = 'Missing session store configuration';
-    assert(config.has(REDIS_HOST), errorMessage);
-    assert(config.has(REDIS_PORT), errorMessage);
-    assert(config.has(REDIS_DB), errorMessage);
-
-    const options = {
-      host: config.get(REDIS_HOST),
-      port: config.get(REDIS_PORT),
-      db: config.get(REDIS_DB),
-    };
-    const redisInstance = await redis.createInstance('web-push', options);
+    const res: WebpushConfigDto = await config.validate('web-push', WebpushConfigDto);
+    const redisInstance = await redis.createInstance('web-push', res.redis);
     return new WebPushService(redisInstance, config);
   },
   inject: [ConfigService, RedisService],

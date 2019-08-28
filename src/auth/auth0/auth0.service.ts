@@ -8,11 +8,8 @@ export class Auth0Service {
   private readonly jwksClient: any; // JWKS client
   private readonly cache: any = {}; // cached options
 
-  constructor(
-    private readonly httpService: HttpService,
-    private readonly config: ConfigService,
-  ) {
-      this.jwksClient = this.createJwks();
+  constructor(private readonly httpService: HttpService, private readonly config: ConfigService) {
+    this.jwksClient = this.createJwks();
   }
 
   /**

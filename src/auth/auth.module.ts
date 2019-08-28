@@ -1,21 +1,24 @@
-import { Module, NestModule, MiddlewareConsumer, HttpModule } from '@nestjs/common';
+import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
 import * as csurf from 'csurf';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { LocalAuthService, Auth0Service } from './providers';
 import { CsrfgenMiddleware, SessionMiddleware } from '../middleware';
-import { PrismaModule } from '../db/prisma/prisma.module';
 import { SessionModule } from './session/session.module';
 import { LoginLimiterModule } from './login-limiter/login-limiter.module';
+import { Auth0Module } from './auth0/auth0.module';
+import { LocalAuthModule } from './local-auth/local-auth.module';
+import { PrismaModule } from '../db/prisma/prisma.module';
 
 @Module({
-  imports: [HttpModule, PrismaModule, SessionModule, LoginLimiterModule],
-  controllers: [AuthController],
-  providers: [
-    AuthService,
-    LocalAuthService,
-    Auth0Service,
+  imports: [
+    PrismaModule,
+    SessionModule,
+    LoginLimiterModule,
+    Auth0Module,
+    LocalAuthModule,
   ],
+  controllers: [AuthController],
+  providers: [AuthService],
   exports: [AuthService, SessionModule, LoginLimiterModule],
 })
 export class AuthModule implements NestModule {

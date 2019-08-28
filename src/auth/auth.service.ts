@@ -3,8 +3,9 @@ import { Ability, RawRule } from '@casl/ability';
 import * as Jwt from 'jsonwebtoken';
 import * as cookie from 'cookie';
 import { CredentialsDto, GrantTypes } from './dto/credentials.dto';
-import { Auth0Service, LocalAuthService } from './providers';
+import { LocalAuthService } from './local-auth/local-auth.service';
 import { ConfigService } from '../config/config.service';
+import { Auth0Service } from './auth0/auth0.service';
 
 @Injectable()
 export class AuthService {

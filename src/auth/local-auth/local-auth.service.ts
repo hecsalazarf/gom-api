@@ -1,26 +1,18 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import * as Jwt from 'jsonwebtoken';
-import { ConfigService } from '../../config/config.service';
 import { PrismaService } from '../../db/prisma/prisma.service';
 import { CredentialsDto } from '../dto';
 import { Bp } from '../../db/prisma/prisma.binding';
+import { LocalAuthConfigDto } from './dto';
 
 const SIGNING_ALG = 'HS256';
 
 @Injectable()
 export class LocalAuthService {
-  private readonly tokenOptions: any;
-  private readonly cache: any = {};
   constructor(
-    private readonly config: ConfigService,
-    private readonly prisma: PrismaService) {
-      this.tokenOptions = {
-        algorithm: SIGNING_ALG,
-        expiresIn: this.config.get('accessToken.options.maxAge') / 1000, // in seconds
-        audience: this.config.get('auth.local.audience'),
-        issuer: this.config.get('auth.local.issuer'),
-      };
-  }
+    private readonly config: LocalAuthConfigDto,
+    private readonly prisma: PrismaService,
+  ) { }
 
   /**
    * Validate BP credentials by phone number
@@ -102,7 +94,12 @@ export class LocalAuthService {
    */
   private sign(payload: any): Promise<string> {
     return new Promise((resolve, reject) => {
-      Jwt.sign(payload, this.config.get('keys')[0], this.tokenOptions,
+      Jwt.sign(payload, this.config.secret, {
+        algorithm: SIGNING_ALG,
+        expiresIn: this.config.expiration, // in seconds
+        audience: this.config.audience,
+        issuer: this.config.issuer,
+      },
         (error, encoded) => {
           if (error) {
             reject(error);
@@ -136,10 +133,7 @@ export class LocalAuthService {
    * @return {string} Audience.
    */
   public get audience(): string {
-    if (!this.cache.audience) {
-      this.cache.audience = this.config.get('auth.local.audience');
-    }
-    return this.cache.audience;
+    return this.config.audience;
   }
 
   /**
@@ -147,10 +141,7 @@ export class LocalAuthService {
    * @return {string} Issuer.
    */
   public get issuer(): string {
-    if (!this.cache.issuer) {
-      this.cache.issuer = this.config.get('auth.local.issuer');
-    }
-    return this.cache.issuer;
+    return this.config.issuer;
   }
 
   /**
@@ -158,10 +149,7 @@ export class LocalAuthService {
    * @return {string} Key.
    */
   public get key(): string {
-    if (!this.cache.key) {
-      this.cache.key = this.config.get('keys')[0];
-    }
-    return this.cache.key;
+    return this.config.secret;
   }
 
   /**

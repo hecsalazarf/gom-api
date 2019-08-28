@@ -1,4 +1,4 @@
-import { IsString } from 'class-validator';
+import { IsString, IsPositive } from 'class-validator';
 
 export class LocalAuthConfigDto {
   @IsString()
@@ -6,4 +6,10 @@ export class LocalAuthConfigDto {
 
   @IsString()
   readonly audience: string;
+
+  @IsPositive()
+  readonly expiration: number;
+
+  @IsString()
+  readonly secret: string;
 }

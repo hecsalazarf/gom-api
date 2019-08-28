@@ -14,7 +14,7 @@ const WebPushFactory = {
   useFactory: async (config: ConfigService, redis: RedisService) => {
     const res: WebpushConfigDto = await config.validate('web-push', WebpushConfigDto);
     const redisInstance = await redis.createInstance('web-push', res.redis);
-    return new WebPushService(redisInstance, config);
+    return new WebPushService(redisInstance, res.vapid);
   },
   inject: [ConfigService, RedisService],
 };

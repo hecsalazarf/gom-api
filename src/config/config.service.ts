@@ -15,7 +15,7 @@ export class ConfigService {
    * @param {ValidationError} error Validation error
    * @param {string} path Path of the property that did not pass the validation
    */
-  private handleError(error: ValidationError, path: string) {
+  private handleError(error: ValidationError, path: string): void {
     if (error.children.length === 0) {
       // no children, so print out the error
       Object.values(error.constraints).map(c => Logger.error(`${path}: ${c}`, '', 'ConfigValidator'));
@@ -30,7 +30,7 @@ export class ConfigService {
    * @param {ValidationError[]} errors Array of errors thrown by class-validator
    * @param {string} path Empty string at first call, it is internally filled by recursive calls
    */
-  private handleErrors(errors: ValidationError[], path?: string) {
+  private handleErrors(errors: ValidationError[], path?: string): void {
     errors.map((e: ValidationError) => this.handleError(e, path ? `${path}->${e.property}` : e.property));
   }
 

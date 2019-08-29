@@ -9,6 +9,6 @@ export class CookieMiddleware implements NestMiddleware {
     use: () => any = this.cookie();
 
     private cookie(): () => any {
-      return cookieParser(this.config.get('keys'));
+      return cookieParser(this.config.get('appKey'));
     }
 }

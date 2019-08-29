@@ -7,6 +7,9 @@ export class SessionConfigDto {
   @IsString()
   readonly name: string;
 
+  @IsString()
+  readonly secret: string;
+
   @IsNotEmpty()
   @ValidateNested()
   @Type(() => RedisConfigDto)

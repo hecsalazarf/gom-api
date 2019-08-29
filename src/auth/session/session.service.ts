@@ -12,16 +12,11 @@ import { SessionConfigDto } from './dto';
 export class SessionService {
   private readonly sessionHandler: express.RequestHandler;
   private readonly redisStore: RedisStore;
-  private readonly secrets: string[];
-  private readonly sessionConfig: SessionConfigDto;
 
-  constructor(redisInstance: Redis, keys: string[], config: SessionConfigDto) {
-    this.secrets = keys;
-    this.sessionConfig = config;
+  constructor(redisInstance: Redis, private readonly config: SessionConfigDto) {
     const Store = connectRedis(session);
-    // @ts-ignore // ignore types mismatch
     this.redisStore = new Store({ client: redisInstance }); // create redis store
-    this.sessionHandler = this.createSessionHandler(config); // create session handler
+    this.sessionHandler = this.createSessionHandler(); // create session handler
   }
 
   /**
@@ -30,11 +25,11 @@ export class SessionService {
    * @returns {express.RequestHandler} Express session handler
    * @private
    */
-  private createSessionHandler(config: SessionConfigDto): express.RequestHandler {
+  private createSessionHandler(): express.RequestHandler {
     const options: session.SessionOptions = {
-      secret: this.secrets,
-      name: this.sessionConfig.name,
-      cookie: this.sessionConfig.options,
+      secret: this.config.secret,
+      name: this.config.name,
+      cookie: this.config.options,
       resave: false, // Do not save back the session if it was not modified
       saveUninitialized: false, // Do not save "uninitialized" sessions
       unset: 'destroy', // The session will be destroyed (deleted) when the response ends
@@ -51,13 +46,14 @@ export class SessionService {
    * @private
    */
   private unsigncookie(value: string): boolean | string {
-    for (const secret of this.secrets) {
-      const result = signature.unsign(value, secret);
-      if (result !== false) {
-        return result;
-      }
-    }
-    return false;
+    // Next code should be used when secret is an array
+    // for (const secret of this.config.secret) {
+    //   const result = signature.unsign(value, secret);
+    //   if (result !== false) {
+    //     return result;
+    //   }
+    // }
+    return signature.unsign(value, this.config.secret);
   }
 
   /**
@@ -91,8 +87,8 @@ export class SessionService {
    */
   public getCookie(cookieHeader: string): any {
     const cookies = cookie.parse(cookieHeader);
-    if (cookies[this.sessionConfig.name]) {
-      return cookies[this.sessionConfig.name];
+    if (cookies[this.config.name]) {
+      return cookies[this.config.name];
     }
     return null;
   }

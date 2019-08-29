@@ -10,7 +10,7 @@ const SessionServiceFactory = {
   useFactory: async (config: ConfigService, redis: RedisService) => {
     const res: SessionConfigDto = await config.validate('session', SessionConfigDto);
     const redisInstance = await redis.createInstance('session', res.redis);
-    return new SessionService(redisInstance, config.get('keys'), res);
+    return new SessionService(redisInstance, res);
   },
   inject: [ConfigService, RedisService],
 };

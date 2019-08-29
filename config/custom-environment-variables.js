@@ -1,12 +1,18 @@
 // Environment variables configuration mapping
 
 module.exports = {
-  keys: ['KEY1', 'KEY2'],
+  appKey: 'APP_KEY',
   auth: {
     auth0: {
       clientId: 'AUTH0_CLIENT_ID',
       clientSecret: 'AUTH0_CLIENT_SECRET',
-    }
+    },
+    'login-limiter': {
+      redis: {
+        port: 'REDIS_PORT',
+        host: 'REDIS_HOST',
+      }
+    },
   },
   'web-push': {
     redis: {

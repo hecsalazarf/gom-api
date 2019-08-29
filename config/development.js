@@ -1,5 +1,5 @@
 module.exports = {
-  keys: ['hola', 'mundo'],
+  appKey: 'hola', // openssl rand -base64 10
   auth: {
     auth0: {
       url: 'https://arkio.auth0.com/',
@@ -13,9 +13,7 @@ module.exports = {
     local: {
       issuer: 'https://api.gom.com/',
       audience: 'http://dev.api.gom',
-      token: {
-        expiration: 60 * 30 // (seconds) half an hour
-      }
+      expiration: 60 * 30, // (seconds) half an hour
     },
     'login-limiter': {
       redis: {

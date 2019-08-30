@@ -15,6 +15,7 @@ export class SessionService {
 
   constructor(redisInstance: Redis, private readonly config: SessionConfigDto) {
     const Store = connectRedis(session);
+    // @ts-ignore
     this.redisStore = new Store({ client: redisInstance }); // create redis store
     this.sessionHandler = this.createSessionHandler(); // create session handler
   }

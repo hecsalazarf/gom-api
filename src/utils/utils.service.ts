@@ -20,7 +20,7 @@ export class UtilsService {
       const buffer = Buffer.alloc(Math.ceil((length * 3) / 4));
       crypto.randomFill(buffer, (err, buf) => {
         if (err) {
-          throw err;
+          reject(err);
         }
         const output = buf.toString('base64') // convert to base64 format
           .slice(0, length) // return required number of characters

@@ -20,6 +20,19 @@ module.exports = {
         port: 6379,
         host: '172.18.0.1',
         db: 3
+      },
+      slowBrute: {
+        // block IP for a day on 50 failed attempts per day
+        points: 50,
+        duration: 60 * 60 * 24, // attempts per day
+        blockDuration: 60 * 60 * 24 // Block for 1 day
+      },
+      consecutiveFails: {
+        // count number of consecutive failed logins and allows
+        // a maximum of 5 username-IP attempts
+        points: 5, 
+        duration: 60 * 60 * 24 * 90, // Store number for 90 days since first fail
+        blockDuration: 60 * 60, // Block for 1 hour
       }
     },
   },

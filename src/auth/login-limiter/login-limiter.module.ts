@@ -15,7 +15,7 @@ const LoginLimiterServiceFactory = {
       enableOfflineQueue: false,
     };
     const redisInstance = await redis.createInstance('login-limiter', options);
-    return new LoginLimiterService(redisInstance);
+    return new LoginLimiterService(redisInstance, res);
   },
   inject: [ConfigService, RedisService],
 };

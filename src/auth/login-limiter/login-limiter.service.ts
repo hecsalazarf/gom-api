@@ -1,9 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Redis } from 'ioredis';
 import { RateLimiterRedis, RateLimiterRes } from 'rate-limiter-flexible';
-
-const MaxAttemptsByIpPerDay = 50; // TODO: configurable
-const MaxConsecutiveFailsByUsernameAndIP = 5; // TODO: configurable
+import { LoginLimiterConfigDto } from './dto';
 
 enum LoginLimiter {
   SLOW_BRUTE = 'SLOW_BRUTE_BY_IP',
@@ -20,14 +18,14 @@ export class LoginLimiterService {
   private readonly consecutiveFails: RateLimiterRedis;
   private readonly logger = new Logger(LoginLimiterService.name);
 
-  constructor(redis: Redis) {
+  constructor(redis: Redis, private readonly config: LoginLimiterConfigDto) {
     // block IP for a day on MaxAttemptsByIpPerDay failed attempts per day
     this.slowBrute = new RateLimiterRedis({
       storeClient: redis,
       keyPrefix: 'login_slow_brute_',
-      points: MaxAttemptsByIpPerDay,
-      duration: 60 * 60 * 24, // attempts per day
-      blockDuration: 60 * 60 * 24, // Block for 1 day, if MaxAttemptsByIpPerDay wrong attempts per day
+      points: config.slowBrute.points,
+      duration: config.slowBrute.duration,
+      blockDuration: config.slowBrute.blockDuration,
     });
 
     // count number of consecutive failed attempts and allows
@@ -35,9 +33,9 @@ export class LoginLimiterService {
     this.consecutiveFails = new RateLimiterRedis({
       storeClient: redis,
       keyPrefix: 'login_consecutive_fails_',
-      points: MaxConsecutiveFailsByUsernameAndIP,
-      duration: 60 * 60 * 24 * 90, // Store number for 90 days since first fail
-      blockDuration: 60 * 60, // Block for 1 hour
+      points: config.consecutiveFails.points,
+      duration: config.consecutiveFails.duration,
+      blockDuration: config.consecutiveFails.blockDuration,
     });
   }
 
@@ -79,9 +77,9 @@ export class LoginLimiterService {
   public getRetrySecs(consecutiveFails: RateLimiterRes, slowBrute: RateLimiterRes): number {
     let retrySecs = 0;
     // Check if IP or Username + IP is already blocked
-    if (slowBrute !== null && slowBrute.consumedPoints > MaxAttemptsByIpPerDay) {
+    if (slowBrute !== null && slowBrute.consumedPoints > this.config.slowBrute.points) {
       retrySecs = Math.round(slowBrute.msBeforeNext / 1000) || 1;
-    } else if (consecutiveFails !== null && consecutiveFails.consumedPoints > MaxConsecutiveFailsByUsernameAndIP) {
+    } else if (consecutiveFails !== null && consecutiveFails.consumedPoints > this.config.consecutiveFails.points) {
       retrySecs = Math.round(consecutiveFails.msBeforeNext / 1000) || 1;
     }
     return retrySecs;

@@ -17,7 +17,7 @@ export class OrderResolver {
   ) {}
 
   @Query('order')
-  @Permission('read:order', 'own')
+  @Permission('read:order')
   async getOrder(@Args() args: any, @Info() info: any): Promise<Order> {
     return await this.prisma.query.order(args, info);
   }
@@ -38,7 +38,7 @@ export class OrderResolver {
   }
 
   @Mutation('updateOrder')
-  @Permission('update:order', 'own')
+  @Permission('update:order')
   @UseInterceptors(AuditInterceptor)
   async updateOrder(@Args() args: any, @Info() info: any,  @Context('user') user: any): Promise<Order> {
     const order: Order = await this.prisma.mutation.updateOrder(args, info);

@@ -19,7 +19,7 @@ export class BpResolver {
   ) {}
 
   @Query('bp')
-  @Permission('read:bp', 'own')
+  @Permission('read:bp')
   async getBp(@Args() args: any, @Info() info: any): Promise<Bp> {
     return await this.prisma.query.bp(args, info);
   }
@@ -39,7 +39,7 @@ export class BpResolver {
   }
 
   @Mutation('updateBp')
-  @Permission('update:bp', 'own')
+  @Permission('update:bp')
   @UseInterceptors(AuditInterceptor)
   async updateBp(@Args() args: any, @Info() info: any): Promise<Bp> {
     return await this.prisma.mutation.updateBp(args, info);

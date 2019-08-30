@@ -15,10 +15,6 @@ export class PermissionGuard implements CanActivate {
     }
     const { user: { ability } } = gqlCtx.getContext(); // get ability from user
     const authorized = permission.every((p: string ) => {
-      if (p === 'own') {
-        // if permission is 'own', omit it as this one is validated in OwnResource guard
-        return true;
-      }
       const defs = p.split(':'); // split permission to get action and subject
       return ability.can(defs[0], defs[1]); // check ability
     });

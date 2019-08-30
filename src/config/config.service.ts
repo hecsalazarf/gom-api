@@ -1,12 +1,13 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ValidationError, validateOrReject } from 'class-validator';
 import { plainToClass } from 'class-transformer';
+import { IConfig } from 'config';
 
 @Injectable()
 export class ConfigService {
-  private readonly config: any;
+  private readonly config: IConfig;
 
-  constructor(configInstance: any) {
+  constructor(configInstance: IConfig) {
     this.config = configInstance;
   }
 
@@ -65,7 +66,7 @@ export class ConfigService {
    * Check that key exists in the global configuration
    * @param {string} key Key to check
    */
-  public has(key: string): any {
+  public has(key: string): boolean {
     return this.config.has(key);
   }
 }

@@ -2,7 +2,6 @@ import { Injectable, Logger } from '@nestjs/common';
 import * as WebPush from 'web-push';
 import { PushSubscription, WebPushError, SendResult } from 'web-push';
 import { Redis } from 'ioredis';
-import { ConfigService } from '../config/config.service';
 import { RedisArgs } from '../db/redis/redis.service';
 import { VapidDto } from './dto';
 
@@ -17,6 +16,7 @@ export enum PushServiceStatus {
                           // before another request can be made.
 }
 
+@Injectable()
 export class WebPushService {
   private readonly logger = new Logger(WebPushService.name);
   private redis: Redis;

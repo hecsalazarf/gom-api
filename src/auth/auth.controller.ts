@@ -64,7 +64,7 @@ export class AuthController {
       const { nickname, name, picture, email, sub, seller, business } = this.auth.decode(token.id_token);
       res.status(HttpStatus.OK);
       res.send({ nickname, name, picture, email, sub, seller, business });
-      this.logger.log(`User ${sub} logged in from ${req.ip}`);
+      this.logger.log(`User ${sub} logged in | ${req.ip}`);
     } else {
       res.status(HttpStatus.NO_CONTENT).send();
     }
@@ -78,7 +78,7 @@ export class AuthController {
       res.clearCookie(this.auth.accessTokenName);
       res.clearCookie(this.auth.csrfName);
       res.status(HttpStatus.OK).send();
-      this.logger.log(`User ${decoded ? decoded.sub : ''} logged out from IP ${req.ip}`);
+      this.logger.log(`User ${decoded ? decoded.sub : ''} logged out | ${req.ip}`);
     } else {
       res.status(HttpStatus.NO_CONTENT).send();
     }

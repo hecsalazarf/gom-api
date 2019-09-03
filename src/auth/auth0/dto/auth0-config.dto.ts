@@ -3,7 +3,7 @@ import { IsNotEmpty, IsString } from 'class-validator';
 export class Auth0ConfigDto {
   @IsNotEmpty()
   @IsString()
-  readonly url: string;
+  readonly tokenUrl: string;
 
   @IsNotEmpty()
   @IsString()

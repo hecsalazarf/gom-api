@@ -1,14 +1,13 @@
 import { Injectable, HttpService, HttpException, HttpStatus } from '@nestjs/common';
 import * as jwksRsa from 'jwks-rsa';
-import { ConfigService } from '../../config/config.service';
 import { CredentialsDto } from '../dto';
+import { Auth0ConfigDto } from './dto';
 
 @Injectable()
 export class Auth0Service {
   private readonly jwksClient: any; // JWKS client
-  private readonly cache: any = {}; // cached options
 
-  constructor(private readonly httpService: HttpService, private readonly config: ConfigService) {
+  constructor(private readonly httpService: HttpService, private readonly config: Auth0ConfigDto) {
     this.jwksClient = this.createJwks();
   }
 
@@ -22,7 +21,7 @@ export class Auth0Service {
       cache: true,
       cacheMaxEntries: 5, // Default value
       // cacheMaxAge: ms('10h'), // Default value
-      jwksUri: this.config.get('auth.auth0.jwksEndpoint'),
+      jwksUri: this.config.jwksEndpoint,
     });
   }
 
@@ -44,10 +43,7 @@ export class Auth0Service {
    * @return {string} Client secret.
    */
   private get clientSecret(): string {
-    if (!this.cache.clientSecret) {
-      this.cache.clientSecret = this.config.get('auth.auth0.clientSecret');
-    }
-    return this.cache.clientSecret;
+    return this.config.clientSecret;
   }
 
   /**
@@ -58,7 +54,7 @@ export class Auth0Service {
   private async getToken(params: any): Promise<any> {
     let result: any;
     try {
-      result = await this.httpService.post(`${this.config.get('auth.auth0.url')}oauth/token`,
+      result = await this.httpService.post(this.config.tokenUrl,
         params,
         {
           responseType: 'json',
@@ -122,10 +118,7 @@ export class Auth0Service {
    * @return {string} Audience.
    */
   public get audience(): string {
-    if (!this.cache.audience) {
-      this.cache.audience = this.config.get('auth.auth0.audience');
-    }
-    return this.cache.audience;
+    return this.config.audience;
   }
 
   /**
@@ -133,10 +126,7 @@ export class Auth0Service {
    * @return {string} Issuer.
    */
   public get issuer(): string {
-    if (!this.cache.issuer) {
-      this.cache.issuer = this.config.get('auth.auth0.issuer');
-    }
-    return this.cache.issuer;
+    return this.config.issuer;
   }
 
   /**
@@ -144,10 +134,7 @@ export class Auth0Service {
    * @return {string} Scope.
    */
   public get scope(): string {
-    if (!this.cache.scope) {
-      this.cache.scope = this.config.get('auth.auth0.scope');
-    }
-    return this.cache.scope;
+    return this.config.scope;
   }
 
   /**
@@ -155,10 +142,7 @@ export class Auth0Service {
    * @return {string} Client ID.
    */
   public get clientId(): string {
-    if (!this.cache.clientId) {
-      this.cache.clientId = this.config.get('auth.auth0.clientId');
-    }
-    return this.cache.clientId;
+    return this.config.clientId;
   }
 
   /**

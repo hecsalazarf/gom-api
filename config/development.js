@@ -2,7 +2,7 @@ module.exports = {
   appKey: 'hola', // openssl rand -base64 10
   auth: {
     auth0: {
-      url: 'https://arkio.auth0.com/',
+      tokenUrl: 'https://arkio.auth0.com/oauth/token',
       issuer: 'https://arkio.auth0.com/',
       clientId: 'tk37Qxx0ozSe3k2W9THkVnuj35eU7FDo',
       clientSecret: '43TAIqHtRt40d2-d8ZltJW_0_YJ4WURo5zgTFS_dthPqZpPvCPZJ9GA8FI35dCZx',

@@ -5,7 +5,7 @@
   "author": "",
   "license": "MIT",
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
+    "build": "tsc -p tsconfig.build.json && npx copyfiles -E -f src/db/prisma/prisma-types.graphql dist/db/prisma/",
     "format": "prettier --write \"src/**/*.ts\"",
     "start": "ts-node -r tsconfig-paths/register src/main.ts",
     "start:dev": "concurrently --handle-input \"wait-on dist/main.js && nodemon\" \"tsc -w -p tsconfig.build.json\" ",
@@ -22,7 +22,7 @@
     "graphql:schema": "graphql get-schema",
     "graphql:binding": "graphql codegen",
     "graphql:typings": "ts-node generate-graphql-typings",
-    "graphql:build": "npm run prisma:deploy; npm run graphql:schema; npm run graphql:binding; npm run graphql:typings"
+    "graphql:build": "npm run prisma:deploy && npm run graphql:schema && npm run graphql:binding && npm run graphql:typings"
   },
   "dependencies": {
     "@casl/ability": "^3.1.2",

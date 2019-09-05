@@ -3,27 +3,35 @@ FROM node:10.16.3-alpine
 # Labeling
 LABEL maintainer="hecsalazarf" \
       description="GOM API" \
-      version="0.1.0"
+      version="0.2.0"
 
-# Install PM2 globally
-RUN npm install pm2 -g
-
-# Set the user name or UID
-USER node
-
-RUN mkdir /home/node/gomapi
+# Copy entrypoint script
+COPY --chown=node:node docker-entrypoint.sh /usr/local/bin/
 
 # Set the working directory
 WORKDIR /home/node/gomapi
 
 # Bundle APP files
-COPY --chown=node:node dist ./dist/
-COPY --chown=node:node package.json* ecosystem.config.js ./
-COPY --chown=node:node config ./config/
+COPY dist ./dist/
+COPY package.json* ecosystem.config.js ./
+COPY config ./config/
+    
+    # Make entrypoint executable
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh \
+    # Install bash for entrypoint execution
+    && apk update && apk add bash \
+    # Install PM2 globally
+    && npm install pm2 -g \
+    # Install app dependencies
+    && npm install --production \
+    # Change owner of working directory
+    && chown -R node:node ../gomapi
 
-# Install app dependencies
-ENV NPM_CONFIG_LOGLEVEL warn
-RUN npm install --production
+# Set the user name
+USER node
+
+# Execute entrypoint
+ENTRYPOINT ["docker-entrypoint.sh"]
 
 # Expose the listening port
 EXPOSE 3000

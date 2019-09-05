@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import * as Redis from 'ioredis';
 import { KeyType } from 'ioredis';
 
@@ -10,8 +10,10 @@ export interface RedisArgs {
 @Injectable()
 export class RedisService {
   private readonly instances: Map<string, Redis.Redis>;
+  private readonly logger: Logger;
   constructor() {
     this.instances = new Map();
+    this.logger = new Logger(RedisService.name);
   }
 
   private createRedis(options?: Redis.RedisOptions): Promise<Redis.Redis> {
@@ -36,9 +38,14 @@ export class RedisService {
     if (this.instances.has(id)) {
       throw new Error(`Instance with ID ${id} already exists`);
     }
-    const instance = await this.createRedis(options);
-    this.instances.set(id, instance);
-    return instance;
+    try {
+      const instance = await this.createRedis(options);
+      this.instances.set(id, instance);
+      return instance;
+    } catch (error) {
+      this.logger.error(`Cannot create redis instance '${id}' | ${error.message}`);
+      throw error;
+    }
   }
 
   /**

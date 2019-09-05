@@ -16,7 +16,7 @@ module.exports = {
     })
   },
   accessToken: {
-    name: 'access-token',
+    name: 'session-token',
   },
   csrf: {
     name: 'csrf-token',

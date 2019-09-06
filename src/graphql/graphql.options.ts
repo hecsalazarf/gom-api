@@ -15,6 +15,7 @@ export class GraphqlOptions implements GqlOptionsFactory {
     return {
       typePaths: ['./**/*.graphql'],
       path: '/graphql', // endpoint
+      debug: process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging' ? false : true,
       context: ({ req, connection }) => {
         // The function to create a context for subscriptions includes connection, while the function
         // for Queries and Mutations contains the arguments for the integration, in express's case req and res.

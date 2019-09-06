@@ -2,17 +2,17 @@ module.exports = {
   appKey: 'hola', // openssl rand -base64 10
   auth: {
     auth0: {
-      tokenUrl: 'https://arkio.auth0.com/oauth/token',
-      issuer: 'https://arkio.auth0.com/',
-      clientId: 'tk37Qxx0ozSe3k2W9THkVnuj35eU7FDo',
-      clientSecret: '43TAIqHtRt40d2-d8ZltJW_0_YJ4WURo5zgTFS_dthPqZpPvCPZJ9GA8FI35dCZx',
-      audience: 'http://dev.api.gom',
+      tokenUrl: 'https://dev-gom.auth0.com/oauth/token',
+      issuer: 'https://dev-gom.auth0.com/',
+      clientId: 'aOojWYLK4U0XN1S5NB2hNGPhqHkw6eOf',
+      clientSecret: 'aSSqHDfO0YhovFOLEDdH7Xf2w7vR91w4DX0ybza59OQUV1DeHwZZq5PpShFrPjzJ',
+      audience: 'https://gql.gom.com',
       scope: 'openid offline_access',
-      jwksEndpoint: 'https://arkio.auth0.com/.well-known/jwks.json'
+      jwksEndpoint: 'https://dev-gom.auth0.com/.well-known/jwks.json'
     },
     local: {
-      issuer: 'https://api.gom.com/',
-      audience: 'http://dev.api.gom',
+      issuer: 'https://auth.gom.com',
+      audience: 'https://gql.gom.com',
       expiration: 60 * 30, // (seconds) half an hour
     },
     'login-limiter': {
@@ -23,16 +23,16 @@ module.exports = {
       },
       slowBrute: {
         // block IP for a day on 50 failed attempts per day
-        points: 50,
-        duration: 60 * 60 * 24, // attempts per day
-        blockDuration: 60 * 60 * 24 // Block for 1 day
+        points: 50, // attempts per day
+        duration: 60 * 60 * 24, // (s) store for 1 day
+        blockDuration: 60 * 60 * 24 // (s) Block for 1 day
       },
       consecutiveFails: {
         // count number of consecutive failed logins and allows
         // a maximum of 5 username-IP attempts
         points: 5, 
-        duration: 60 * 60 * 24 * 90, // Store number for 90 days since first fail
-        blockDuration: 60 * 60, // Block for 1 hour
+        duration: 60 * 60 * 24 * 90, // (s) Store number for 90 days since first fail
+        blockDuration: 60 * 60, // (s) Block for 1 hour
       }
     },
   },
@@ -55,7 +55,7 @@ module.exports = {
       db: 2
     },
     options: {
-      maxAge: 3600 * 1000, // 24 * 3600 * 1000, // 1 day
+      maxAge: 3600 * 1000, // (ms) 1 hour
       httpOnly: true,
       sameSite: true,
       secure: true
@@ -63,7 +63,7 @@ module.exports = {
   },
   accessToken: {
     options: {
-      maxAge: 3600 * 1000, // 24 * 3600 * 1000, // 1 day
+      maxAge: 3600 * 1000, // (ms) 1 hour
       httpOnly: false,
       sameSite: true,
       secure: true

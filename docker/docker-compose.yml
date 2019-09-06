@@ -5,6 +5,21 @@ networks:
 
 volumes:
   postgres:
+  redis:
+
+secrets:
+  gom_app_key:
+    external: true
+  gom_auth0_client_secret:
+    external: true
+  gom_pg_password:
+    external: true
+  gom_prisma_secret:
+    external: true
+  gom_vapid_private_key:
+    external: true
+  gom_vapid_public_key:
+    external: true
 
 services:
   prisma:
@@ -44,6 +59,7 @@ services:
     environment:
       POSTGRES_USER: prisma
       POSTGRES_PASSWORD: prisma
+      #POSTGRES_PASSWORD_FILE: /run/secrets/gom_pg_password
     volumes:
       - postgres:/var/lib/postgresql/data
     deploy:
@@ -58,41 +74,23 @@ services:
       options:
         max-size: "200k"
         max-file: "10"
+    secrets:
+      - gom_pg_password
   
   redis:
     image: redis:5.0.5-alpine
     ports:
       - '6379:6379'
+    volumes:
+      - redis:/data
     deploy:
       restart_policy:
         condition: any
         delay: 5s
       replicas: 1
+    command: [ "redis-server", "--appendonly", "yes" ] # start with persistent storage
     networks:
       - gomnet
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "200k"
-        max-file: "10"
-
-  api:
-    image: hecsalazarf/gom-api:0.1
-    ports:
-      - '3000:3000'
-    environment:
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-      PRISMA_HOST: http://prisma:4466
-      PRISMA_SECRET: "12345"
-    deploy:
-      restart_policy:
-        condition: any
-        delay: 5s
-      replicas: 1
-    networks:
-      - gomnet
-    command: [ "pm2-runtime", "start", "ecosystem.config.js" ] #Use it only on development or staging environments
     logging:
       driver: "json-file"
       options:

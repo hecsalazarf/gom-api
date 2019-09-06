@@ -31,3 +31,7 @@ lerna-debug.log*
 # App
 src/
 test/
+
+# Archive files
+**/*.tar
+**/*.tar.gz

@@ -101,3 +101,49 @@ It counts number of consecutive failed attempts during `consecutiveFails.duratio
 This blocks IP for `consecutiveFails.blockDuration` seconds on `consecutiveFails.points` failed attempts per `consecutiveFails.duration` seconds.
 
 ### API endpoints
+#### Login with password grant `/auth/login/` [POST]
+Seller login with username and password
+##### Request
+```json
+{
+	"grantType": "password",
+	"username":"test@test.net",
+	"password": "Quiron00"
+}
+```
+##### Reponse
+```json
+{
+    "nickname": "test",
+    "name": "test@test.net",
+    "picture": "https://s.gravatar.com/avatar/6139e4ad230648ca4f1e68b985ef589c?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fte.png",
+    "email": "test@test.net",
+    "sub": "auth0|5d7109da452e7b0c97ed00a6"
+}
+```
+
+#### Login with phone grant `/auth/login/` [POST]
+Seller's customer login with phone number
+##### Request
+```json
+{
+	"grantType": "phone",
+	"username":"mWnnB0y32b",
+	"phone": "5522145684"
+}
+```
+##### Reponse
+```json
+{
+    "nickname": "Pedro",
+    "name": "Pedro Ruiz",
+    "sub": "cjyi3ewi3006r07953qhkfzfr",
+    "seller": "auth0|5d7109da452e7b0c97ed00a6",
+    "business": "Paletas Marías"
+}
+```
+#### Logout `/auth/logout/` [GET]
+Clear session data and cookies of current session.
+
+#### Ping `/auth/ping/` [GET]
+Request CSRF token in order to make subsequent requests.

@@ -88,8 +88,18 @@ Once tokens are got, we create a new session in Redis and store just the signatu
 Every time a GraphQL or WebPush request arrives, it is validated in a middleware by taking its cookie payload and joining it with the corresponding signature. If the validation is successful, the request continues; otherwise and HTTP error is sent.
 
 ```
-JWT = < TOKEN_PAYLOAD {cookie} > . < TOKEN_SIGNATURE {redis} >
+JWT = <TOKEN_PAYLOAD {cookie}>.<TOKEN_SIGNATURE {redis}>
 ```
+
+Session is configurable with these properties:
+
+* `session.redis.host`: Redis host, e.g. `'172.18.0.1'`
+* `session.redis.port`: Redis port, e.g. `6379`
+* `session.redis.db`: Redis logical database
+* `session.options.maxAge`: Max age in milliseconds
+* `session.options.httpOnly` Specifies the boolean value for the `HttpOnly Set-Cookie` attribute.
+* `session.options.sameSite`: Specifies the boolean or string to be the value for the `SameSite Set-Cookie` attribute.
+* `session.options.secure`: Specifies the boolean value for the `Secure Set-Cookie` attribute. Please note that `secure: true` is a recommended option. However, it requires an https-enabled website, i.e., HTTPS is necessary for secure cookies. If secure is set, and you access your site over HTTP, the cookie will not be set.
 
 ### Login rate limiter
 The login endpoint is protected with two rate limiters that can be configured within `login-limiter` section of the configuration files. They are based on [node-rate-limiter-flexible](https://github.com/animir/node-rate-limiter-flexible).

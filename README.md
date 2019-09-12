@@ -25,6 +25,9 @@ $ npm run start:debug
 # watch mode
 $ npm run start:dev
 
+# create compiled bundle
+$ npm run build
+
 # production mode
 $ npm run start:prod
 ```
@@ -205,4 +208,22 @@ Unsubscribe from notifications
 `True` or `false`
 
 ## Redis module
-> WIP
+The Redis module is called internally to create connection clients. At this moment, only one instance of Redis is used with different logical databases. 
+
+* DB 1: Webpush subscriptions.
+* DB 2: Sessions.
+* DB 3: Login rate limiter.
+
+To change the default logical databases, set the configuratio property `redis.db`. The host and port of Redis is set with `redis.host` and `redis.port` properties respectively. If you want to override the values with environment variables, you could use `REDIS_HOST` and `REDIS_PORT`.
+
+## Versioning
+
+0.2.0
+
+## Authors
+
+* **Héctor Salazar** - *hecsalazarf*
+
+## Acknowledgments
+
+Thanks to anyone whose code was used. This project is built on top of talented programmers' work; I just put the pieces together. 

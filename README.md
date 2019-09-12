@@ -147,3 +147,52 @@ Clear session data and cookies of current session.
 
 #### Ping `/auth/ping/` [GET]
 Request CSRF token in order to make subsequent requests.
+
+## Web push notifications module
+Gom follows [VAPID](https://tools.ietf.org/html/rfc8292) specification to send Webpush messages. We currently support notifications for CREATE and UPDATE operations on orders.
+
+As required by the specification, a private and a public key are needed. They are configured in `web-push.vapid.privateKey` and `web-push.vapid.publicKey` respectively within configuration files. You can also set environment variables
+`VAPID_PRIVATE_KEY` and `VAPID_PUBLIC_KEY`.
+
+To start receiving notifications, a user previously had to login and subscribe to the service; then order operations will push the notification if a subscription was saved for a given user participating in such order.
+
+It is recommended to unsubscribe after loging out. However, Gom automatically deletes all invalid subscriptions whenever a notification is attempted to be sent.
+
+All subcriptions are stored in Redis, therefore, Webpush module requires Redis configurations properties: 
+* `web-push.redis.host`
+* `web-push.redis.port`
+* `web-push.redis.db`
+
+### API endpoints
+#### Subscribe `/webpush/subscribe/` [POST]
+Subscribe to notifications
+##### Request
+```json
+{
+	"endpoint": "http1234567",
+	"keys": {
+		"auth": "123",
+		"p256dh": "leloas"
+	}
+}
+```
+##### Response
+`True` or `false`
+
+#### Unsubscribe `/webpush/unsubscribe/` [POST]
+Unsubscribe from notifications
+##### Request
+```json
+{
+	"endpoint": "http123",
+	"keys": {
+		"auth": "123",
+		"p256dh": "leloas"
+	}
+}
+```
+##### Response
+`True` or `false`
+
+## Redis module
+> WIP

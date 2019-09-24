@@ -8,7 +8,17 @@ The backend implementation with a [NestJS]() architecture that gives functionali
 * Web Push Service with a subscription REST API.
 
 ## Prerequisites
-> WIP
+* Node.js >= 8.9.0
+* npm >= 5.6.0
+* Redis >= 5.05
+* Postgres >= 11.4
+* Prisma >= 1.34
+
+#### Docker images
+For a fast and ready to use (usually on development) Redis, Postgres and Prisma solutions, you may want to deploy a Docker stack. Use the *docker/docker-compose.yml* file to deploy them.
+
+#### Prisma model
+Gom Api needs the deployed model on Prisma. See deployment step [6](#6.-deploy-prisma-model) to know how to do it.
 
 ## Installation
 

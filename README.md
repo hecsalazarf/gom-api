@@ -7,6 +7,9 @@ The backend implementation with a [NestJS]() architecture that gives functionali
 * An Auth REST API.
 * Web Push Service with a subscription REST API.
 
+## Prerequisites
+> WIP
+
 ## Installation
 
 ```bash
@@ -31,6 +34,71 @@ $ npm run build
 # production mode
 $ npm run start:prod
 ```
+
+## Deployment with Docker
+**Important note:** Deployment with Docker is intended for a production environment.
+
+Before deployment, make sure to properly configure your firewall. Refer to this [guide](https://github.com/hecsalazarf/server-configs/blob/master/docker/Firewall_for_Docker_Swarm_with_UFW.md).
+
+### 1. Dockerize the app
+Dockerize the app following the steps in [here](docker/README.md).
+
+### 2. Pull Docker images
+Gom Api requires these images in order to work; pull them from the Docker Hub registry.
+
+```bash
+$ docker pull prismagraphql/prisma:1.34
+$ docker pull postgres:11.4-alpine
+$ docker pull redis:5.0.5-alpine
+```
+
+### 3. Initialize Docker Swarm
+Start the swarm by running:
+```bash
+# Change the advertise address according to your server IP
+$ docker swarm init --advertise-addr 10.5.96.4
+```
+
+### 4. Create secrets (optional)
+Docker secrets are optional since you can set the corresponding environment variables in the *docker-compose.yaml* file. However, in order to centrally manage this data and securely transmit it to only those containers that need access to it, Docker Secrets are recommended.
+
+All environment variables ending with the suffix **_FILE** support reading its values from secrets.
+
+Gom Api needs the following secrets to boot up. 
+* gom_app_key
+* gom_auth0_client_secret
+* gom_pg_password
+* gom_prisma_secret
+* gom_vapid_private_key
+* gom_vapid_public_key
+
+You can create them with the command:
+```bash
+$ docker secret create SECRET_NAME INPUT_FILE
+```
+
+See the Docker [documentation](https://docs.docker.com/engine/reference/commandline/secret_create/) for more details.
+
+### 5. Deploy the stack
+Run:
+```bash
+$ docker stack deploy -c docker/docker-compose-stage.yml gom
+```
+
+### 6. Deploy Prisma model
+Once you have deployed the Docker stack, deploy the Prisma model:
+```
+$ cd prisma
+$ npx prisma deploy
+```
+
+If you configured a Managemet Api key, you should set the `PRISMA_MANAGEMENT_API_SECRET` environment variable.
+```bash
+$ PRISMA_MANAGEMENT_API_SECRET=your_management_api_key npx prisma deploy 
+```
+
+## Proxy
+> WIP
 
 ## GraphQL module
 Gom API makes use of [Apollo Server](https://www.apollographql.com/docs/apollo-server/) and [Prisma Binding](https://github.com/prisma/prisma-binding) by delegating execution of queries, mutations, and subscriptions to the API of the underlying [Prisma](https://www.prisma.io/) database service. GraphQL operations can ben executed in the `/graphql/` endpoint that is exposed.

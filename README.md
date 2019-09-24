@@ -108,7 +108,31 @@ $ PRISMA_MANAGEMENT_API_SECRET=your_management_api_key npx prisma deploy
 ```
 
 ## Proxy
-> WIP
+When running behind a proxy, make sure to set these headers,
+* X-Forwarded-For
+* X-Forwarded-Host
+* X-Forwarded-Proto
+
+and also, enable WebSocket connections.
+
+With Nginx, you might do it the following way.
+
+```Nginx
+location /api/ {
+  # Proxy pass 
+  proxy_pass <GOM_API_SERVER>;
+  proxy_buffering off;
+  proxy_set_header X-Real-IP $remote_addr;
+  # Express required headers when 'trust proxy' is enabled
+  proxy_set_header X-Forwarded-For $realip_remote_addr;
+  proxy_set_header X-Forwarded-Host $hostname;
+  proxy_set_header X-Forwarded-Proto $scheme;
+  # Support web sockets
+  proxy_http_version 1.1;
+  proxy_set_header Upgrade $http_upgrade;
+  proxy_set_header Connection "Upgrade";
+}
+```
 
 ## GraphQL module
 Gom API makes use of [Apollo Server](https://www.apollographql.com/docs/apollo-server/) and [Prisma Binding](https://github.com/prisma/prisma-binding) by delegating execution of queries, mutations, and subscriptions to the API of the underlying [Prisma](https://www.prisma.io/) database service. GraphQL operations can ben executed in the `/graphql/` endpoint that is exposed.

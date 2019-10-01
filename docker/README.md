@@ -3,7 +3,7 @@
 ## Create image
 Within a terminal, go to the project root folder and compile the application,
 ```bash
-$ npm run build
+$ npm run prestart:prod
 ```
 
 then run the Docker build command.

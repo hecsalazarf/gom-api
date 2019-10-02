@@ -8,7 +8,7 @@ $ npm run prestart:prod
 
 then run the Docker build command.
 ```bash
-$ docker build -t hecsalazarf/gom-api:0.2 .
+$ docker build -t hecsalazarf/gom-api:0.2 -f docker/Dockerfile .
 ```
 
 This will build an image from the *Dockerfile* file with a *hecsalazarf/gom-api:0.2* tag.

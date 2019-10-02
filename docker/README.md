@@ -11,6 +11,11 @@ then run the Docker build command.
 $ docker build -t hecsalazarf/gom-api:0.2 -f docker/Dockerfile .
 ```
 
+Optionally, you may specify image version:
+```bash
+$ docker build -t hecsalazarf/gom-api:0.2 -f docker/Dockerfile --build-arg VERSION=<YOUR_VERSION> .
+```
+
 This will build an image from the *Dockerfile* file with a *hecsalazarf/gom-api:0.2* tag.
 
 ## Save image

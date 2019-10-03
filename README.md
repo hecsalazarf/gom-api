@@ -70,12 +70,13 @@ $ docker swarm init --advertise-addr 10.5.96.4
 ```
 
 ### 4. Create secrets (optional)
-Docker secrets are optional since you can set the corresponding environment variables in the *docker-compose.yaml* file. However, in order to centrally manage this data and securely transmit it to only those containers that need access to it, Docker Secrets are recommended.
+Docker secrets are optional since you can set the corresponding environment variables directly in the *docker-compose.yaml* file. However, in order to centrally manage this data and securely transmit it to only those containers that need access to it, Docker Secrets are recommended.
 
 All environment variables ending with the suffix **_FILE** support reading its values from secrets.
 
 Gom Api needs the following secrets to boot up. 
 * gom_app_key
+* gom_auth0_client_id
 * gom_auth0_client_secret
 * gom_pg_password
 * gom_prisma_secret

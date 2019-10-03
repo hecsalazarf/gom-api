@@ -27,6 +27,7 @@ file_env() {
 
 file_env 'APP_KEY'
 file_env 'AUTH0_CLIENT_SECRET'
+file_env 'AUTH0_CLIENT_ID'
 file_env 'VAPID_PRIVATE_KEY'
 file_env 'VAPID_PUBLIC_KEY'
 file_env 'PRISMA_SECRET'

@@ -32,6 +32,9 @@ lerna-debug.log*
 src/
 test/
 
+# CI
+jenkins/
+
 # Archive files
 **/*.tar
 **/*.tar.gz

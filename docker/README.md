@@ -29,5 +29,5 @@ where *gom-api-image.tar* is the TAR file that will be created from the image *h
 ## Import image
 To import an image from a TAR file, run:
 ```bash
-$ docker image import gom-api-image.tar
+$ docker image load -i gom-api-image.tar
 ```

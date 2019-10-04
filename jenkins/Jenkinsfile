@@ -5,6 +5,7 @@ pipeline {
       args  '-v /var/run/docker.sock:/var/run/docker.sock' // use same Docker daemon as the host's
     }
   }
+
   stages {
    stage('Build') {
       steps {
@@ -22,6 +23,7 @@ pipeline {
       // * SSH user-with-password (node1-ssh-password) credential for sudo operations
       // * Prisma management API secret (prisma-mgmt-secret) credential
       // * Prisma service secret (prisma-service-secret) credential
+      // * Postgres password (postgres-prisma) credential
       environment {
         DOCKER_TAG = 'hecsalazarf/gom-api' // Docker image tag
         REMOTE_TEMP_DIR = '/home/hector/gom-api/' // temporary directory on remote server to put files
@@ -33,10 +35,12 @@ pipeline {
         PRISMA_MANAGEMENT_API_SECRET = credentials('prisma-mgmt-secret')
         PRISMA_SERVICE_SECRET = credentials('prisma-service-secret')
         PRISMA_SERVICE_ENDPOINT = 'https://hecsalazarf.sytes.net'
+        POSTGRES = credentials('postgres-prisma')
       }
       steps {
         sshagent (credentials: [env.CRED_PRIVATE_KEY]) {
           sh 'jenkins/deploy.sh'
+          echo 'Deploy completed'
         }
       }
     }

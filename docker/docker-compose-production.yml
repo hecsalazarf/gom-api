@@ -34,7 +34,7 @@ services:
       - '4466:4466'
     environment:
       PRISMA_CONFIG: |
-        managementApiSecret: "${PRISMA_MGMT_SECRET:?err}"
+        managementApiSecret: "${PRISMA_MANAGEMENT_API_SECRET:?err}"
         port: 4466
         databases:
           default:
@@ -42,7 +42,7 @@ services:
             host: postgres
             port: 5432
             user: pggom_connector
-            password: "${PRISMA_PASSWORD:?err}"
+            password: "${POSTGRES_PASSWORD:?err}"
             connectionLimit: 2
     deploy:
       placement:

@@ -1,7 +1,7 @@
 pipeline {
   agent {
     docker {
-      image 'hecsalazarf/alpine:3.10'
+      image 'hecsalazarf/gomapi-agent:0.1'
       args  '-v /var/run/docker.sock:/var/run/docker.sock' // use same Docker daemon as the host's
     }
   }
@@ -26,11 +26,11 @@ pipeline {
       // * Postgres password (postgres-prisma) credential
       environment {
         DOCKER_TAG = 'hecsalazarf/gom-api' // Docker image tag
-        REMOTE_TEMP_DIR = '/home/hector/gom-api/' // temporary directory on remote server to put files
-        REMOTE_HOST = 'hecsalazarf.sytes.net' // remote host
-        CRED_PRIVATE_KEY = 'node1-ssh-private-key' // remote host
-        SSH = credentials('node1-ssh-password') // password credential
-        SSH_OPTIONS = '-o StrictHostKeyChecking=no -p 6330'  // ssh options
+        REMOTE_TEMP_DIR = '/home/hector/gom-api/' // Temporary directory on remote server to put files
+        REMOTE_HOST = 'hecsalazarf.sytes.net' // Remote host
+        CRED_PRIVATE_KEY = 'node1-ssh-private-key' // Private key credential
+        SSH = credentials('node1-ssh-password') // Password credential
+        SSH_OPTIONS = '-o StrictHostKeyChecking=no -p 6330'  // SSH options
         // ------------------------------
         PRISMA_MANAGEMENT_API_SECRET = credentials('prisma-mgmt-secret')
         PRISMA_SERVICE_SECRET = credentials('prisma-service-secret')

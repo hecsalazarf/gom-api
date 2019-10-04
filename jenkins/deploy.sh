@@ -33,3 +33,9 @@ ssh $SSH_OPTIONS -l $SSH_USR $REMOTE_HOST "cd ${REMOTE_TEMP_DIR} \
 && docker stack rm gom \
 && sleep 5 \
 && docker stack deploy -c docker-compose-production.yml gom"
+
+# Wait 10 seconds so that the stack is ready
+echo "--> Waiting 10 seconds before proceeding"
+sleep 10
+echo "--> Deploying Prisma into $PRISMA_SERVICE_ENDPOINT"
+npx prisma deploy -f -p prisma/prisma-production.yml

@@ -1,0 +1,4 @@
+# Prisma service configuration for production
+endpoint: ${env:PRISMA_SERVICE_ENDPOINT}
+datamodel: datamodel.prisma
+secret: ${env:PRISMA_SERVICE_SECRET}

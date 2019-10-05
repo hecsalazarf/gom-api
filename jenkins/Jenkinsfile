@@ -24,6 +24,10 @@ pipeline {
       // * Prisma management API secret (prisma-mgmt-secret) credential
       // * Prisma service secret (prisma-service-secret) credential
       // * Postgres password (postgres-prisma) credential
+      when {
+        branch 'master'
+      }
+      
       environment {
         DOCKER_TAG = 'hecsalazarf/gom-api' // Docker image tag
         REMOTE_TEMP_DIR = '/home/hector/gom-api/' // Temporary directory on remote server to put files

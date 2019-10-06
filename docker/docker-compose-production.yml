@@ -1,7 +1,11 @@
 version: '3.7'
 
 networks:
-  gomnet:
+  multihost:
+    ipam:
+      driver: default
+      config:
+        - subnet: 11.0.0.0/24
 
 volumes:
   postgres:
@@ -9,6 +13,8 @@ volumes:
 
 secrets:
   gom_app_key:
+    external: true
+  gom_auth0_client_id:
     external: true
   gom_auth0_client_secret:
     external: true
@@ -28,16 +34,20 @@ services:
       - '4466:4466'
     environment:
       PRISMA_CONFIG: |
-        managementApiSecret: my-server-secret-123
+        managementApiSecret: "${PRISMA_MANAGEMENT_API_SECRET:?err}"
         port: 4466
         databases:
           default:
             connector: postgres
             host: postgres
             port: 5432
-            user: prisma
-            password: prisma
+            user: pggom_connector
+            password: "${POSTGRES_PASSWORD:?err}"
+            connectionLimit: 2
     deploy:
+      placement:
+        constraints:
+          - node.hostname == prisma-server
       restart_policy:
         condition: any
         delay: 5s
@@ -46,7 +56,7 @@ services:
         limits:
           memory: 500M
     networks:
-      - gomnet
+      - multihost
     logging:
       driver: "json-file"
       options:
@@ -54,22 +64,25 @@ services:
         max-file: "10"
 
   postgres:
-    image: postgres:11.4-alpine
+    image: postgres:11.5-alpine
     ports:
       - '5432:5432'
     environment:
-      POSTGRES_USER: prisma
+      POSTGRES_USER: pggom_connector
       #POSTGRES_PASSWORD: prisma
       POSTGRES_PASSWORD_FILE: /run/secrets/gom_pg_password
     volumes:
       - postgres:/var/lib/postgresql/data
     deploy:
+      placement:
+        constraints:
+          - node.hostname == prisma-server
       restart_policy:
         condition: any
         delay: 5s
       replicas: 1
     networks:
-      - gomnet
+      - multihost
     logging:
       driver: "json-file"
       options:
@@ -85,13 +98,16 @@ services:
     volumes:
       - redis:/data
     deploy:
+      placement:
+        constraints:
+          - node.hostname == node1
       restart_policy:
         condition: any
         delay: 5s
       replicas: 1
     command: [ "redis-server", "--appendonly", "yes" ] # start with persistent storage
     networks:
-      - gomnet
+      - multihost
     logging:
       driver: "json-file"
       options:
@@ -99,13 +115,14 @@ services:
         max-file: "10"
 
   api:
-    image: hecsalazarf/gom-api:0.2
+    image: "hecsalazarf/gom-api:${VERSION:?err}"
     ports:
       - '3000:3000'
     environment:
       #APP_KEY: hola
       APP_KEY_FILE: /run/secrets/gom_app_key
-      AUTH0_CLIENT_ID: aOojWYLK4U0XN1S5NB2hNGPhqHkw6eOf
+      #AUTH0_CLIENT_ID: aOojWYLK4U0XN1S5NB2hNGPhqHkw6eOf
+      AUTH0_CLIENT_ID_FILE: /run/secrets/gom_auth0_client_id
       #AUTH0_CLIENT_SECRET: aSSqHDfO0YhovFOLEDdH7Xf2w7vR91w4DX0ybza59OQUV1DeHwZZq5PpShFrPjzJ
       AUTH0_CLIENT_SECRET_FILE: /run/secrets/gom_auth0_client_secret
       #VAPID_PRIVATE_KEY: 4DztwpAycGt6VZ1EwIfxxkIWyqk65AkGWLovcQ56Ns4
@@ -118,13 +135,16 @@ services:
       #PRISMA_SECRET: "12345"
       PRISMA_SECRET_FILE: /run/secrets/gom_prisma_secret
     deploy:
+      placement:
+        constraints:
+          - node.hostname == node1
       restart_policy:
         condition: any
         delay: 5s
       replicas: 1
     networks:
-      - gomnet
-    command: [ "pm2-runtime", "start", "ecosystem.config.js" ] #Use it only on development or staging environments
+      - multihost
+    command: [ "pm2-runtime", "start", "ecosystem.config.js", "--env", "staging" ] #Use it only on development or staging environments
     logging:
       driver: "json-file"
       options:
@@ -132,6 +152,7 @@ services:
         max-file: "10"
     secrets:
       - gom_app_key
+      - gom_auth0_client_id
       - gom_auth0_client_secret
       - gom_prisma_secret
       - gom_vapid_private_key

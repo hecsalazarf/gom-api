@@ -57,8 +57,8 @@ module.exports = {
     options: {
       maxAge: 3600 * 1000, // (ms) 1 hour
       httpOnly: true,
-      sameSite: true,
-      secure: true
+      sameSite: false, // Set to false if you want to test from Postman
+      secure: false
     }
   },
   accessToken: {

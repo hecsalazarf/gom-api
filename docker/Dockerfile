@@ -1,12 +1,15 @@
 FROM node:10.16.3-alpine
 
+# Version argument
+ARG VERSION=latest
+
 # Labeling
 LABEL maintainer="hecsalazarf" \
       description="GOM API" \
-      version="0.2.0"
+      version="${VERSION}"
 
 # Copy entrypoint script
-COPY --chown=node:node docker-entrypoint.sh /usr/local/bin/
+COPY --chown=node:node docker/docker-entrypoint.sh /usr/local/bin/
 
 # Set the working directory
 WORKDIR /home/node/gomapi
@@ -37,4 +40,4 @@ ENTRYPOINT ["docker-entrypoint.sh"]
 EXPOSE 3000
 
 # Default command
-CMD [ "pm2-runtime", "start", "ecosystem.config.js", "--env", "production" ] 
+CMD [ "pm2-runtime", "start", "ecosystem.config.js", "--env", "production" ]

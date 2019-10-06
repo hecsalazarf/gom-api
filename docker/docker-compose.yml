@@ -1,25 +1,11 @@
 version: '3.7'
 
 networks:
-  gomnet:
+  multihost:
 
 volumes:
   postgres:
   redis:
-
-secrets:
-  gom_app_key:
-    external: true
-  gom_auth0_client_secret:
-    external: true
-  gom_pg_password:
-    external: true
-  gom_prisma_secret:
-    external: true
-  gom_vapid_private_key:
-    external: true
-  gom_vapid_public_key:
-    external: true
 
 services:
   prisma:
@@ -59,7 +45,6 @@ services:
     environment:
       POSTGRES_USER: prisma
       POSTGRES_PASSWORD: prisma
-      #POSTGRES_PASSWORD_FILE: /run/secrets/gom_pg_password
     volumes:
       - postgres:/var/lib/postgresql/data
     deploy:
@@ -74,8 +59,6 @@ services:
       options:
         max-size: "200k"
         max-file: "10"
-    secrets:
-      - gom_pg_password
   
   redis:
     image: redis:5.0.5-alpine

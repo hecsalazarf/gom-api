@@ -31,7 +31,7 @@ services:
         limits:
           memory: 500M
     networks:
-      - gomnet
+      - multihost
     logging:
       driver: "json-file"
       options:
@@ -53,7 +53,7 @@ services:
         delay: 5s
       replicas: 1
     networks:
-      - gomnet
+      - multihost
     logging:
       driver: "json-file"
       options:
@@ -73,7 +73,7 @@ services:
       replicas: 1
     command: [ "redis-server", "--appendonly", "yes" ] # start with persistent storage
     networks:
-      - gomnet
+      - multihost
     logging:
       driver: "json-file"
       options:

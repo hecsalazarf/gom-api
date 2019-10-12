@@ -36,3 +36,6 @@ lerna-debug.log*
 # Archive files
 *.tar
 *.tar.gz
+
+# Env files
+*.env

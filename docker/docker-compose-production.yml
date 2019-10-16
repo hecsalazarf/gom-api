@@ -29,7 +29,7 @@ secrets:
 
 services:
   prisma:
-    image: prismagraphql/prisma:1.34
+    image: prismagraphql/prisma:1.34.10
     ports:
       - '4466:4466'
     environment:

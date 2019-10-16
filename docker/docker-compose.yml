@@ -9,7 +9,7 @@ volumes:
 
 services:
   prisma:
-    image: prismagraphql/prisma:1.34
+    image: prismagraphql/prisma:1.34.10
     ports:
       - '4466:4466'
     environment:
@@ -39,7 +39,7 @@ services:
         max-file: "10"
 
   postgres:
-    image: postgres:11.4-alpine
+    image: postgres:11.5-alpine
     ports:
       - '5432:5432'
     environment:

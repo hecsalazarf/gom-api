@@ -37,12 +37,14 @@ export class AuthController {
       try {
        token = await this.auth.requestToken(body);
       } catch (err) {
+        this.logger.error(`User ${body.username} cannot be authenticated`);
         if (err.status && err.status === HttpStatus.FORBIDDEN) {
           const { message, error, exists } = err.message;
-            // consume limiter points and throw an error
+          // consume limiter points and throw an error
           await this.loginLimitter.consume(body.username, req.ip, exists || false);
           throw new ForbiddenException(message, error);
         }
+        this.logger.error(err);
         throw err;
       }
 

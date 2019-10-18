@@ -65,13 +65,13 @@ module.exports = {
     options: {
       maxAge: 3600 * 1000, // (ms) 1 hour
       httpOnly: false,
-      sameSite: true,
+      sameSite: 'Lax',
       secure: true
     },
   },
   csrf: {
     options: {
-      sameSite: true,
+      sameSite: 'Lax',
       secure: true
     }
   },

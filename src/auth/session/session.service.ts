@@ -30,6 +30,7 @@ export class SessionService {
     const options: session.SessionOptions = {
       secret: this.config.secret,
       name: this.config.name,
+      // @ts-ignore
       cookie: this.config.options,
       resave: false, // Do not save back the session if it was not modified
       saveUninitialized: false, // Do not save "uninitialized" sessions

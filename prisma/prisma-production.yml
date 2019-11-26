@@ -1,6 +1,7 @@
 # Prisma service configuration for production
 # You can set the environment variables either directly while running
 # the command or by specifying a .env file:
+# https://github.com/prisma/prisma/issues/4419
 # $ env $(cat ENV_FILE | xargs) npx prisma COMMAND -p PROJECT_FILE
 endpoint: ${env:PRISMA_SERVICE_ENDPOINT}
 datamodel: datamodel.prisma

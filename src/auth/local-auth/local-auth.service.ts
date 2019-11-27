@@ -27,6 +27,7 @@ export class LocalAuthService {
     };
     const query = `{
       uid
+      extUid
       phone
       name1
       lastName1
@@ -58,6 +59,7 @@ export class LocalAuthService {
     */
     return {
       sub: bp.uid,
+      eid: bp.extUid,
       gty: 'phone',
       seller: bp.customerOf[0].extUid,
       business: bp.customerOf[0].business,

@@ -1,4 +1,4 @@
-import { IsBoolean, IsPositive, IsOptional } from 'class-validator';
+import { IsBoolean, IsPositive, IsOptional, IsIn } from 'class-validator';
 
 export class CookieConfigDto {
   @IsOptional()
@@ -10,8 +10,8 @@ export class CookieConfigDto {
   readonly httpOnly?: boolean;
 
   @IsOptional()
-  @IsBoolean()
-  readonly sameSite: boolean;
+  @IsIn([ true, false, 'Strict', 'Lax' ])
+  readonly sameSite: boolean | string;
 
   @IsOptional()
   @IsBoolean()

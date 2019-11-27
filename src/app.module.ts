@@ -2,7 +2,7 @@ import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
 import { APP_FILTER } from '@nestjs/core';
 import { ConfigModule } from './config/config.module';
 import { CookieMiddleware } from './middleware';
-import { CatchAllFilter } from './app.filter';
+import { HttpExceptionFilter } from './app.filter';
 import { GraphqlModule } from './graphql/graphql.module';
 
 @Module({
@@ -13,7 +13,7 @@ import { GraphqlModule } from './graphql/graphql.module';
       * dependancy injection. See more https://docs.nestjs.com/exception-filters
       */
       provide: APP_FILTER,
-      useClass: CatchAllFilter,
+      useClass: HttpExceptionFilter,
     },
   ],
   imports: [ConfigModule, GraphqlModule],

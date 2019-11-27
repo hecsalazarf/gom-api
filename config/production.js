@@ -57,7 +57,7 @@ module.exports = {
     options: {
       maxAge: 3600 * 1000 * 24 * 60, // 60 days
       httpOnly: true,
-      sameSite: true,
+      sameSite: 'Lax',
       secure: true
     }
   },
@@ -65,13 +65,13 @@ module.exports = {
     options: {
       maxAge: 3600 * 1000 * 24 * 60, // 60 days
       httpOnly: false,
-      sameSite: true,
+      sameSite: 'Lax',
       secure: true
     },
   },
   csrf: {
     options: {
-      sameSite: true,
+      sameSite: 'Lax',
       secure: true
     }
   },

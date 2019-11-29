@@ -24,7 +24,7 @@ RUN chmod +x /usr/local/bin/docker-entrypoint.sh \
     # Install bash for entrypoint execution
     && apk update && apk add bash \
     # Install PM2 globally
-    && npm install pm2 -g \
+    && npm install pm2@4.2.0 -g \
     # Install app dependencies
     && npm install --production \
     # Change owner of working directory

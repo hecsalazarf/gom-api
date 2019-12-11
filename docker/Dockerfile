@@ -23,8 +23,10 @@ COPY config ./config/
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh \
     # Install bash for entrypoint execution
     && apk update && apk add bash \
-    # Install PM2 globally
-    && npm install pm2@4.2.0 -g \
+    # Install PM2 globally with log rotation module
+    && npm install pm2@4.2.0 -g && pm2 install pm2-logrotate \
+    # Configure PM2 log rotation module
+    && pm2 set pm2-logrotate:max_size 1M \
     # Install app dependencies
     && npm install --production \
     # Change owner of working directory

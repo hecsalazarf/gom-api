@@ -2,13 +2,14 @@ import { Injectable, Logger } from '@nestjs/common';
 import { ValidationError, validateOrReject } from 'class-validator';
 import { plainToClass } from 'class-transformer';
 import { IConfig } from 'config';
+import config from 'config';
 
 @Injectable()
 export class ConfigService {
   private readonly config: IConfig;
 
-  constructor(configInstance: IConfig) {
-    this.config = configInstance;
+  constructor() {
+    this.config = config;
   }
 
   /**

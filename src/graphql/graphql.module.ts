@@ -1,5 +1,5 @@
 import { Module, MiddlewareConsumer, NestModule } from '@nestjs/common';
-import * as csurf from 'csurf';
+import csurf from 'csurf';
 import { GraphQLModule } from '@nestjs/graphql';
 import { GraphqlOptions } from './graphql.options';
 import { BpModule, OrderModule } from './resolvers';

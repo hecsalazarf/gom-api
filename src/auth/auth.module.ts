@@ -1,5 +1,5 @@
 import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
-import * as csurf from 'csurf';
+import csurf from 'csurf';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { CsrfgenMiddleware, SessionMiddleware } from '../middleware';

@@ -1,5 +1,5 @@
 import { Injectable, NestMiddleware, Logger } from '@nestjs/common';
-import * as cors from 'cors';
+import cors from 'cors';
 import { RequestHandler, Request } from 'express';
 import { CorsOptions } from 'cors';
 import { ConfigService } from '../config/config.service';

@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { Redis } from 'ioredis';
 import { RedisStore } from 'connect-redis';
-import * as session from 'express-session';
-import * as connectRedis from 'connect-redis';
-import * as express from 'express';
-import * as signature from 'cookie-signature';
-import * as cookie from 'cookie';
+import session from 'express-session';
+import connectRedis from 'connect-redis';
+import express from 'express';
+import signature from 'cookie-signature';
+import cookie from 'cookie';
 import { SessionConfigDto } from './dto';
 
 @Injectable()

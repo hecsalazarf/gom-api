@@ -1,6 +1,6 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import { ConfigService } from '../config/config.service';
-import * as cookieParser from 'cookie-parser';
+import cookieParser from 'cookie-parser';
 
 @Injectable()
 export class CookieMiddleware implements NestMiddleware {

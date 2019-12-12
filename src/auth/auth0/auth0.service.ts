@@ -1,5 +1,5 @@
 import { Injectable, HttpService, HttpException, HttpStatus } from '@nestjs/common';
-import * as jwksRsa from 'jwks-rsa';
+import jwksRsa from 'jwks-rsa';
 import { CredentialsDto } from '../dto';
 import { Auth0ConfigDto } from './dto';
 

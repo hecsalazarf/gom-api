@@ -1,5 +1,5 @@
 import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
-import * as csurf from 'csurf';
+import csurf from 'csurf';
 import { WebPushService } from './web-push.service';
 import { WebPushController } from './web-push.controller';
 import { RedisModule } from '../db/redis/redis.module';

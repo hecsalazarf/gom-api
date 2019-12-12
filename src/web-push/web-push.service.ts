@@ -116,7 +116,7 @@ export class WebPushService {
     }
     const pipeline = this.redis.pipeline(); // create a pipeline
     // add each subscription to the pipeline
-    subs.map((sub, index) => pipeline.hgetall(`sub:${sub}`, (error, res) => {
+    subs.map((sub, index) => pipeline.hgetall(`sub:${sub}`, (error, res: any) => {
       if (Object.keys(res).length === 0) {
         return; // if empty object, return
       }

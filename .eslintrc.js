@@ -31,6 +31,7 @@ module.exports = {
     'no-console': 'warn',
     'no-trailing-spaces': "error",
     'comma-spacing': 'error',
+    'eol-last': 'error',
     '@typescript-eslint/ban-ts-ignore': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/camelcase': 'off',
@@ -39,4 +40,4 @@ module.exports = {
     '@typescript-eslint/brace-style': ['error'],
     '@typescript-eslint/semi': ['error']
   }
-}
+};

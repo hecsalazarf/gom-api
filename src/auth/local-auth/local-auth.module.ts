@@ -7,7 +7,7 @@ import { PrismaService } from '../../db/prisma/prisma.service';
 
 const LocalAuthServiceFactory = {
   provide: LocalAuthService,
-  useFactory: async (config: ConfigService, prisma: PrismaService) => {
+  useFactory: async (config: ConfigService, prisma: PrismaService): Promise<LocalAuthService> => {
     const res = await config.validate('auth.local', LocalAuthConfigDto);
     return new LocalAuthService(res, prisma);
   },

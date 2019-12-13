@@ -11,7 +11,7 @@ export class WebPushController {
 
   @Post('subscribe')
   @HttpCode(HttpStatus.CREATED)
-  async subscribe(@Body(new ValidationPipe()) subs: SubscriptionDto, @Request() req) {
+  async subscribe(@Body(new ValidationPipe()) subs: SubscriptionDto, @Request() req): Promise<boolean> {
     const log = `${subs.endpoint.slice(-7)} | ${req.ip}`;
     try {
       const res = await this.webpush.addUserSubscription(req.user.id, subs);
@@ -26,7 +26,7 @@ export class WebPushController {
 
   @Post('unsubscribe')
   @HttpCode(HttpStatus.CREATED)
-  async unsubscribe(@Body(new ValidationPipe()) subs: SubscriptionDto, @Request() req) {
+  async unsubscribe(@Body(new ValidationPipe()) subs: SubscriptionDto, @Request() req): Promise<boolean> {
     const log = `${subs.endpoint.slice(-7)} | ${req.ip}`;
     try {
       const res = await this.webpush.removeUserSubscriptions(req.user.id, [subs.endpoint]);

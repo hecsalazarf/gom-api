@@ -48,7 +48,7 @@ export class BpOwnerGuard implements CanActivate {
     return true;
   }
 
-  private async checkWhereUniqueInput(where: BpWhereUniqueInput, user: { id: string, ability: Ability}): Promise<boolean | undefined> {
+  private async checkWhereUniqueInput(where: BpWhereUniqueInput, user: { id: string; ability: Ability}): Promise<boolean | undefined> {
     const filter: BpWhereInput = {};
     if (user.ability.can('role', 'seller')) {
       // if customer, found the BP issued to him
@@ -67,7 +67,7 @@ export class BpOwnerGuard implements CanActivate {
     }
   }
 
-  private checkWhereInput(where: BpWhereInput, user: { id: string, ability: Ability}): boolean | undefined {
+  private checkWhereInput(where: BpWhereInput, user: { id: string; ability: Ability}): boolean | undefined {
     if (user.ability.can('role', 'seller') && where.customerOf_some) {
       // if seller, found the BP assigned to him
       return where.customerOf_some.extUid === user.id;
@@ -76,7 +76,7 @@ export class BpOwnerGuard implements CanActivate {
     }
   }
 
-  private checkDataInput(data: BpCreateInput, user: { id: string, ability: Ability}): boolean | undefined {
+  private checkDataInput(data: BpCreateInput, user: { id: string; ability: Ability}): boolean | undefined {
     if (user.ability.can('role', 'seller') && data.customerOf && data.customerOf.connect) {
       // if seller, found the BP assigned to him
       return data.customerOf.connect.findIndex(u => u.extUid === user.id) !== -1;
@@ -85,7 +85,7 @@ export class BpOwnerGuard implements CanActivate {
     }
   }
 
-  private checkSubscriptionWhereInput(where: BpSubscriptionWhereInput, user: { id: string, ability: Ability}): boolean | undefined {
+  private checkSubscriptionWhereInput(where: BpSubscriptionWhereInput, user: { id: string; ability: Ability}): boolean | undefined {
     if (user.ability.can('role', 'seller') && where.node && where.node.customerOf_some) {
       // if seller, found the BP assigned to him
       return where.node.customerOf_some.extUid === user.id;

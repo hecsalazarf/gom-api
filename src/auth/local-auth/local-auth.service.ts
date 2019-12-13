@@ -102,11 +102,11 @@ export class LocalAuthService {
         audience: this.config.audience,
         issuer: this.config.issuer,
       },
-        (error, encoded) => {
-          if (error) {
-            reject(error);
-          }
-          resolve(encoded);
+      (error, encoded) => {
+        if (error) {
+          reject(error);
+        }
+        resolve(encoded);
       });
     });
   }

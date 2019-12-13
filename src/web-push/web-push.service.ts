@@ -13,7 +13,7 @@ export enum PushServiceStatus {
   GONE = 410, // Gone. The subscription is no longer valid and should be removed from application server.
   TOO_LARGE = 413,	// Payload size too large. The minimum size payload a push service must support is 4096 bytes (or 4kb).
   TOO_MANY_REQUESTS = 429, // Too many requests. The push service should include a 'Retry-After' header to indicate how long
-                          // before another request can be made.
+  // before another request can be made.
 }
 
 @Injectable()

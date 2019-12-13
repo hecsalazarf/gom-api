@@ -3,11 +3,6 @@ import { Redis } from 'ioredis';
 import { RateLimiterRedis, RateLimiterRes } from 'rate-limiter-flexible';
 import { LoginLimiterConfigDto } from './dto';
 
-enum LoginLimiter {
-  SLOW_BRUTE = 'SLOW_BRUTE_BY_IP',
-  CONSECUTIVE_FAILS = 'CONSECUTIVE_FAILS',
-}
-
 /**
  * Wraper for login endpoint protection, taken from rate-limiter-flexible wiki
  * https://github.com/animir/node-rate-limiter-flexible/wiki/Overall-example#login-endpoint-protection
@@ -96,7 +91,7 @@ export class LoginLimiterService {
     const promises = [this.slowBrute.consume(ip)];
     if (userExists) {
       // Count failed attempts by Username + IP only for registered users
-       promises.push(this.consecutiveFails.consume(this.createKey(user, ip)));
+      promises.push(this.consecutiveFails.consume(this.createKey(user, ip)));
     }
     try {
       res = await Promise.all(promises);

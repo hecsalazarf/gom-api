@@ -16,7 +16,7 @@ export class GraphqlOptions implements GqlOptionsFactory {
       typePaths: ['./**/*.graphql'],
       path: '/graphql', // endpoint
       debug: process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging' ? false : true,
-      context: ({ req, connection }) => {
+      context: ({ req, connection }): any => {
         // The function to create a context for subscriptions includes connection, while the function
         // for Queries and Mutations contains the arguments for the integration, in express's case req and res.
         if (connection) {
@@ -30,7 +30,7 @@ export class GraphqlOptions implements GqlOptionsFactory {
       },
       subscriptions: {
         path: '/graphql',
-        onConnect: async (connectionParams: any, websocket: any, context: ConnectionContext) => {
+        onConnect: async (connectionParams: any, websocket: any, context: ConnectionContext): Promise<any> => {
           if (context.request.headers.cookie) {
             const sessionCookie = this.session.getCookie(context.request.headers.cookie);
             const accessToken = this.auth.getCookie(context.request.headers.cookie);

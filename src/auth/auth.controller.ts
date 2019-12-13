@@ -35,7 +35,7 @@ export class AuthController {
       // With the given credentials request the JWT
       let token: any;
       try {
-       token = await this.auth.requestToken(body);
+        token = await this.auth.requestToken(body);
       } catch (err) {
         this.logger.error(`User ${body.username} cannot be authenticated`);
         if (err.status && err.status === HttpStatus.FORBIDDEN) {
@@ -61,7 +61,7 @@ export class AuthController {
       req.session.refresh_token = token.refresh_token || undefined; // save refresh token if it exists
 
       // After a login, refresh the CSRF token
-      // @ts-ignore // TODO Store token secret in session
+      // @ts-ignore //
       res.cookie(this.auth.csrfName, req.csrfToken(), this.auth.csrfOptions);
       const { nickname, name, picture, email, sub, seller, business } = this.auth.decode(token.id_token);
       res.status(HttpStatus.OK);
@@ -73,7 +73,7 @@ export class AuthController {
   }
 
   @Get('logout')
-  async signOut(@Res() res: Response, @Req() req: any): Promise<void> {
+  signOut(@Res() res: Response, @Req() req: any): void {
     if (req.session.access_token_sign) { // check there is a session
       const decoded = this.auth.decode(`${req.cookies[this.auth.accessTokenName]}.${req.session.access_token_sign}`);
       req.session = null;

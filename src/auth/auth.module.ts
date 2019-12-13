@@ -22,7 +22,7 @@ import { PrismaModule } from '../db/prisma/prisma.module';
   exports: [AuthService, SessionModule, LoginLimiterModule],
 })
 export class AuthModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
+  configure(consumer: MiddlewareConsumer): void {
     consumer
       .apply(SessionMiddleware, csurf(), CsrfgenMiddleware ) // TODO Reactivate CSRF
       .forRoutes(AuthController);

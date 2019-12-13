@@ -5,7 +5,7 @@ import { PrismaConfigDto } from './dto';
 
 const PrismaFactory = {
   provide: PrismaService,
-  useFactory: async (config: ConfigService) => {
+  useFactory: async (config: ConfigService): Promise<PrismaService> => {
     const res: PrismaConfigDto = await config.validate('prisma', PrismaConfigDto);
     return new PrismaService(res.endpoint, res.secret);
   },

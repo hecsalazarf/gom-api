@@ -17,9 +17,9 @@ export class AuthService {
     private readonly auth0: Auth0Service,
     private readonly config: ConfigService,
   ) {
-      this.accessTokenConfig = config.get('accessToken');
-      this.csrfConfig = config.get('csrf');
-    }
+    this.accessTokenConfig = config.get('accessToken');
+    this.csrfConfig = config.get('csrf');
+  }
 
   /**
    * Get auth service by Issuer
@@ -27,20 +27,20 @@ export class AuthService {
    * @return {any} Auth service.
    */
   private getServiceByIssuer(issuer: string): any {
-      let service: any;
-      switch (issuer) {
-        case this.auth0.issuer:
-          service = this.auth0;
-          break;
-        case this.localAuth.issuer:
-          service = this.localAuth;
-          break;
-      }
+    let service: any;
+    switch (issuer) {
+      case this.auth0.issuer:
+        service = this.auth0;
+        break;
+      case this.localAuth.issuer:
+        service = this.localAuth;
+        break;
+    }
 
-      if (!service) {
-        throw new Error('Unknown issuer');
-      }
-      return service;
+    if (!service) {
+      throw new Error('Unknown issuer');
+    }
+    return service;
   }
 
   /**
@@ -94,16 +94,16 @@ export class AuthService {
    * @return {Ability} Ability.
    */
   public buildAbility(decoded: any): Ability {
-  const { permissions } = decoded;
-  const rules = permissions.map((permission: string): RawRule => {
-    const defs = permission.split(':');
-    return {
-      actions: defs[0],
-      subject: defs[1],
-    };
-  });
-  return new Ability(rules);
-}
+    const { permissions } = decoded;
+    const rules = permissions.map((permission: string): RawRule => {
+      const defs = permission.split(':');
+      return {
+        actions: defs[0],
+        subject: defs[1],
+      };
+    });
+    return new Ability(rules);
+  }
 
   /**
    * Decode token without verification.
@@ -132,7 +132,7 @@ export class AuthService {
    * @param {string} token Encoded token
    * @returns {any} The splitted token
    */
-  public splitToken(token: string): { signature: string, payload: string } {
+  public splitToken(token: string): { signature: string; payload: string } {
     const index = token.lastIndexOf('.');
 
     return {

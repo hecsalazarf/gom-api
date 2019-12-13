@@ -8,7 +8,7 @@ import { LoginLimiterConfigDto } from './dto';
 
 const LoginLimiterServiceFactory = {
   provide: LoginLimiterService,
-  useFactory: async (config: ConfigService, redis: RedisService) => {
+  useFactory: async (config: ConfigService, redis: RedisService): Promise<LoginLimiterService> => {
     const res: LoginLimiterConfigDto = await config.validate('auth.login-limiter', LoginLimiterConfigDto);
     const options: RedisOptions = {
       ...res.redis,

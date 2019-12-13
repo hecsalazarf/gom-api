@@ -32,7 +32,7 @@ export class AuthMiddleware implements NestMiddleware {
     };
   }
 
-  public async use(req: any, res: any, next: () => void) {
+  public async use(req: any, res: any, next: () => void): Promise<void> {
     let token: string;
     try {
       token = `${req.cookies[this.auth.accessTokenName]}.${req.session.access_token_sign}`;

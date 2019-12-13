@@ -8,7 +8,7 @@ export class OnRedisDestroy implements OnModuleDestroy {
   constructor(private readonly redis: RedisService) {}
 
   // app.enableShutdownHooks() must have been called to enable this hook
-  async onModuleDestroy() {
+  async onModuleDestroy(): Promise<void> {
     const instances = this.redis.getAllInstances();
     const promises = [];
     instances.forEach((value, key) => {

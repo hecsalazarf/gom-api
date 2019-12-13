@@ -32,7 +32,7 @@ export class Auth0Service {
    * @callback callback Callback with the key or error
    * @return {void}
    */
-  private getKey(header: any, callback: any) {
+  private getKey(header: any, callback: any): void {
     this.jwksClient.getSigningKey(header.kid, (err, key) => {
       callback(err, key.publicKey || key.rsaPublicKey);
     });

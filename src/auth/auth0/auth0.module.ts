@@ -5,7 +5,7 @@ import { Auth0ConfigDto } from './dto';
 
 const Auth0ServiceFactory = {
   provide: Auth0Service,
-  useFactory: async (config: ConfigService, http: HttpService) => {
+  useFactory: async (config: ConfigService, http: HttpService): Promise<Auth0Service> => {
     const res: Auth0ConfigDto = await config.validate('auth.auth0', Auth0ConfigDto);
     return new Auth0Service(http, res);
   },

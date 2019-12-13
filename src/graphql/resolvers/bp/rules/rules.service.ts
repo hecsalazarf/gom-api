@@ -14,7 +14,7 @@ export class BpRulesService {
         issuedTo: {
           uid: bp,
         },
-      stage_in: ActiveStatus,
+        stage_in: ActiveStatus,
       },
       first: 1, // we only need one
     }, '{ uid }'); // no data needed

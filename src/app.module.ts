@@ -19,7 +19,7 @@ import { GraphqlModule } from './graphql/graphql.module';
   imports: [ConfigModule, GraphqlModule],
 })
 export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
+  configure(consumer: MiddlewareConsumer): void {
     consumer
       .apply(CookieMiddleware)
       .forRoutes('*');

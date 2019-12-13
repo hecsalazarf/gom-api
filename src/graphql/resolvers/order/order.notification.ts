@@ -20,8 +20,8 @@ export class OrderNotification extends EventEmitter {
 
   constructor(private readonly webpush: WebPushService) {
     super();
-    this.on(OrderNotifyEvents.UPDATE, this.onUpdateHandler);
-    this.on(OrderNotifyEvents.CREATE, this.onCreateHandler);
+    this.on(OrderNotifyEvents.UPDATE, this.onUpdateHandler.bind(this));
+    this.on(OrderNotifyEvents.CREATE, this.onCreateHandler.bind(this));
   }
 
   /**

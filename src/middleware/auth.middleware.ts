@@ -43,7 +43,10 @@ export class AuthMiddleware implements NestMiddleware {
         try {
           const refreshed = await this.auth.refreshToken(req.session.refresh_token); // refresh token
           const splitted = this.auth.splitToken(refreshed.access_token);
-          req.session.access_token_sign = splitted.signature; // update session
+          Object.defineProperty(req.session, 'access_token_sign', {
+            value: splitted.signature, // update session
+            enumerable: true,
+          });
           res.cookie(this.auth.accessTokenName, splitted.payload, this.auth.accessTokenOptions); // update access token cookie
           const decoded = this.auth.decode(refreshed.access_token);
           this.createContext(req, decoded); // create context

@@ -56,9 +56,16 @@ export class AuthController {
       // are stored in the access_token cookie.
       // The signature is stored in the session
       const splitted = this.auth.splitToken(token.access_token);
-      req.session.access_token_sign = splitted.signature; // Create session
+      // Create session
+      Object.defineProperty(req.session, 'access_token_sign', {
+        value: splitted.signature,
+        enumerable: true,
+      });
       res.cookie(this.auth.accessTokenName, splitted.payload, this.auth.accessTokenOptions); // Create the access token
-      req.session.refresh_token = token.refresh_token || undefined; // save refresh token if it exists
+      Object.defineProperty(req.session, 'refresh_token', {
+        value: token.refresh_token || undefined, // save refresh token if it exists
+        enumerable: true,
+      });
 
       // After a login, refresh the CSRF token
       // @ts-ignore //

@@ -31,6 +31,7 @@ module.exports = {
     'no-console': 'warn',
     'no-trailing-spaces': "error",
     'comma-spacing': 'error',
+    'keyword-spacing': 'error',
     'eol-last': 'error',
     '@typescript-eslint/ban-ts-ignore': 'off',
     '@typescript-eslint/no-explicit-any': 'off',

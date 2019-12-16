@@ -37,7 +37,7 @@ ssh $SSH_OPTIONS -l $SSH_USR $REMOTE_HOST "cd ${REMOTE_TEMP_DIR} \
 && export POSTGRES_PASSWORD=$POSTGRES_PSW \
 && docker stack rm gom \
 && sleep 5 \
-&& docker stack deploy -c docker-compose-production.yml gom"
+&& docker stack deploy --resolve-image=changed -c docker-compose-production.yml gom"
 
 # Wait 15 seconds so that the stack is ready
 echo "--> Waiting for tasks to boot up"

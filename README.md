@@ -317,11 +317,11 @@ The Redis module is called internally to create connection clients. At this mome
 * DB 2: Sessions.
 * DB 3: Login rate limiter.
 
-To change the default logical databases, set the configuratio property `redis.db`. The host and port of Redis is set with `redis.host` and `redis.port` properties respectively. If you want to override the values with environment variables, you could use `REDIS_HOST` and `REDIS_PORT`.
+To change the default logical databases, set the configuration property `redis.db`. The host and port of Redis is set with `redis.host` and `redis.port` properties respectively. If you want to override the values with environment variables, you could use `REDIS_HOST` and `REDIS_PORT`.
 
 ## Versioning
 
-0.4.0
+0.4.1
 
 ## Authors
 

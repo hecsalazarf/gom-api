@@ -1,5 +1,5 @@
 import { Injectable, HttpService, HttpException, HttpStatus } from '@nestjs/common';
-import * as jwksRsa from 'jwks-rsa';
+import jwksRsa from 'jwks-rsa';
 import { CredentialsDto } from '../dto';
 import { Auth0ConfigDto } from './dto';
 
@@ -32,7 +32,7 @@ export class Auth0Service {
    * @callback callback Callback with the key or error
    * @return {void}
    */
-  private getKey(header: any, callback: any) {
+  private getKey(header: any, callback: any): void {
     this.jwksClient.getSigningKey(header.kid, (err, key) => {
       callback(err, key.publicKey || key.rsaPublicKey);
     });

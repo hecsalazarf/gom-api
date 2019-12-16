@@ -1,7 +1,7 @@
 import { UseFilters, UseInterceptors, UseGuards } from '@nestjs/common';
 import { Resolver, Query, Args, Mutation, Info, Context, Subscription } from '@nestjs/graphql';
 import { PrismaService } from '../../../db/prisma/prisma.service';
-import { OrderConnection } from '../../graphql.schema';
+import { OrderConnection, OrderSubscriptionPayload } from '../../graphql.schema';
 import { Order } from './model/order';
 import { AuditInterceptor, Permission, PermissionGuard, GraphqlFilter } from '../../graphql.common';
 import { OrderNotification, OrderNotifyEvents } from './order.notification';
@@ -48,7 +48,7 @@ export class OrderResolver {
 
   @Subscription('order')
   @Permission('subscribe:order')
-  onOrderMutation(@Args() args, @Info() info) {
+  onOrderMutation(@Args() args, @Info() info): Promise<AsyncIterator<OrderSubscriptionPayload | null>> {
     return this.prisma.subscription.order(args, info);
   }
 }

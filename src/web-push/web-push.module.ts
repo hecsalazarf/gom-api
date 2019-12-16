@@ -1,5 +1,5 @@
 import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
-import * as csurf from 'csurf';
+import csurf from 'csurf';
 import { WebPushService } from './web-push.service';
 import { WebPushController } from './web-push.controller';
 import { RedisModule } from '../db/redis/redis.module';
@@ -11,7 +11,7 @@ import { WebpushConfigDto } from './dto';
 
 const WebPushFactory = {
   provide: WebPushService,
-  useFactory: async (config: ConfigService, redis: RedisService) => {
+  useFactory: async (config: ConfigService, redis: RedisService): Promise<WebPushService> => {
     const res: WebpushConfigDto = await config.validate('web-push', WebpushConfigDto);
     const redisInstance = await redis.createInstance('web-push', res.redis);
     return new WebPushService(redisInstance, res.vapid);
@@ -26,7 +26,7 @@ const WebPushFactory = {
   exports: [WebPushFactory],
 })
 export class WebPushModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
+  configure(consumer: MiddlewareConsumer): void {
     consumer
       .apply(SessionMiddleware, csurf(), AuthMiddleware) // TODO Reactivate CSRF
       .forRoutes(WebPushController);

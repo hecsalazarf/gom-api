@@ -4,15 +4,15 @@ module.exports = {
   auth: {
     local: {
       secret: defer(function () {
-        return this.appKey // deferred configuration
+        return this.appKey; // deferred configuration
       })
     },
 
-  },  
+  },
   session: {
     name: 'session-id',
     secret: defer(function () {
-      return this.appKey // deferred configuration
+      return this.appKey;// deferred configuration
     })
   },
   accessToken: {
@@ -21,4 +21,4 @@ module.exports = {
   csrf: {
     name: 'csrf-token',
   }
-}
+};

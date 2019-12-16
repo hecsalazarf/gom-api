@@ -47,7 +47,7 @@ export class OrderOwnerGuard implements CanActivate {
     return true;
   }
 
-  private async checkWhereUniqueInput(where: OrderWhereUniqueInput, user: { id: string, ability: Ability}): Promise<boolean | undefined> {
+  private async checkWhereUniqueInput(where: OrderWhereUniqueInput, user: { id: string; ability: Ability}): Promise<boolean | undefined> {
     const filter: OrderWhereInput = {};
     if (user.ability.can('role', 'customer')) {
       // if customer, found the order issued to him
@@ -71,7 +71,7 @@ export class OrderOwnerGuard implements CanActivate {
     }
   }
 
-  private checkWhereInput(where: OrderWhereInput, user: { id: string, ability: Ability}): boolean | undefined {
+  private checkWhereInput(where: OrderWhereInput, user: { id: string; ability: Ability}): boolean | undefined {
     if (user.ability.can('role', 'customer') && where.issuedTo) {
       return where.issuedTo.uid === user.id;
     } else if (user.ability.can('role', 'seller') && where.assignedTo) {
@@ -82,7 +82,7 @@ export class OrderOwnerGuard implements CanActivate {
     }
   }
 
-  private checkDataInput(data: OrderCreateInput, user: { id: string, ability: Ability}): boolean | undefined {
+  private checkDataInput(data: OrderCreateInput, user: { id: string; ability: Ability}): boolean | undefined {
     if (user.ability.can('role', 'customer') && data.issuedTo) {
       return data.issuedTo.connect.uid === user.id;
     } else if (user.ability.can('role', 'seller') && data.assignedTo) {
@@ -93,7 +93,7 @@ export class OrderOwnerGuard implements CanActivate {
     }
   }
 
-  private checkSubscriptionWhereInput(where: OrderSubscriptionWhereInput, user: { id: string, ability: Ability}): boolean | undefined {
+  private checkSubscriptionWhereInput(where: OrderSubscriptionWhereInput, user: { id: string; ability: Ability}): boolean | undefined {
     if (user.ability.can('role', 'customer') && where.node && where.node.issuedTo) {
       return where.node.issuedTo.uid === user.id;
     } else if (user.ability.can('role', 'seller') && where.node && where.node.assignedTo) {

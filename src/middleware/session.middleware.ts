@@ -4,7 +4,7 @@ import { SessionService } from '../auth/session/session.service';
 
 @Injectable()
 export class SessionMiddleware implements NestMiddleware {
-    constructor(private readonly session: SessionService) {}
+  constructor(private readonly session: SessionService) {}
 
-    use: RequestHandler = this.session.handler;
+  use: RequestHandler = this.session.handler;
 }

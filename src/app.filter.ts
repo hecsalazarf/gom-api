@@ -5,7 +5,7 @@ import { HttpError } from 'http-errors';
 // Catch HTTP exceptions
 @Catch(HttpException, HttpError)
 export class HttpExceptionFilter<T> extends BaseExceptionFilter {
-  catch(exception: any, host: ArgumentsHost) {
+  catch(exception: any, host: ArgumentsHost): void {
     const ctx = host.switchToHttp();
     const request = ctx.getRequest();
     if (exception instanceof HttpError) {
@@ -22,9 +22,9 @@ export class HttpExceptionFilter<T> extends BaseExceptionFilter {
 
   private transformHttpError(exception: any): HttpException {
     return new HttpException({
-        code: exception.code,
-        message: exception.message,
-      }, exception.status);
+      code: exception.code,
+      message: exception.message,
+    }, exception.status);
   }
 
   private createLogText(exception: HttpException, ip: string): string {

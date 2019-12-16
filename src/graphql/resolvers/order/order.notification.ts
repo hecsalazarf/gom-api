@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import * as EventEmitter from 'events';
+import EventEmitter from 'events';
 import { Order } from './model/order';
 import { WebPushService } from '../../../web-push/web-push.service';
 
@@ -20,8 +20,8 @@ export class OrderNotification extends EventEmitter {
 
   constructor(private readonly webpush: WebPushService) {
     super();
-    this.on(OrderNotifyEvents.UPDATE, this.onUpdateHandler);
-    this.on(OrderNotifyEvents.CREATE, this.onCreateHandler);
+    this.on(OrderNotifyEvents.UPDATE, this.onUpdateHandler.bind(this));
+    this.on(OrderNotifyEvents.CREATE, this.onCreateHandler.bind(this));
   }
 
   /**

@@ -7,7 +7,7 @@ import { SessionConfigDto } from './dto';
 
 const SessionServiceFactory = {
   provide: SessionService,
-  useFactory: async (config: ConfigService, redis: RedisService) => {
+  useFactory: async (config: ConfigService, redis: RedisService): Promise<SessionService> => {
     const res: SessionConfigDto = await config.validate('session', SessionConfigDto);
     const redisInstance = await redis.createInstance('session', res.redis);
     return new SessionService(redisInstance, res);

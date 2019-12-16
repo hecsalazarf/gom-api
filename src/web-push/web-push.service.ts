@@ -13,7 +13,7 @@ export enum PushServiceStatus {
   GONE = 410, // Gone. The subscription is no longer valid and should be removed from application server.
   TOO_LARGE = 413,	// Payload size too large. The minimum size payload a push service must support is 4096 bytes (or 4kb).
   TOO_MANY_REQUESTS = 429, // Too many requests. The push service should include a 'Retry-After' header to indicate how long
-                          // before another request can be made.
+  // before another request can be made.
 }
 
 @Injectable()
@@ -116,7 +116,7 @@ export class WebPushService {
     }
     const pipeline = this.redis.pipeline(); // create a pipeline
     // add each subscription to the pipeline
-    subs.map((sub, index) => pipeline.hgetall(`sub:${sub}`, (error, res) => {
+    subs.map((sub, index) => pipeline.hgetall(`sub:${sub}`, (error, res: any) => {
       if (Object.keys(res).length === 0) {
         return; // if empty object, return
       }

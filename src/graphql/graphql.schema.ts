@@ -4,7 +4,7 @@
  * -------------------------------------------------------
  */
 
-/* tslint:disable */
+/* eslint-disable */
 export enum BpOrderByInput {
     uid_ASC = "uid_ASC",
     uid_DESC = "uid_DESC",

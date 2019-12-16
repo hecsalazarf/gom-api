@@ -10,8 +10,6 @@ module.exports = {
     watch: false,
     max_memory_restart: '500M',
     source_map_support: true,
-    autorestart: true,
-    restart_delay: 3000,
     env: {
       NODE_ENV: 'development'
     },

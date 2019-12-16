@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { GraphQLResolveInfo, GraphQLSchema } from 'graphql'
 import { IResolvers } from 'graphql-tools/dist/Interfaces'
 import { Options } from 'graphql-binding'

@@ -1,5 +1,5 @@
 import { Module, MiddlewareConsumer, NestModule } from '@nestjs/common';
-import * as csurf from 'csurf';
+import csurf from 'csurf';
 import { GraphQLModule } from '@nestjs/graphql';
 import { GraphqlOptions } from './graphql.options';
 import { BpModule, OrderModule } from './resolvers';
@@ -20,7 +20,7 @@ import { AuthModule } from '../auth/auth.module';
   ],
 })
 export class GraphqlModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
+  configure(consumer: MiddlewareConsumer): void {
     consumer
       .apply(SessionMiddleware, csurf(), AuthMiddleware) // TODO Reactivate CSRF
       .forRoutes('graphql');

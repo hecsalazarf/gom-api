@@ -34,4 +34,4 @@ module.exports = {
     secret: 'PRISMA_SECRET',
     endpoint: 'PRISMA_ENDPOINT'
   }
-}
+};

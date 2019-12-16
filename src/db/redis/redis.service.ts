@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import * as Redis from 'ioredis';
+import Redis from 'ioredis';
 import { KeyType } from 'ioredis';
 
 export interface RedisArgs {

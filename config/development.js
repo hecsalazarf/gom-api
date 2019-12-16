@@ -30,7 +30,7 @@ module.exports = {
       consecutiveFails: {
         // count number of consecutive failed logins and allows
         // a maximum of 5 username-IP attempts
-        points: 5, 
+        points: 5,
         duration: 60 * 60 * 24 * 90, // (s) Store number for 90 days since first fail
         blockDuration: 60 * 60, // (s) Block for 1 hour
       }
@@ -84,4 +84,4 @@ module.exports = {
       '192.168.0.2'
     ]
   }
-}
+};

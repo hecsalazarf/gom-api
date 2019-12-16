@@ -6,7 +6,6 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc -p tsconfig.build.json && npx copyfiles -E -f src/db/prisma/prisma-types.graphql dist/db/prisma/",
-    "format": "prettier --write \"src/**/*.ts\"",
     "start": "ts-node -r tsconfig-paths/register src/main.ts",
     "start:dev": "concurrently --handle-input \"wait-on dist/main.js && nodemon\" \"tsc -w -p tsconfig.build.json\" ",
     "start:debug": "nodemon --config nodemon-debug.json",
@@ -70,7 +69,6 @@
     "graphql-cli": "^3.0.14",
     "jest": "^24.9.0",
     "nodemon": "^2.0.2",
-    "prettier": "^1.19.1",
     "prisma": "^1.34.10",
     "supertest": "^4.0.2",
     "ts-jest": "^24.2.0",

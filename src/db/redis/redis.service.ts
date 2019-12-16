@@ -16,15 +16,20 @@ export class RedisService {
     this.logger = new Logger(RedisService.name);
   }
 
-  private createRedis(options?: Redis.RedisOptions): Promise<Redis.Redis> {
+  private createRedis(options?: Redis.RedisOptions, skipWait?: boolean): Promise<Redis.Redis> {
     return new Promise((resolve, reject) => {
       const instance = new Redis(options);
-      instance.on('ready', () => {
-        resolve(instance); // Return the Redis instance
-      });
-      instance.on('error', (error) => {
-        reject(error); // Reject on error
-      });
+      if (skipWait) {
+        // Do not wait to be ready
+        resolve(instance);
+      } else {
+        instance.on('ready', () => {
+          resolve(instance); // Return the Redis instance
+        });
+        instance.on('error', (error) => {
+          reject(error); // Reject on error
+        });
+      }
     });
   }
 
@@ -34,12 +39,12 @@ export class RedisService {
    * @param {IORedis.RedisOptions} options Redis options, see ioredis options
    * @returns The ioredis instance, or error, in case of not being able to connect
    */
-  public async createInstance(id: string, options?: Redis.RedisOptions): Promise<Redis.Redis> {
+  public async createInstance(id: string, options?: Redis.RedisOptions, skipWait = false): Promise<Redis.Redis> {
     if (this.instances.has(id)) {
       throw new Error(`Instance with ID ${id} already exists`);
     }
     try {
-      const instance = await this.createRedis(options);
+      const instance = await this.createRedis(options, skipWait);
       this.instances.set(id, instance);
       return instance;
     } catch (error) {

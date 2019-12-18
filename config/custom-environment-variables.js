@@ -33,5 +33,11 @@ module.exports = {
   prisma: {
     secret: 'PRISMA_SECRET',
     endpoint: 'PRISMA_ENDPOINT'
+  },
+  mq: {
+    redis: {
+      port: 'REDIS_PORT',
+      host: 'REDIS_HOST'
+    }
   }
 };

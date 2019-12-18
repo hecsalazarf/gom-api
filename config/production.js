@@ -79,4 +79,11 @@ module.exports = {
     endpoint: '<PRISMA_ENDPOINT>',
     secret: '<PRISMA_SECRET | PRISMA_SECRET_FILE>'
   },
+  mq: {
+    redis: {
+      port: '<REDIS_PORT>',
+      host: '<REDIS_HOST>',
+      db: 4
+    }
+  }
 };

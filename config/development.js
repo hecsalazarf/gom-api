@@ -79,6 +79,13 @@ module.exports = {
     endpoint: 'http://172.18.0.1:4466',
     secret: '12345'
   },
+  mq: {
+    redis: {
+      port: 6379,
+      host: '172.18.0.1',
+      db: 4
+    }
+  },
   cors: {
     whitelist: [
       '192.168.0.2'

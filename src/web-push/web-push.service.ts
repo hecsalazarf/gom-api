@@ -62,12 +62,17 @@ export class WebPushService {
         duration: 5000,
       }
     });
-    // this.worker.on('completed', this.onJobCompleted.bind(this));
+    this.worker.on('failed', this.onFailedJob.bind(this));
   }
 
-  /* private onJobCompleted(job, result): void {
-    this.logger.log(result);
-  } */
+  /**
+   * Listener for failed jobs. Print error on console
+   * @param {Job} job The job that failed
+   * @param {Error} error Error details
+   */
+  private onFailedJob(job: Job, error: Error): void {
+    this.logger.error(`Job ${job.name}[${job.id}] failed: ${error.message}`);
+  }
 
   /**
    * Handle errors after pushing notifications. If there are expired subscriptions, remove

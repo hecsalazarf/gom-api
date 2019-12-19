@@ -14,7 +14,7 @@ export class WebPushController {
   async subscribe(@Body(new ValidationPipe()) subs: SubscriptionDto, @Request() req): Promise<boolean> {
     const log = `${subs.endpoint.slice(-7)} | ${req.ip}`;
     try {
-      const res = await this.webpush.addUserSubscription(req.user.id, subs);
+      const res = await this.webpush.addSubscription(req.user.id, subs);
       this.logger.log(`User ${req.user.id} subscribed | ${log}`);
       return res;
     } catch (error) {
@@ -29,7 +29,7 @@ export class WebPushController {
   async unsubscribe(@Body(new ValidationPipe()) subs: SubscriptionDto, @Request() req): Promise<boolean> {
     const log = `${subs.endpoint.slice(-7)} | ${req.ip}`;
     try {
-      const res = await this.webpush.removeUserSubscriptions(req.user.id, [subs.endpoint]);
+      const res = await this.webpush.removeSubscriptions(req.user.id, [subs.endpoint]);
       this.logger.log(`User ${req.user.id} unsubscribed | ${log}`);
       return res;
     } catch (error) {

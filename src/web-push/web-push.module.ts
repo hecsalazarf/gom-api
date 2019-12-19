@@ -5,25 +5,14 @@ import { WebPushController } from './web-push.controller';
 import { RedisModule } from '../db/redis/redis.module';
 import { AuthMiddleware, SessionMiddleware } from '../middleware';
 import { AuthModule } from '../auth/auth.module';
-import { ConfigService } from '../config/config.service';
-import { RedisService } from '../db/redis/redis.service';
-import { WebpushConfigDto } from './dto';
-
-const WebPushFactory = {
-  provide: WebPushService,
-  useFactory: async (config: ConfigService, redis: RedisService): Promise<WebPushService> => {
-    const res: WebpushConfigDto = await config.validate('web-push', WebpushConfigDto);
-    const redisInstance = await redis.createInstance('web-push', res.redis);
-    return new WebPushService(redisInstance, res.vapid);
-  },
-  inject: [ConfigService, RedisService],
-};
+import { MqModule } from '../mq/mq.module';
+import { SubRepository } from './providers';
 
 @Module({
-  imports: [RedisModule, AuthModule],
-  providers: [WebPushFactory],
+  imports: [RedisModule, AuthModule, MqModule],
+  providers: [WebPushService.factory, SubRepository.factory],
   controllers: [WebPushController],
-  exports: [WebPushFactory],
+  exports: [WebPushService.factory],
 })
 export class WebPushModule implements NestModule {
   configure(consumer: MiddlewareConsumer): void {

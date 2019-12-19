@@ -6,11 +6,11 @@ import { RedisModule } from '../db/redis/redis.module';
 import { AuthMiddleware, SessionMiddleware } from '../middleware';
 import { AuthModule } from '../auth/auth.module';
 import { MqModule } from '../mq/mq.module';
-import { SubRepository } from './providers';
+import { SubsRepository } from './providers';
 
 @Module({
   imports: [RedisModule, AuthModule, MqModule],
-  providers: [WebPushService.factory, SubRepository.factory],
+  providers: [WebPushService.factory, SubsRepository.factory],
   controllers: [WebPushController],
   exports: [WebPushService.factory],
 })

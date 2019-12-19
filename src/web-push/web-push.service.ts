@@ -5,7 +5,7 @@ import WebPush from 'web-push';
 import { VapidDto } from './dto';
 import { MqService } from '../mq/mq.service';
 import { ConfigService } from '../config/config.service';
-import { SubRepository, Subscription } from './providers';
+import { SubsRepository, Subscription } from './providers';
 
 // Push Service Status
 export enum PushServiceStatus {
@@ -24,21 +24,21 @@ export class WebPushService {
   private worker: Worker;
   private queue: Queue;
 
-  constructor(vapid: VapidDto, mq: MqService, private readonly subRepo: SubRepository) {
+  constructor(vapid: VapidDto, mq: MqService, private readonly subsRepo: SubsRepository) {
     this.initMqTasks(mq);
     WebPush.setVapidDetails(vapid.subject, vapid.publicKey, vapid.privateKey);
   }
 
   /**
-   * Factory object required by Nestjs
+   * Factory object required by Nestjs to instantiate WebPushService
    */
   public static factory = {
     provide: WebPushService,
-    useFactory: async (config: ConfigService, mq: MqService, subRepo: SubRepository): Promise<WebPushService> => {
+    useFactory: async (config: ConfigService, mq: MqService, subsRepo: SubsRepository): Promise<WebPushService> => {
       const vapid: VapidDto = await config.validate('web-push.vapid', VapidDto);
-      return new WebPushService(vapid, mq, subRepo);
+      return new WebPushService(vapid, mq, subsRepo);
     },
-    inject: [ConfigService, MqService, SubRepository],
+    inject: [ConfigService, MqService, SubsRepository],
   };
 
   /**
@@ -108,7 +108,7 @@ export class WebPushService {
         return sub;
       });
       try {
-        await this.subRepo.removeMany(subs);
+        await this.subsRepo.removeMany(subs);
       } catch (error) {
         // print error when execution went wrong
         this.logger.error(`Expired subscriptions of user ${userId} were not removed`);
@@ -144,7 +144,7 @@ export class WebPushService {
     if (user === '') {
       return false; // empty user, return false
     }
-    const subscriptions = await this.subRepo.fetchAllByUser(user);
+    const subscriptions = await this.subsRepo.fetchAllByUser(user);
     if (subscriptions.length === 0) {
       return false; // no subscriptions, return false
     }
@@ -185,7 +185,7 @@ export class WebPushService {
       sub.user.id = userId;
       return sub;
     });
-    return this.subRepo.removeMany(subs);
+    return this.subsRepo.removeMany(subs);
   }
 
 
@@ -199,6 +199,6 @@ export class WebPushService {
     subs.user.id = userId;
     subs.endpoint = subscription.endpoint;
     subs.keys = subscription.keys;
-    return this.subRepo.save(subs);
+    return this.subsRepo.save(subs);
   }
 }

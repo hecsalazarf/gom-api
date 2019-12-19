@@ -8,15 +8,15 @@ import { RedisArgs } from '../../db/redis/redis.service';
 import { Subscription } from './subscription';
 
 @Injectable()
-export class SubRepository {
+export class SubsRepository {
   constructor(private readonly redis: Redis) { }
 
   public static factory = {
-    provide: SubRepository,
-    useFactory: async (config: ConfigService, redis: RedisService): Promise<SubRepository> => {
+    provide: SubsRepository,
+    useFactory: async (config: ConfigService, redis: RedisService): Promise<SubsRepository> => {
       const redisConfig: RedisConfigDto = await config.validate('web-push.redis', RedisConfigDto);
       const redisInstance = await redis.createInstance('web-push', redisConfig);
-      return new SubRepository(redisInstance);
+      return new SubsRepository(redisInstance);
     },
     inject: [ConfigService, RedisService],
   };

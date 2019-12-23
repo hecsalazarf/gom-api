@@ -1,9 +1,11 @@
 import { Injectable, Logger } from '@nestjs/common';
-import * as WebPush from 'web-push';
-import { PushSubscription, WebPushError, SendResult } from 'web-push';
-import { Redis } from 'ioredis';
-import { RedisArgs } from '../db/redis/redis.service';
+import { Queue, Worker, QueueBaseOptions, Job } from 'bullmq';
+import { WebPushError, SendResult, PushSubscription } from 'web-push';
+import WebPush from 'web-push';
 import { VapidDto } from './dto';
+import { MqService } from '../mq/mq.service';
+import { ConfigService } from '../config/config.service';
+import { SubsRepository, Subscription } from './providers';
 
 // Push Service Status
 export enum PushServiceStatus {
@@ -19,47 +21,57 @@ export enum PushServiceStatus {
 @Injectable()
 export class WebPushService {
   private readonly logger = new Logger(WebPushService.name);
-  private redis: Redis;
+  private worker: Worker;
+  private queue: Queue;
 
-  constructor(redisInstance: Redis, vapid: VapidDto) {
-    this.redis = redisInstance;
+  constructor(vapid: VapidDto, mq: MqService, private readonly subsRepo: SubsRepository) {
+    this.initMqTasks(mq);
     WebPush.setVapidDetails(vapid.subject, vapid.publicKey, vapid.privateKey);
   }
 
   /**
-   * Create redis hash input from subscription info
-   * @param {PushSubscription} subscription Subscription info
+   * Factory object required by Nestjs to instantiate WebPushService
    */
-  private createSubData(subscription: PushSubscription): RedisArgs {
-    const key = 'sub:' + subscription.endpoint;
-    const data = [
-      'p256dh',
-      subscription.keys.p256dh,
-      'auth',
-      subscription.keys.auth,
-    ];
+  public static factory = {
+    provide: WebPushService,
+    useFactory: async (config: ConfigService, mq: MqService, subsRepo: SubsRepository): Promise<WebPushService> => {
+      const vapid: VapidDto = await config.validate('web-push.vapid', VapidDto);
+      return new WebPushService(vapid, mq, subsRepo);
+    },
+    inject: [ConfigService, MqService, SubsRepository],
+  };
 
-    return {
-      key,
-      data,
+  /**
+   * Init tasks processor and queue
+   * @param {MqService} mq Message Queue service
+   */
+  private initMqTasks(mq: MqService): void {
+    const queueBaseOpts: QueueBaseOptions = {
+      prefix: WebPushService.name.toLowerCase()
     };
+    this.queue = mq.createQueue('tasks', {
+      ...queueBaseOpts,
+      defaultJobOptions: {
+        removeOnComplete: 100
+      }
+    }, queueBaseOpts);
+    this.worker = mq.createWorker('tasks', this.jobProcessor.bind(this), {
+      ...queueBaseOpts,
+      limiter: {
+        max: 1000,
+        duration: 5000,
+      }
+    });
+    this.worker.on('failed', this.onFailedJob.bind(this));
   }
 
   /**
-   * Create redis set input that links user to subscription
-   * @param {string} userId User id
-   * @param {string} subscriptionId Subscription id
+   * Listener for failed jobs. Print error on console
+   * @param {Job} job The job that failed
+   * @param {Error} error Error details
    */
-  private createUserToSubData(userId: string, subscriptionId: string): RedisArgs {
-    const key = `user:${userId}:subs`;
-    const data = [
-      subscriptionId,
-    ];
-
-    return {
-      key,
-      data,
-    };
+  private onFailedJob(job: Job, error: Error): void {
+    this.logger.error(`Job ${job.name}[${job.id}] failed: ${error.message}`);
   }
 
   /**
@@ -69,7 +81,7 @@ export class WebPushService {
    * @param {string} userId User ID to send notification
    * @returns {number} Errors count
    */
-  private handleErrors(responses: Array<SendResult | WebPushError>, userId: string): number {
+  private async handleErrors(responses: Array<SendResult | WebPushError>, userId: string): Promise<number> {
     let errorCount = 0; // count errors in the responses
     const subsToRemove = responses.map(res => {
       if (res instanceof WebPushError) {
@@ -88,86 +100,35 @@ export class WebPushService {
     }).filter(res => res); // filter undefined elements
 
     if (subsToRemove.length > 0) {
-      // if there are subscriptions to remove, queue them
-      setImmediate(async () => {
-        try {
-          await this.removeUserSubscriptions(userId, subsToRemove);
-        } catch (error) {
-          // print error when execution went wrong
-          this.logger.error(`Expired subscriptions of user ${userId} were not removed`);
-          if (error.message) {
-            this.logger.error(error.message);
-          }
-        }
+      // there are subscriptions to remove
+      const subs = subsToRemove.map(endp => {
+        const sub = new Subscription();
+        sub.endpoint = endp;
+        sub.user.id = userId;
+        return sub;
       });
+      try {
+        await this.subsRepo.removeMany(subs);
+      } catch (error) {
+        // print error when execution went wrong
+        this.logger.error(`Expired subscriptions of user ${userId} were not removed`);
+        if (error.message) {
+          this.logger.error(error.message);
+        }
+      }
     }
     return errorCount;
   }
 
   /**
-   * Get user subscriptions by user ID
-   * @param {string} userId User ID
+   * Processor dispatcher of jobs
+   * @param {Job} job The job being dispatched
    */
-  private async getUserSubscriptions(userId: string): Promise<PushSubscription[]> {
-    const subscriptions: PushSubscription[] = []; // container of all subscriptions
-    const subs: string[] = await this.redis.smembers(`user:${userId}:subs`); // get user subscriptions set
-    if (subs.length === 0) {
-      return subscriptions; // no subscriptions, return empty container
+  private jobProcessor(job: Job): Promise<any> {
+    if (this[job.name]) {
+      return this[job.name](...job.data.args);
     }
-    const pipeline = this.redis.pipeline(); // create a pipeline
-    // add each subscription to the pipeline
-    subs.map((sub, index) => pipeline.hgetall(`sub:${sub}`, (error, res: any) => {
-      if (Object.keys(res).length === 0) {
-        return; // if empty object, return
-      }
-      // create PushSubscription object
-      subscriptions[index] = {
-        endpoint: sub,
-        keys: {
-          auth: res.auth,
-          p256dh: res.p256dh,
-        },
-      };
-    }));
-
-    await pipeline.exec(); // get subscription details in bulk
-
-    return subscriptions;
-  }
-
-  /**
-   * Remove user subscriptions
-   * @param {string} userId User id
-   * @param {PushSubscription} subscriptions Array of subscription IDs to remove
-   */
-  public async removeUserSubscriptions(userId: string, subscriptions: string[]): Promise<boolean> {
-    const pipeline = this.redis.pipeline();
-    subscriptions.map(sub => {
-      // add operations to the pipeline
-      pipeline.srem(`user:${userId}:subs`, sub); // remove subscription from user's subscriptions set
-      pipeline.del(`sub:${sub}`); // remove the subscription
-    });
-    await pipeline.exec();
-
-    return true;
-  }
-
-  /**
-   * Store user subscription
-   * @param {string} user User id
-   * @param {PushSubscription} subscription Subscription info
-   */
-  public async addUserSubscription(user: string, subscription: PushSubscription): Promise<boolean> {
-    const sub = this.createSubData(subscription);
-    const userToSub = this.createUserToSubData(user, subscription.endpoint);
-
-    await this.redis
-      .multi()
-      .hmset(sub.key, sub.data) // store subscription
-      .sadd(userToSub.key, userToSub.data) // add subscription to user subscriptions set
-      .exec();
-
-    return true;
+    throw new Error(`No handler for job ${job.name}`);
   }
 
   /**
@@ -179,11 +140,11 @@ export class WebPushService {
    * @returns {Promise<boolean>} Promise that resolves with 'true' when the notification was sent to at least one subscription,
    * or 'false' when no subscription is found. Promise rejects when all subscriptions returned with error from the Push Service
    */
-  public async pushNotification(user: string, payload: string | Buffer): Promise<boolean> {
+  private async push(user: string, payload: string | Buffer): Promise<boolean> {
     if (user === '') {
       return false; // empty user, return false
     }
-    const subscriptions = await this.getUserSubscriptions(user);
+    const subscriptions = await this.subsRepo.fetchAllByUser(user);
     if (subscriptions.length === 0) {
       return false; // no subscriptions, return false
     }
@@ -192,10 +153,52 @@ export class WebPushService {
     const promises = subscriptions.map(sub => WebPush.sendNotification(sub, payload));
     // wait until subscriptions are executed. Catch all errors
     const res = await Promise.all(promises.map(p => p.catch(e => e)));
-    if (this.handleErrors(res, user) === res.length) {
+    if (await this.handleErrors(res, user) === res.length) {
       // if all responses are errors, reject
       throw new Error(`Notification was not sent to ${user}. All subscriptions were invalid`); // TODO return error array
     }
     return true;
+  }
+
+
+  /**
+   * Send notification to queue
+   * @param {string} user User ID to send notification
+   * @param {string | Buffer} payload Notification payload
+   * @returns {Promise<boolean>} Promise that resolves with 'true' when the notification was sent to at least one subscription,
+   * or 'false' when no subscription is found. Promise rejects when all subscriptions returned with error from the Push Service
+   */
+  public pushNotification(user: string, payload: string | Buffer): Promise<Job> {
+    return this.queue.add('push', { args: [user, payload] });
+  }
+
+
+  /**
+   * Remove many subscriptions of a giver user
+   * @param userId User ID
+   * @param endpoints Array of endpoints to remove
+   */
+  public removeSubscriptions(userId: string, endpoints: string[]): Promise<boolean> {
+    const subs = endpoints.map(endp => {
+      const sub = new Subscription();
+      sub.endpoint = endp;
+      sub.user.id = userId;
+      return sub;
+    });
+    return this.subsRepo.removeMany(subs);
+  }
+
+
+  /**
+   * Add subcription to a given user
+   * @param {string} userId User ID
+   * @param {PushSubscription} subscription Subscription object
+   */
+  public addSubscription(userId: string, subscription: PushSubscription): Promise<boolean> {
+    const subs = new Subscription();
+    subs.user.id = userId;
+    subs.endpoint = subscription.endpoint;
+    subs.keys = subscription.keys;
+    return this.subsRepo.save(subs);
   }
 }

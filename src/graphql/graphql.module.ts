@@ -2,7 +2,7 @@ import { Module, MiddlewareConsumer, NestModule } from '@nestjs/common';
 import csurf from 'csurf';
 import { GraphQLModule } from '@nestjs/graphql';
 import { GraphqlOptions } from './graphql.options';
-import { BpModule, OrderModule } from './resolvers';
+import { BpModule, OrderModule, PromotionModule } from './resolvers';
 import { AuthMiddleware, SessionMiddleware } from '../middleware';
 import { AuthModule } from '../auth/auth.module';
 
@@ -13,6 +13,7 @@ import { AuthModule } from '../auth/auth.module';
       imports: [
         BpModule,
         OrderModule,
+        PromotionModule,
         AuthModule, // to inject dependencies in GraphqlOptions
       ],
     }),
@@ -22,7 +23,7 @@ import { AuthModule } from '../auth/auth.module';
 export class GraphqlModule implements NestModule {
   configure(consumer: MiddlewareConsumer): void {
     consumer
-      .apply(SessionMiddleware, csurf(), AuthMiddleware) // TODO Reactivate CSRF
+      .apply(SessionMiddleware, csurf(), AuthMiddleware)
       .forRoutes('graphql');
   }
 }

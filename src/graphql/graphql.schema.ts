@@ -142,8 +142,8 @@ export enum PublicationOrderByInput {
     type_DESC = "type_DESC",
     status_ASC = "status_ASC",
     status_DESC = "status_DESC",
-    publishAt_ASC = "publishAt_ASC",
-    publishAt_DESC = "publishAt_DESC",
+    delay_ASC = "delay_ASC",
+    delay_DESC = "delay_DESC",
     createdAt_ASC = "createdAt_ASC",
     createdAt_DESC = "createdAt_DESC",
     updatedAt_ASC = "updatedAt_ASC",
@@ -2245,7 +2245,7 @@ export class PublicationCreateInput {
     uid?: string;
     type: PublicationType;
     status?: PublicationStatus;
-    publishAt?: DateTime;
+    delay?: number;
     createdBy?: string;
     updatedBy?: string;
     promotion: PromotionCreateOneWithoutPublicationsInput;
@@ -2260,7 +2260,7 @@ export class PublicationCreateWithoutPromotionInput {
     uid?: string;
     type: PublicationType;
     status?: PublicationStatus;
-    publishAt?: DateTime;
+    delay?: number;
     createdBy?: string;
     updatedBy?: string;
 }
@@ -2291,14 +2291,14 @@ export class PublicationScalarWhereInput {
     status_not?: PublicationStatus;
     status_in?: PublicationStatus[];
     status_not_in?: PublicationStatus[];
-    publishAt?: DateTime;
-    publishAt_not?: DateTime;
-    publishAt_in?: DateTime[];
-    publishAt_not_in?: DateTime[];
-    publishAt_lt?: DateTime;
-    publishAt_lte?: DateTime;
-    publishAt_gt?: DateTime;
-    publishAt_gte?: DateTime;
+    delay?: number;
+    delay_not?: number;
+    delay_in?: number[];
+    delay_not_in?: number[];
+    delay_lt?: number;
+    delay_lte?: number;
+    delay_gt?: number;
+    delay_gte?: number;
     createdAt?: DateTime;
     createdAt_not?: DateTime;
     createdAt_in?: DateTime[];
@@ -2359,7 +2359,7 @@ export class PublicationSubscriptionWhereInput {
 export class PublicationUpdateInput {
     type?: PublicationType;
     status?: PublicationStatus;
-    publishAt?: DateTime;
+    delay?: number;
     createdBy?: string;
     updatedBy?: string;
     promotion?: PromotionUpdateOneRequiredWithoutPublicationsInput;
@@ -2368,7 +2368,7 @@ export class PublicationUpdateInput {
 export class PublicationUpdateManyDataInput {
     type?: PublicationType;
     status?: PublicationStatus;
-    publishAt?: DateTime;
+    delay?: number;
     createdBy?: string;
     updatedBy?: string;
 }
@@ -2376,7 +2376,7 @@ export class PublicationUpdateManyDataInput {
 export class PublicationUpdateManyMutationInput {
     type?: PublicationType;
     status?: PublicationStatus;
-    publishAt?: DateTime;
+    delay?: number;
     createdBy?: string;
     updatedBy?: string;
 }
@@ -2401,7 +2401,7 @@ export class PublicationUpdateManyWithWhereNestedInput {
 export class PublicationUpdateWithoutPromotionDataInput {
     type?: PublicationType;
     status?: PublicationStatus;
-    publishAt?: DateTime;
+    delay?: number;
     createdBy?: string;
     updatedBy?: string;
 }
@@ -2443,14 +2443,14 @@ export class PublicationWhereInput {
     status_not?: PublicationStatus;
     status_in?: PublicationStatus[];
     status_not_in?: PublicationStatus[];
-    publishAt?: DateTime;
-    publishAt_not?: DateTime;
-    publishAt_in?: DateTime[];
-    publishAt_not_in?: DateTime[];
-    publishAt_lt?: DateTime;
-    publishAt_lte?: DateTime;
-    publishAt_gt?: DateTime;
-    publishAt_gte?: DateTime;
+    delay?: number;
+    delay_not?: number;
+    delay_in?: number[];
+    delay_not_in?: number[];
+    delay_lt?: number;
+    delay_lte?: number;
+    delay_gt?: number;
+    delay_gte?: number;
     createdAt?: DateTime;
     createdAt_not?: DateTime;
     createdAt_in?: DateTime[];
@@ -3191,7 +3191,7 @@ export class Publication {
     uid: string;
     type: PublicationType;
     status?: PublicationStatus;
-    publishAt?: DateTime;
+    delay?: number;
     promotion: Promotion;
     createdAt?: DateTime;
     updatedAt?: DateTime;
@@ -3214,7 +3214,7 @@ export class PublicationPreviousValues {
     uid: string;
     type: PublicationType;
     status?: PublicationStatus;
-    publishAt?: DateTime;
+    delay?: number;
     createdAt?: DateTime;
     updatedAt?: DateTime;
     createdBy?: string;

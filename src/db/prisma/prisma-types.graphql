@@ -1,5 +1,5 @@
 # source: http://172.18.0.1:4466
-# timestamp: Tue Dec 24 2019 14:56:03 GMT-0600 (GMT-06:00)
+# timestamp: Thu Feb 20 2020 15:14:24 GMT-0600 (GMT-06:00)
 
 type AggregateBp {
   count: Int!
@@ -4703,7 +4703,7 @@ type Publication {
   uid: ID!
   type: PublicationType!
   status: PublicationStatus
-  publishAt: DateTime
+  delay: Int
   promotion: Promotion!
   createdAt: DateTime
   updatedAt: DateTime
@@ -4725,7 +4725,7 @@ input PublicationCreateInput {
   uid: ID
   type: PublicationType!
   status: PublicationStatus
-  publishAt: DateTime
+  delay: Int
   createdBy: String
   updatedBy: String
   promotion: PromotionCreateOneWithoutPublicationsInput!
@@ -4740,7 +4740,7 @@ input PublicationCreateWithoutPromotionInput {
   uid: ID
   type: PublicationType!
   status: PublicationStatus
-  publishAt: DateTime
+  delay: Int
   createdBy: String
   updatedBy: String
 }
@@ -4761,8 +4761,8 @@ enum PublicationOrderByInput {
   type_DESC
   status_ASC
   status_DESC
-  publishAt_ASC
-  publishAt_DESC
+  delay_ASC
+  delay_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -4777,7 +4777,7 @@ type PublicationPreviousValues {
   uid: ID!
   type: PublicationType!
   status: PublicationStatus
-  publishAt: DateTime
+  delay: Int
   createdAt: DateTime
   updatedAt: DateTime
   createdBy: String
@@ -4853,28 +4853,28 @@ input PublicationScalarWhereInput {
 
   """All values that are not contained in given list."""
   status_not_in: [PublicationStatus!]
-  publishAt: DateTime
+  delay: Int
 
   """All values that are not equal to given value."""
-  publishAt_not: DateTime
+  delay_not: Int
 
   """All values that are contained in given list."""
-  publishAt_in: [DateTime!]
+  delay_in: [Int!]
 
   """All values that are not contained in given list."""
-  publishAt_not_in: [DateTime!]
+  delay_not_in: [Int!]
 
   """All values less than the given value."""
-  publishAt_lt: DateTime
+  delay_lt: Int
 
   """All values less than or equal the given value."""
-  publishAt_lte: DateTime
+  delay_lte: Int
 
   """All values greater than the given value."""
-  publishAt_gt: DateTime
+  delay_gt: Int
 
   """All values greater than or equal the given value."""
-  publishAt_gte: DateTime
+  delay_gte: Int
   createdAt: DateTime
 
   """All values that are not equal to given value."""
@@ -5051,7 +5051,7 @@ enum PublicationType {
 input PublicationUpdateInput {
   type: PublicationType
   status: PublicationStatus
-  publishAt: DateTime
+  delay: Int
   createdBy: String
   updatedBy: String
   promotion: PromotionUpdateOneRequiredWithoutPublicationsInput
@@ -5060,7 +5060,7 @@ input PublicationUpdateInput {
 input PublicationUpdateManyDataInput {
   type: PublicationType
   status: PublicationStatus
-  publishAt: DateTime
+  delay: Int
   createdBy: String
   updatedBy: String
 }
@@ -5068,7 +5068,7 @@ input PublicationUpdateManyDataInput {
 input PublicationUpdateManyMutationInput {
   type: PublicationType
   status: PublicationStatus
-  publishAt: DateTime
+  delay: Int
   createdBy: String
   updatedBy: String
 }
@@ -5093,7 +5093,7 @@ input PublicationUpdateManyWithWhereNestedInput {
 input PublicationUpdateWithoutPromotionDataInput {
   type: PublicationType
   status: PublicationStatus
-  publishAt: DateTime
+  delay: Int
   createdBy: String
   updatedBy: String
 }
@@ -5178,28 +5178,28 @@ input PublicationWhereInput {
 
   """All values that are not contained in given list."""
   status_not_in: [PublicationStatus!]
-  publishAt: DateTime
+  delay: Int
 
   """All values that are not equal to given value."""
-  publishAt_not: DateTime
+  delay_not: Int
 
   """All values that are contained in given list."""
-  publishAt_in: [DateTime!]
+  delay_in: [Int!]
 
   """All values that are not contained in given list."""
-  publishAt_not_in: [DateTime!]
+  delay_not_in: [Int!]
 
   """All values less than the given value."""
-  publishAt_lt: DateTime
+  delay_lt: Int
 
   """All values less than or equal the given value."""
-  publishAt_lte: DateTime
+  delay_lte: Int
 
   """All values greater than the given value."""
-  publishAt_gt: DateTime
+  delay_gt: Int
 
   """All values greater than or equal the given value."""
-  publishAt_gte: DateTime
+  delay_gte: Int
   createdAt: DateTime
 
   """All values that are not equal to given value."""

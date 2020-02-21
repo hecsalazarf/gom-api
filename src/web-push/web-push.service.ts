@@ -140,7 +140,7 @@ export class WebPushService {
    * @returns {Promise<boolean>} Promise that resolves with 'true' when the notification was sent to at least one subscription,
    * or 'false' when no subscription is found. Promise rejects when all subscriptions returned with error from the Push Service
    */
-  private async push(user: string, payload: string | Buffer): Promise<boolean> {
+  public async pushNotification(user: string, payload: string | Buffer): Promise<boolean> {
     if (user === '') {
       return false; // empty user, return false
     }
@@ -162,14 +162,14 @@ export class WebPushService {
 
 
   /**
-   * Send notification to queue
+   * Add notification to queue
    * @param {string} user User ID to send notification
    * @param {string | Buffer} payload Notification payload
    * @returns {Promise<boolean>} Promise that resolves with 'true' when the notification was sent to at least one subscription,
    * or 'false' when no subscription is found. Promise rejects when all subscriptions returned with error from the Push Service
    */
-  public pushNotification(user: string, payload: string | Buffer): Promise<Job> {
-    return this.queue.add('push', { args: [user, payload] });
+  public queueNotification(user: string, payload: string | Buffer): Promise<Job> {
+    return this.queue.add('pushNotification', { args: [user, payload] });
   }
 
 

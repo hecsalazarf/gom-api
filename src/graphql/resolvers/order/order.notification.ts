@@ -103,7 +103,7 @@ export class OrderNotification extends EventEmitter {
    * @param {NotificationPayload} emmitedBy Notification payload
    */
   private pushNotification(receiver: string, payload: NotificationPayload): void {
-    this.webpush.pushNotification(receiver, JSON.stringify(payload))
+    this.webpush.queueNotification(receiver, JSON.stringify(payload))
       .catch(error => {
         this.logger.error(error.message);
       });

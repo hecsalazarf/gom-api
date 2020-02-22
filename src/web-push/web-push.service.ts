@@ -132,6 +132,17 @@ export class WebPushService {
   }
 
   /**
+   * Send notification using the WebPush API
+   * @param {Array<PushSubscription>} subscriptions Subscriptions array
+   */
+  private async sendNotification(subscriptions: Array<PushSubscription>, payload: string | Buffer):  Promise<Array<SendResult | WebPushError>> {
+    // send notification to subscriptions
+    const promises = subscriptions.map(sub => WebPush.sendNotification(sub, payload));
+    // wait until subscriptions are executed. Catch all errors
+    return await Promise.all(promises.map(p => p.catch(e => e)));
+  }
+
+  /**
    * Push notification to a given user. The notification is sent to all user's subscriptions,
    * however, it's not guaranteed all subscriptions receive the message as some of them may
    * expire. The subscriptions with error will be displayed in the log
@@ -150,12 +161,38 @@ export class WebPushService {
     }
 
     // send notification to subscriptions
-    const promises = subscriptions.map(sub => WebPush.sendNotification(sub, payload));
     // wait until subscriptions are executed. Catch all errors
-    const res = await Promise.all(promises.map(p => p.catch(e => e)));
+    const res = await this.sendNotification(subscriptions, payload);
     if (await this.handleErrors(res, user) === res.length) {
       // if all responses are errors, reject
       throw new Error(`Notification was not sent to ${user}. All subscriptions were invalid`); // TODO return error array
+    }
+    return true;
+  }
+
+  /**
+   * Broadcast notification to a group of users. The notification is sent to all subscriptions,
+   * however, it's not guaranteed all subscriptions receive the message as some of them may
+   * expire. The subscriptions with error will be displayed in the log
+   * @param {Array<string>} users User IDs to broadcast notification
+   * @param {string | Buffer} payload Notification payload
+   * @returns {Promise<boolean>} Promise that resolves with 'true' when the notification was sent to at least one subscription,
+   * or 'false' when no subscription is found. Promise rejects when all subscriptions returned with error from the Push Service
+   */
+  public async broadcastNotification(users: Array<string>, payload: string | Buffer): Promise<boolean> {
+    if (users.length === 0) {
+      return false; // empty user, return false
+    }
+    const userSubs = await this.subsRepo.fetchAllByUsers(users);
+    if (userSubs.size === 0) {
+      return false;
+    }
+    const res = await this.sendNotification(Array.from(userSubs.values()), payload);
+    // TODO Specify error for each user  because now the code does not
+    // have the relationship error<->subscription per user
+    if (await this.handleErrors(res, '#') === res.length) {
+      // if all responses are errors, reject
+      throw new Error('None message was delivered. All subscriptions were invalid'); // TODO return error array
     }
     return true;
   }

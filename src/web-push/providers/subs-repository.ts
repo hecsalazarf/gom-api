@@ -89,6 +89,23 @@ export class SubsRepository {
   }
 
   /**
+   * Get subscriptions by user IDs
+   * @param {Array<string>} userIds User ID
+   */
+  public async fetchAllByUsers(userIds: Array<string>): Promise<Map<string, PushSubscription>> {
+    const usersSubs: Map<string, PushSubscription> = new Map();
+    const promises = [];
+    for (const id of userIds) {
+      promises.push(this.fetchAllByUser(id));
+    }
+    const result = await Promise.all(promises);
+    for (const [index, value] of result.entries()) {
+      usersSubs.set(userIds[index], value);
+    }
+    return usersSubs;
+  }
+
+  /**
    * Remove many subscriptions
    * @param {Subscription[]} subscriptions Array of subscription to remove
    */

@@ -187,7 +187,11 @@ export class WebPushService {
     if (userSubs.size === 0) {
       return false;
     }
-    const res = await this.sendNotification(Array.from(userSubs.values()), payload);
+    const subs = Array.from(userSubs.values()).reduce((acc, curr) => {
+      acc.push(...curr);
+      return acc;
+    }, []);
+    const res = await this.sendNotification(subs, payload);
     // TODO Specify error for each user  because now the code does not
     // have the relationship error<->subscription per user
     if (await this.handleErrors(res, '#') === res.length) {

@@ -92,8 +92,8 @@ export class SubsRepository {
    * Get subscriptions by user IDs
    * @param {Array<string>} userIds User ID
    */
-  public async fetchAllByUsers(userIds: Array<string>): Promise<Map<string, PushSubscription>> {
-    const usersSubs: Map<string, PushSubscription> = new Map();
+  public async fetchAllByUsers(userIds: Array<string>): Promise<Map<string, Array<PushSubscription>>> {
+    const usersSubs: Map<string, Array<PushSubscription>> = new Map();
     const promises = [];
     for (const id of userIds) {
       promises.push(this.fetchAllByUser(id));

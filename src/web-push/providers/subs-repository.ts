@@ -98,9 +98,11 @@ export class SubsRepository {
     for (const id of userIds) {
       promises.push(this.fetchAllByUser(id));
     }
-    const result = await Promise.all(promises);
-    for (const [index, value] of result.entries()) {
-      usersSubs.set(userIds[index], value);
+    const entries = (await Promise.all(promises)).entries();
+    for (const [index, value] of entries) {
+      if (value.length > 0) {
+        usersSubs.set(userIds[index], value);
+      }
     }
     return usersSubs;
   }

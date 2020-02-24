@@ -1,17 +1,11 @@
 import { Injectable, Logger } from '@nestjs/common';
 import EventEmitter from 'events';
 import { Order } from './model/order';
-import { WebPushService } from '../../../web-push/web-push.service';
+import { WebPushService, NotificationPayload } from '../../../web-push/web-push.service';
 
 export enum OrderNotifyEvents {
   UPDATE = 'update',
   CREATE = 'create',
-}
-
-interface NotificationPayload {
-  title: string; // notification title
-  body: string; // notification body
-  data: any; // notification data
 }
 
 @Injectable()

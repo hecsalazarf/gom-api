@@ -18,6 +18,16 @@ export enum PushServiceStatus {
   // before another request can be made.
 }
 
+export interface NotificationPayload {
+  title: string; // notification title
+  body: string; // notification body
+  data: {
+    type: string;
+    uid: string;
+    operation?: string;
+  }; // notification data
+}
+
 @Injectable()
 export class WebPushService {
   private readonly logger = new Logger(WebPushService.name);

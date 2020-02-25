@@ -32,9 +32,19 @@ export class PublicationService {
     });
     this.worker.on('failed', this.onFailedJob.bind(this));
     this.worker.on('completed', this.onSuccessfulJob.bind(this));
+    // Bullmq has a strage behaviour, probably a bug:
+    // After a process reboot, the delayed jobs previously queued, are not
+    // processed by the QueueScheduler when the time comes.
+    // Only after a new job is scheduled, the delayed ones,
+    // get executed. We intentionally queue this dummy job to keep on
+    // serving tasks.
+    this.queue.add('boot', {}, { delay: 1000 });
   }
 
   private async sendNotification (job: Job): Promise<boolean> {
+    if (Object.keys(job.data).length < 1) {
+      return;
+    }
     const p1 = await this.prisma.query.bpsConnection({
       where: {
         customerOf_some: {
@@ -59,12 +69,7 @@ export class PublicationService {
         uid: job.data.promoUid
       }
     };
-
-    const result = await this.webPush.broadcastNotification(edges.map(e => e.node.uid), JSON.stringify(payload));
-    if (!result) {
-      this.logger.error(`No subscriptions to deliver the publication ${job.data.uid}`);
-    }
-    return result;
+    return this.webPush.broadcastNotification(edges.map(e => e.node.uid), JSON.stringify(payload));
   }
 
   private async updatePublication(uid: string, data: PublicationUpdateInput): Promise<void> {
@@ -88,8 +93,15 @@ export class PublicationService {
     });
   }
 
-  private onSuccessfulJob(job: Job): void {
-    this.logger.log(`Publication ${job.data.publication.uid} succesfully delivered`);
+  private onSuccessfulJob(job: Job, result: any): void {
+    if (typeof result === 'undefined') {
+      return; // Fail silently
+    }
+    if (result) {
+      this.logger.log(`Publication ${job.data.publication.uid} succesfully delivered`);
+    } else {
+      this.logger.warn(`No subscriptions to deliver the publication ${job.data.publication.uid}`);
+    }
     this.updatePublication(job.data.publication.uid, {
       status: PublicationStatus.DELIVERED,
       updatedBy: `system_job:${job.id}`

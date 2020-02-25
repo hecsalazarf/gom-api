@@ -35,16 +35,17 @@ export class MqService {
    * @returns {Queue} Bullmq queue
    */
   public createQueue(name: string, options?: QueueOptions, schedule?: QueueSchedulerOptions): Queue {
+    if (typeof schedule === 'object') {
+      // IMPORTANT
+      // The QueueScheduler must always be instantiated before the Queue,
+      // in order to work properly with delayed jobs.
+      schedule.connection = this.createConnection(`mq:schedule:${name}`);
+      new QueueScheduler(name, schedule);
+    }
     const queueOpts = options || {};
     // override connection
     queueOpts.connection = this.createConnection(`mq:queue:${name}`);
     const queue = new Queue(name, queueOpts);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    let scheduler: QueueScheduler;
-    if (typeof schedule !== 'undefined') {
-      schedule.connection = this.createConnection(`mq:schedule:${name}`);
-      scheduler = new QueueScheduler(name, schedule);
-    }
     return queue;
   }
 

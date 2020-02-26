@@ -7,25 +7,30 @@
     {
       "type": "node",
       "request": "attach",
-      "name": "Attach to Nestjs debug",
-      "port": 9229,
+      "name": "Attach to Nestjs",
       "restart": true,
       // "preLaunchTask": "nestjs:debug",
       // "stopOnEntry": false,
       "protocol": "inspector"
     },
     {
+      // Nodemon v2.0.2 has an issue that makes debugging crash after
+      // watch-mode reboot, throwing "address already in use".
+      // We use v2.0.1 instead. More info at:
+      // https://github.com/remy/nodemon/issues/1476#issuecomment-573592914
       "type": "node",
       "request": "launch",
-      "name": "Launch Nestjs debug",
+      "name": "Launch Nestjs",
       "cwd": "${workspaceRoot}",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": [ "run", "start:debug" ],
+      "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/nodemon",
+      "runtimeArgs": [ "--config", "nodemon-debug.json" ],
+      // We do not use program since vscode requires outFiles and
+      // and a preLaunchTask (tsc build) for TS files.
+      "args": ["${workspaceRoot}/src/main.ts"],
       "protocol": "auto",
       "restart": true,
-      "port": 9229,
-      "autoAttachChildProcesses": true,
-      
+      "smartStep": true,
+      "console": "integratedTerminal"
     }
   ]
 }

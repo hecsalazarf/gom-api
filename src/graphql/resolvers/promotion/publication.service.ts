@@ -104,6 +104,7 @@ export class PublicationService {
     }
     this.updatePublication(job.data.publication.uid, {
       status: PublicationStatus.DELIVERED,
+      publishAt: new Date().toISOString(),
       updatedBy: `system_job:${job.id}`
     });
   }

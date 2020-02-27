@@ -114,6 +114,7 @@ type Publication {
   type: PublicationType!
   status: PublicationStatus
   delay: Int
+  publishAt: DateTime
   promotion: Promotion! @relation(name: "PromoPublication", link: INLINE, onDelete: SET_NULL)
   createdAt: DateTime @createdAt
   updatedAt: DateTime @updatedAt

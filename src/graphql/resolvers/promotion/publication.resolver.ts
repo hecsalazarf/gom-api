@@ -44,6 +44,9 @@ export class PublicationResolver {
     if (customers.length < 1) {
       throw new ApolloError('No customers associated', 'NO_CUSTOMERS');
     }
+    Object.defineProperty(args.data, 'publishAt', {
+      value: new Date(Date.now() + (args.data.delay || 0)).toISOString()
+    });
     const publication: Publication = await this.prisma.mutation.createPublication(args, info);
     this.service.broadcast(publication, args.data.promotion.connect.uid);
     return publication;

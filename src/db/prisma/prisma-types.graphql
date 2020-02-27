@@ -1,5 +1,5 @@
 # source: http://172.18.0.1:4466
-# timestamp: Thu Feb 20 2020 15:14:24 GMT-0600 (GMT-06:00)
+# timestamp: Thu Feb 27 2020 16:33:03 GMT-0600 (GMT-06:00)
 
 type AggregateBp {
   count: Int!
@@ -4704,6 +4704,7 @@ type Publication {
   type: PublicationType!
   status: PublicationStatus
   delay: Int
+  publishAt: DateTime
   promotion: Promotion!
   createdAt: DateTime
   updatedAt: DateTime
@@ -4726,6 +4727,7 @@ input PublicationCreateInput {
   type: PublicationType!
   status: PublicationStatus
   delay: Int
+  publishAt: DateTime
   createdBy: String
   updatedBy: String
   promotion: PromotionCreateOneWithoutPublicationsInput!
@@ -4741,6 +4743,7 @@ input PublicationCreateWithoutPromotionInput {
   type: PublicationType!
   status: PublicationStatus
   delay: Int
+  publishAt: DateTime
   createdBy: String
   updatedBy: String
 }
@@ -4763,6 +4766,8 @@ enum PublicationOrderByInput {
   status_DESC
   delay_ASC
   delay_DESC
+  publishAt_ASC
+  publishAt_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -4778,6 +4783,7 @@ type PublicationPreviousValues {
   type: PublicationType!
   status: PublicationStatus
   delay: Int
+  publishAt: DateTime
   createdAt: DateTime
   updatedAt: DateTime
   createdBy: String
@@ -4875,6 +4881,28 @@ input PublicationScalarWhereInput {
 
   """All values greater than or equal the given value."""
   delay_gte: Int
+  publishAt: DateTime
+
+  """All values that are not equal to given value."""
+  publishAt_not: DateTime
+
+  """All values that are contained in given list."""
+  publishAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  publishAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  publishAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  publishAt_lte: DateTime
+
+  """All values greater than the given value."""
+  publishAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  publishAt_gte: DateTime
   createdAt: DateTime
 
   """All values that are not equal to given value."""
@@ -5052,6 +5080,7 @@ input PublicationUpdateInput {
   type: PublicationType
   status: PublicationStatus
   delay: Int
+  publishAt: DateTime
   createdBy: String
   updatedBy: String
   promotion: PromotionUpdateOneRequiredWithoutPublicationsInput
@@ -5061,6 +5090,7 @@ input PublicationUpdateManyDataInput {
   type: PublicationType
   status: PublicationStatus
   delay: Int
+  publishAt: DateTime
   createdBy: String
   updatedBy: String
 }
@@ -5069,6 +5099,7 @@ input PublicationUpdateManyMutationInput {
   type: PublicationType
   status: PublicationStatus
   delay: Int
+  publishAt: DateTime
   createdBy: String
   updatedBy: String
 }
@@ -5094,6 +5125,7 @@ input PublicationUpdateWithoutPromotionDataInput {
   type: PublicationType
   status: PublicationStatus
   delay: Int
+  publishAt: DateTime
   createdBy: String
   updatedBy: String
 }
@@ -5200,6 +5232,28 @@ input PublicationWhereInput {
 
   """All values greater than or equal the given value."""
   delay_gte: Int
+  publishAt: DateTime
+
+  """All values that are not equal to given value."""
+  publishAt_not: DateTime
+
+  """All values that are contained in given list."""
+  publishAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  publishAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  publishAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  publishAt_lte: DateTime
+
+  """All values greater than the given value."""
+  publishAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  publishAt_gte: DateTime
   createdAt: DateTime
 
   """All values that are not equal to given value."""

@@ -144,6 +144,8 @@ export enum PublicationOrderByInput {
     status_DESC = "status_DESC",
     delay_ASC = "delay_ASC",
     delay_DESC = "delay_DESC",
+    publishAt_ASC = "publishAt_ASC",
+    publishAt_DESC = "publishAt_DESC",
     createdAt_ASC = "createdAt_ASC",
     createdAt_DESC = "createdAt_DESC",
     updatedAt_ASC = "updatedAt_ASC",
@@ -2246,6 +2248,7 @@ export class PublicationCreateInput {
     type: PublicationType;
     status?: PublicationStatus;
     delay?: number;
+    publishAt?: DateTime;
     createdBy?: string;
     updatedBy?: string;
     promotion: PromotionCreateOneWithoutPublicationsInput;
@@ -2261,6 +2264,7 @@ export class PublicationCreateWithoutPromotionInput {
     type: PublicationType;
     status?: PublicationStatus;
     delay?: number;
+    publishAt?: DateTime;
     createdBy?: string;
     updatedBy?: string;
 }
@@ -2299,6 +2303,14 @@ export class PublicationScalarWhereInput {
     delay_lte?: number;
     delay_gt?: number;
     delay_gte?: number;
+    publishAt?: DateTime;
+    publishAt_not?: DateTime;
+    publishAt_in?: DateTime[];
+    publishAt_not_in?: DateTime[];
+    publishAt_lt?: DateTime;
+    publishAt_lte?: DateTime;
+    publishAt_gt?: DateTime;
+    publishAt_gte?: DateTime;
     createdAt?: DateTime;
     createdAt_not?: DateTime;
     createdAt_in?: DateTime[];
@@ -2360,6 +2372,7 @@ export class PublicationUpdateInput {
     type?: PublicationType;
     status?: PublicationStatus;
     delay?: number;
+    publishAt?: DateTime;
     createdBy?: string;
     updatedBy?: string;
     promotion?: PromotionUpdateOneRequiredWithoutPublicationsInput;
@@ -2369,6 +2382,7 @@ export class PublicationUpdateManyDataInput {
     type?: PublicationType;
     status?: PublicationStatus;
     delay?: number;
+    publishAt?: DateTime;
     createdBy?: string;
     updatedBy?: string;
 }
@@ -2377,6 +2391,7 @@ export class PublicationUpdateManyMutationInput {
     type?: PublicationType;
     status?: PublicationStatus;
     delay?: number;
+    publishAt?: DateTime;
     createdBy?: string;
     updatedBy?: string;
 }
@@ -2402,6 +2417,7 @@ export class PublicationUpdateWithoutPromotionDataInput {
     type?: PublicationType;
     status?: PublicationStatus;
     delay?: number;
+    publishAt?: DateTime;
     createdBy?: string;
     updatedBy?: string;
 }
@@ -2451,6 +2467,14 @@ export class PublicationWhereInput {
     delay_lte?: number;
     delay_gt?: number;
     delay_gte?: number;
+    publishAt?: DateTime;
+    publishAt_not?: DateTime;
+    publishAt_in?: DateTime[];
+    publishAt_not_in?: DateTime[];
+    publishAt_lt?: DateTime;
+    publishAt_lte?: DateTime;
+    publishAt_gt?: DateTime;
+    publishAt_gte?: DateTime;
     createdAt?: DateTime;
     createdAt_not?: DateTime;
     createdAt_in?: DateTime[];
@@ -3192,6 +3216,7 @@ export class Publication {
     type: PublicationType;
     status?: PublicationStatus;
     delay?: number;
+    publishAt?: DateTime;
     promotion: Promotion;
     createdAt?: DateTime;
     updatedAt?: DateTime;
@@ -3215,6 +3240,7 @@ export class PublicationPreviousValues {
     type: PublicationType;
     status?: PublicationStatus;
     delay?: number;
+    publishAt?: DateTime;
     createdAt?: DateTime;
     updatedAt?: DateTime;
     createdBy?: string;

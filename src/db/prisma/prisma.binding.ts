@@ -4819,6 +4819,7 @@ type Publication {
   type: PublicationType!
   status: PublicationStatus
   delay: Int
+  publishAt: DateTime
   promotion: Promotion!
   createdAt: DateTime
   updatedAt: DateTime
@@ -4841,6 +4842,7 @@ input PublicationCreateInput {
   type: PublicationType!
   status: PublicationStatus
   delay: Int
+  publishAt: DateTime
   createdBy: String
   updatedBy: String
   promotion: PromotionCreateOneWithoutPublicationsInput!
@@ -4856,6 +4858,7 @@ input PublicationCreateWithoutPromotionInput {
   type: PublicationType!
   status: PublicationStatus
   delay: Int
+  publishAt: DateTime
   createdBy: String
   updatedBy: String
 }
@@ -4878,6 +4881,8 @@ enum PublicationOrderByInput {
   status_DESC
   delay_ASC
   delay_DESC
+  publishAt_ASC
+  publishAt_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -4893,6 +4898,7 @@ type PublicationPreviousValues {
   type: PublicationType!
   status: PublicationStatus
   delay: Int
+  publishAt: DateTime
   createdAt: DateTime
   updatedAt: DateTime
   createdBy: String
@@ -4990,6 +4996,28 @@ input PublicationScalarWhereInput {
 
   """All values greater than or equal the given value."""
   delay_gte: Int
+  publishAt: DateTime
+
+  """All values that are not equal to given value."""
+  publishAt_not: DateTime
+
+  """All values that are contained in given list."""
+  publishAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  publishAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  publishAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  publishAt_lte: DateTime
+
+  """All values greater than the given value."""
+  publishAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  publishAt_gte: DateTime
   createdAt: DateTime
 
   """All values that are not equal to given value."""
@@ -5167,6 +5195,7 @@ input PublicationUpdateInput {
   type: PublicationType
   status: PublicationStatus
   delay: Int
+  publishAt: DateTime
   createdBy: String
   updatedBy: String
   promotion: PromotionUpdateOneRequiredWithoutPublicationsInput
@@ -5176,6 +5205,7 @@ input PublicationUpdateManyDataInput {
   type: PublicationType
   status: PublicationStatus
   delay: Int
+  publishAt: DateTime
   createdBy: String
   updatedBy: String
 }
@@ -5184,6 +5214,7 @@ input PublicationUpdateManyMutationInput {
   type: PublicationType
   status: PublicationStatus
   delay: Int
+  publishAt: DateTime
   createdBy: String
   updatedBy: String
 }
@@ -5209,6 +5240,7 @@ input PublicationUpdateWithoutPromotionDataInput {
   type: PublicationType
   status: PublicationStatus
   delay: Int
+  publishAt: DateTime
   createdBy: String
   updatedBy: String
 }
@@ -5315,6 +5347,28 @@ input PublicationWhereInput {
 
   """All values greater than or equal the given value."""
   delay_gte: Int
+  publishAt: DateTime
+
+  """All values that are not equal to given value."""
+  publishAt_not: DateTime
+
+  """All values that are contained in given list."""
+  publishAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  publishAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  publishAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  publishAt_lte: DateTime
+
+  """All values greater than the given value."""
+  publishAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  publishAt_gte: DateTime
   createdAt: DateTime
 
   """All values that are not equal to given value."""
@@ -6298,6 +6352,8 @@ export type PublicationOrderByInput =   'uid_ASC' |
   'status_DESC' |
   'delay_ASC' |
   'delay_DESC' |
+  'publishAt_ASC' |
+  'publishAt_DESC' |
   'createdAt_ASC' |
   'createdAt_DESC' |
   'updatedAt_ASC' |
@@ -8393,6 +8449,7 @@ export interface PublicationCreateInput {
   type: PublicationType
   status?: PublicationStatus | null
   delay?: Int | null
+  publishAt?: DateTime | null
   createdBy?: String | null
   updatedBy?: String | null
   promotion: PromotionCreateOneWithoutPublicationsInput
@@ -8408,6 +8465,7 @@ export interface PublicationCreateWithoutPromotionInput {
   type: PublicationType
   status?: PublicationStatus | null
   delay?: Int | null
+  publishAt?: DateTime | null
   createdBy?: String | null
   updatedBy?: String | null
 }
@@ -8446,6 +8504,14 @@ export interface PublicationScalarWhereInput {
   delay_lte?: Int | null
   delay_gt?: Int | null
   delay_gte?: Int | null
+  publishAt?: DateTime | null
+  publishAt_not?: DateTime | null
+  publishAt_in?: DateTime[] | DateTime | null
+  publishAt_not_in?: DateTime[] | DateTime | null
+  publishAt_lt?: DateTime | null
+  publishAt_lte?: DateTime | null
+  publishAt_gt?: DateTime | null
+  publishAt_gte?: DateTime | null
   createdAt?: DateTime | null
   createdAt_not?: DateTime | null
   createdAt_in?: DateTime[] | DateTime | null
@@ -8507,6 +8573,7 @@ export interface PublicationUpdateInput {
   type?: PublicationType | null
   status?: PublicationStatus | null
   delay?: Int | null
+  publishAt?: DateTime | null
   createdBy?: String | null
   updatedBy?: String | null
   promotion?: PromotionUpdateOneRequiredWithoutPublicationsInput | null
@@ -8516,6 +8583,7 @@ export interface PublicationUpdateManyDataInput {
   type?: PublicationType | null
   status?: PublicationStatus | null
   delay?: Int | null
+  publishAt?: DateTime | null
   createdBy?: String | null
   updatedBy?: String | null
 }
@@ -8524,6 +8592,7 @@ export interface PublicationUpdateManyMutationInput {
   type?: PublicationType | null
   status?: PublicationStatus | null
   delay?: Int | null
+  publishAt?: DateTime | null
   createdBy?: String | null
   updatedBy?: String | null
 }
@@ -8549,6 +8618,7 @@ export interface PublicationUpdateWithoutPromotionDataInput {
   type?: PublicationType | null
   status?: PublicationStatus | null
   delay?: Int | null
+  publishAt?: DateTime | null
   createdBy?: String | null
   updatedBy?: String | null
 }
@@ -8598,6 +8668,14 @@ export interface PublicationWhereInput {
   delay_lte?: Int | null
   delay_gt?: Int | null
   delay_gte?: Int | null
+  publishAt?: DateTime | null
+  publishAt_not?: DateTime | null
+  publishAt_in?: DateTime[] | DateTime | null
+  publishAt_not_in?: DateTime[] | DateTime | null
+  publishAt_lt?: DateTime | null
+  publishAt_lte?: DateTime | null
+  publishAt_gt?: DateTime | null
+  publishAt_gte?: DateTime | null
   createdAt?: DateTime | null
   createdAt_not?: DateTime | null
   createdAt_in?: DateTime[] | DateTime | null
@@ -9301,6 +9379,7 @@ export interface Publication {
   type: PublicationType
   status?: PublicationStatus | null
   delay?: Int | null
+  publishAt?: DateTime | null
   promotion: Promotion
   createdAt?: DateTime | null
   updatedAt?: DateTime | null
@@ -9332,6 +9411,7 @@ export interface PublicationPreviousValues {
   type: PublicationType
   status?: PublicationStatus | null
   delay?: Int | null
+  publishAt?: DateTime | null
   createdAt?: DateTime | null
   updatedAt?: DateTime | null
   createdBy?: String | null

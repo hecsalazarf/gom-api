@@ -6,10 +6,11 @@ import { Promotion } from './model/promotion';
 import { AuditInterceptor } from '../../interceptors';
 import { PromotionConnection } from '../../graphql.schema';
 import { PermissionGuard, Permission } from '../../../graphql/graphql.common';
+import { PromotionOwnerGuard } from './guards';
 
 @Resolver('Promotion')
 @UseFilters(GraphqlFilter)
-@UseGuards(PermissionGuard)
+@UseGuards(PermissionGuard, PromotionOwnerGuard)
 export class PromoResolver {
   constructor(private readonly prisma: PrismaService) { }
 

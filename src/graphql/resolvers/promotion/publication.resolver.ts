@@ -8,12 +8,13 @@ import { AuditInterceptor } from '../../interceptors';
 import { PublicationConnection } from '../../graphql.schema';
 import { PublicationService } from './publication.service';
 import { PermissionGuard, Permission } from '../../../graphql/graphql.common';
+import { PublicationRules } from './rules/publication.rules';
 
 @Resolver('Publication')
 @UseFilters(GraphqlFilter)
 @UseGuards(PermissionGuard)
 export class PublicationResolver {
-  constructor(private readonly prisma: PrismaService, private readonly service: PublicationService) { }
+  constructor(private readonly prisma: PrismaService, private readonly service: PublicationService, private readonly rules: PublicationRules) { }
 
   @Query('publication')
   @Permission('read:publication')
@@ -31,18 +32,11 @@ export class PublicationResolver {
   @UseInterceptors(AuditInterceptor)
   @Permission('create:publication')
   async createPublication(@Args() args: any, @Info() info: any): Promise<Publication> {
-    const customers  = await this.prisma.query.bps({
-      where: {
-        customerOf_some: {
-          promotions_some: {
-            uid: args.data.promotion.connect.uid
-          }
-        }
-      },
-      first: 1
-    }, '{ uid }');
-    if (customers.length < 1) {
+    if (!await this.rules.hasCustomers(args.data.promotion.connect.uid)) {
       throw new ApolloError('No customers associated', 'NO_CUSTOMERS');
+    }
+    if (await this.rules.reachedLimit(args.data)) {
+      throw new ApolloError('Too many publications', 'TOO_MANY_PUBLICATIONS');
     }
     Object.defineProperty(args.data, 'publishAt', {
       value: new Date(Date.now() + (args.data.delay || 0)).toISOString()

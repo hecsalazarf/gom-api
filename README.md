@@ -321,7 +321,7 @@ To change the default logical databases, set the configuration property `redis.d
 
 ## Versioning
 
-0.4.1
+0.5.0
 
 ## Authors
 

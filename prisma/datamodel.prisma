@@ -21,6 +21,7 @@ type User {
   business: String!
   role: String
   orders: [Order!] @relation(name: "UserOrder", onDelete: CASCADE)
+  promotions: [Promotion!] @relation(name: "UserPromo", onDelete: CASCADE)
   customers: [Bp!] @relation(name: "CustomerOf", link: TABLE, onDelete: CASCADE)
   createdAt: DateTime @createdAt
   updatedAt: DateTime @updatedAt
@@ -40,6 +41,7 @@ type Order {
   issuedTo: Bp! @relation(name: "BpOrder", link: INLINE, onDelete: SET_NULL)
   assignedTo: User! @relation(name: "UserOrder", link: INLINE, onDelete: SET_NULL)
   items: [Item!]! @relation(name: "OrderItem", onDelete: CASCADE)
+  promotions: [Promotion!] @relation(name: "OrderPromo", onDelete: SET_NULL)
   createdAt: DateTime @createdAt
   updatedAt: DateTime @updatedAt
   createdBy: String
@@ -74,6 +76,46 @@ type Price {
   amount: Float!
   currency: Currency!
   item: Item! @relation(name: "ItemPrices", link: INLINE, onDelete: SET_NULL)
+  createdAt: DateTime @createdAt
+  updatedAt: DateTime @updatedAt
+  createdBy: String
+  updatedBy: String
+}
+
+type Promotion {
+  uid: ID! @id
+  code: String!
+  name: String!
+  start: DateTime,
+  end: DateTime,
+  category: String,
+  content: String,
+  assignedTo: User! @relation(name: "UserPromo", link: INLINE, onDelete: SET_NULL)
+  publications: [Publication!] @relation(name: "PromoPublication", onDelete: CASCADE)
+  orders: [Order!] @relation(name: "OrderPromo",link: TABLE, onDelete: SET_NULL)
+  createdAt: DateTime @createdAt
+  updatedAt: DateTime @updatedAt
+  createdBy: String
+  updatedBy: String
+}
+
+enum PublicationType {
+  NOTIFICATION
+}
+
+enum PublicationStatus {
+  DELIVERED
+  WAITING
+  FAILED
+}
+
+type Publication {
+  uid: ID! @id
+  type: PublicationType!
+  status: PublicationStatus
+  delay: Int
+  publishAt: DateTime
+  promotion: Promotion! @relation(name: "PromoPublication", link: INLINE, onDelete: SET_NULL)
   createdAt: DateTime @createdAt
   updatedAt: DateTime @updatedAt
   createdBy: String

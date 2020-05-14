@@ -110,6 +110,62 @@ export enum PriceType {
     GENERAL = "GENERAL"
 }
 
+export enum PromotionOrderByInput {
+    uid_ASC = "uid_ASC",
+    uid_DESC = "uid_DESC",
+    code_ASC = "code_ASC",
+    code_DESC = "code_DESC",
+    name_ASC = "name_ASC",
+    name_DESC = "name_DESC",
+    start_ASC = "start_ASC",
+    start_DESC = "start_DESC",
+    end_ASC = "end_ASC",
+    end_DESC = "end_DESC",
+    category_ASC = "category_ASC",
+    category_DESC = "category_DESC",
+    content_ASC = "content_ASC",
+    content_DESC = "content_DESC",
+    createdAt_ASC = "createdAt_ASC",
+    createdAt_DESC = "createdAt_DESC",
+    updatedAt_ASC = "updatedAt_ASC",
+    updatedAt_DESC = "updatedAt_DESC",
+    createdBy_ASC = "createdBy_ASC",
+    createdBy_DESC = "createdBy_DESC",
+    updatedBy_ASC = "updatedBy_ASC",
+    updatedBy_DESC = "updatedBy_DESC"
+}
+
+export enum PublicationOrderByInput {
+    uid_ASC = "uid_ASC",
+    uid_DESC = "uid_DESC",
+    type_ASC = "type_ASC",
+    type_DESC = "type_DESC",
+    status_ASC = "status_ASC",
+    status_DESC = "status_DESC",
+    delay_ASC = "delay_ASC",
+    delay_DESC = "delay_DESC",
+    publishAt_ASC = "publishAt_ASC",
+    publishAt_DESC = "publishAt_DESC",
+    createdAt_ASC = "createdAt_ASC",
+    createdAt_DESC = "createdAt_DESC",
+    updatedAt_ASC = "updatedAt_ASC",
+    updatedAt_DESC = "updatedAt_DESC",
+    createdBy_ASC = "createdBy_ASC",
+    createdBy_DESC = "createdBy_DESC",
+    updatedBy_ASC = "updatedBy_ASC",
+    updatedBy_DESC = "updatedBy_DESC"
+}
+
+export enum PublicationStatus {
+    DELIVERED = "DELIVERED",
+    WAITING = "WAITING",
+    FAILED = "FAILED"
+}
+
+export enum PublicationType {
+    NOTIFICATION = "NOTIFICATION"
+}
+
 export enum UserOrderByInput {
     uid_ASC = "uid_ASC",
     uid_DESC = "uid_DESC",
@@ -1017,6 +1073,7 @@ export class OrderCreateInput {
     issuedTo: BpCreateOneWithoutOrdersInput;
     assignedTo: UserCreateOneWithoutOrdersInput;
     items?: ItemCreateManyWithoutOrderInput;
+    promotions?: PromotionCreateManyWithoutOrdersInput;
 }
 
 export class OrderCreateManyWithoutAssignedToInput {
@@ -1026,6 +1083,11 @@ export class OrderCreateManyWithoutAssignedToInput {
 
 export class OrderCreateManyWithoutIssuedToInput {
     create?: OrderCreateWithoutIssuedToInput[];
+    connect?: OrderWhereUniqueInput[];
+}
+
+export class OrderCreateManyWithoutPromotionsInput {
+    create?: OrderCreateWithoutPromotionsInput[];
     connect?: OrderWhereUniqueInput[];
 }
 
@@ -1042,6 +1104,7 @@ export class OrderCreateWithoutAssignedToInput {
     updatedBy?: string;
     issuedTo: BpCreateOneWithoutOrdersInput;
     items?: ItemCreateManyWithoutOrderInput;
+    promotions?: PromotionCreateManyWithoutOrdersInput;
 }
 
 export class OrderCreateWithoutIssuedToInput {
@@ -1052,6 +1115,7 @@ export class OrderCreateWithoutIssuedToInput {
     updatedBy?: string;
     assignedTo: UserCreateOneWithoutOrdersInput;
     items?: ItemCreateManyWithoutOrderInput;
+    promotions?: PromotionCreateManyWithoutOrdersInput;
 }
 
 export class OrderCreateWithoutItemsInput {
@@ -1062,6 +1126,18 @@ export class OrderCreateWithoutItemsInput {
     updatedBy?: string;
     issuedTo: BpCreateOneWithoutOrdersInput;
     assignedTo: UserCreateOneWithoutOrdersInput;
+    promotions?: PromotionCreateManyWithoutOrdersInput;
+}
+
+export class OrderCreateWithoutPromotionsInput {
+    uid?: string;
+    name: string;
+    stage?: OrderStage;
+    createdBy?: string;
+    updatedBy?: string;
+    issuedTo: BpCreateOneWithoutOrdersInput;
+    assignedTo: UserCreateOneWithoutOrdersInput;
+    items?: ItemCreateManyWithoutOrderInput;
 }
 
 export class OrderScalarWhereInput {
@@ -1165,6 +1241,7 @@ export class OrderUpdateInput {
     issuedTo?: BpUpdateOneRequiredWithoutOrdersInput;
     assignedTo?: UserUpdateOneRequiredWithoutOrdersInput;
     items?: ItemUpdateManyWithoutOrderInput;
+    promotions?: PromotionUpdateManyWithoutOrdersInput;
 }
 
 export class OrderUpdateManyDataInput {
@@ -1205,6 +1282,18 @@ export class OrderUpdateManyWithoutIssuedToInput {
     upsert?: OrderUpsertWithWhereUniqueWithoutIssuedToInput[];
 }
 
+export class OrderUpdateManyWithoutPromotionsInput {
+    create?: OrderCreateWithoutPromotionsInput[];
+    connect?: OrderWhereUniqueInput[];
+    set?: OrderWhereUniqueInput[];
+    disconnect?: OrderWhereUniqueInput[];
+    delete?: OrderWhereUniqueInput[];
+    update?: OrderUpdateWithWhereUniqueWithoutPromotionsInput[];
+    updateMany?: OrderUpdateManyWithWhereNestedInput[];
+    deleteMany?: OrderScalarWhereInput[];
+    upsert?: OrderUpsertWithWhereUniqueWithoutPromotionsInput[];
+}
+
 export class OrderUpdateManyWithWhereNestedInput {
     where: OrderScalarWhereInput;
     data: OrderUpdateManyDataInput;
@@ -1224,6 +1313,7 @@ export class OrderUpdateWithoutAssignedToDataInput {
     updatedBy?: string;
     issuedTo?: BpUpdateOneRequiredWithoutOrdersInput;
     items?: ItemUpdateManyWithoutOrderInput;
+    promotions?: PromotionUpdateManyWithoutOrdersInput;
 }
 
 export class OrderUpdateWithoutIssuedToDataInput {
@@ -1233,6 +1323,7 @@ export class OrderUpdateWithoutIssuedToDataInput {
     updatedBy?: string;
     assignedTo?: UserUpdateOneRequiredWithoutOrdersInput;
     items?: ItemUpdateManyWithoutOrderInput;
+    promotions?: PromotionUpdateManyWithoutOrdersInput;
 }
 
 export class OrderUpdateWithoutItemsDataInput {
@@ -1242,6 +1333,17 @@ export class OrderUpdateWithoutItemsDataInput {
     updatedBy?: string;
     issuedTo?: BpUpdateOneRequiredWithoutOrdersInput;
     assignedTo?: UserUpdateOneRequiredWithoutOrdersInput;
+    promotions?: PromotionUpdateManyWithoutOrdersInput;
+}
+
+export class OrderUpdateWithoutPromotionsDataInput {
+    name?: string;
+    stage?: OrderStage;
+    createdBy?: string;
+    updatedBy?: string;
+    issuedTo?: BpUpdateOneRequiredWithoutOrdersInput;
+    assignedTo?: UserUpdateOneRequiredWithoutOrdersInput;
+    items?: ItemUpdateManyWithoutOrderInput;
 }
 
 export class OrderUpdateWithWhereUniqueWithoutAssignedToInput {
@@ -1252,6 +1354,11 @@ export class OrderUpdateWithWhereUniqueWithoutAssignedToInput {
 export class OrderUpdateWithWhereUniqueWithoutIssuedToInput {
     where: OrderWhereUniqueInput;
     data: OrderUpdateWithoutIssuedToDataInput;
+}
+
+export class OrderUpdateWithWhereUniqueWithoutPromotionsInput {
+    where: OrderWhereUniqueInput;
+    data: OrderUpdateWithoutPromotionsDataInput;
 }
 
 export class OrderUpsertWithoutItemsInput {
@@ -1269,6 +1376,12 @@ export class OrderUpsertWithWhereUniqueWithoutIssuedToInput {
     where: OrderWhereUniqueInput;
     update: OrderUpdateWithoutIssuedToDataInput;
     create: OrderCreateWithoutIssuedToInput;
+}
+
+export class OrderUpsertWithWhereUniqueWithoutPromotionsInput {
+    where: OrderWhereUniqueInput;
+    update: OrderUpdateWithoutPromotionsDataInput;
+    create: OrderCreateWithoutPromotionsInput;
 }
 
 export class OrderWhereInput {
@@ -1356,6 +1469,9 @@ export class OrderWhereInput {
     items_every?: ItemWhereInput;
     items_some?: ItemWhereInput;
     items_none?: ItemWhereInput;
+    promotions_every?: PromotionWhereInput;
+    promotions_some?: PromotionWhereInput;
+    promotions_none?: PromotionWhereInput;
 }
 
 export class OrderWhereUniqueInput {
@@ -1623,12 +1739,800 @@ export class PriceWhereUniqueInput {
     uid?: string;
 }
 
+export class PromotionCreateInput {
+    uid?: string;
+    code: string;
+    name: string;
+    start?: DateTime;
+    end?: DateTime;
+    category?: string;
+    content?: string;
+    createdBy?: string;
+    updatedBy?: string;
+    assignedTo: UserCreateOneWithoutPromotionsInput;
+    publications?: PublicationCreateManyWithoutPromotionInput;
+    orders?: OrderCreateManyWithoutPromotionsInput;
+}
+
+export class PromotionCreateManyWithoutAssignedToInput {
+    create?: PromotionCreateWithoutAssignedToInput[];
+    connect?: PromotionWhereUniqueInput[];
+}
+
+export class PromotionCreateManyWithoutOrdersInput {
+    create?: PromotionCreateWithoutOrdersInput[];
+    connect?: PromotionWhereUniqueInput[];
+}
+
+export class PromotionCreateOneWithoutPublicationsInput {
+    create?: PromotionCreateWithoutPublicationsInput;
+    connect?: PromotionWhereUniqueInput;
+}
+
+export class PromotionCreateWithoutAssignedToInput {
+    uid?: string;
+    code: string;
+    name: string;
+    start?: DateTime;
+    end?: DateTime;
+    category?: string;
+    content?: string;
+    createdBy?: string;
+    updatedBy?: string;
+    publications?: PublicationCreateManyWithoutPromotionInput;
+    orders?: OrderCreateManyWithoutPromotionsInput;
+}
+
+export class PromotionCreateWithoutOrdersInput {
+    uid?: string;
+    code: string;
+    name: string;
+    start?: DateTime;
+    end?: DateTime;
+    category?: string;
+    content?: string;
+    createdBy?: string;
+    updatedBy?: string;
+    assignedTo: UserCreateOneWithoutPromotionsInput;
+    publications?: PublicationCreateManyWithoutPromotionInput;
+}
+
+export class PromotionCreateWithoutPublicationsInput {
+    uid?: string;
+    code: string;
+    name: string;
+    start?: DateTime;
+    end?: DateTime;
+    category?: string;
+    content?: string;
+    createdBy?: string;
+    updatedBy?: string;
+    assignedTo: UserCreateOneWithoutPromotionsInput;
+    orders?: OrderCreateManyWithoutPromotionsInput;
+}
+
+export class PromotionScalarWhereInput {
+    AND?: PromotionScalarWhereInput[];
+    OR?: PromotionScalarWhereInput[];
+    NOT?: PromotionScalarWhereInput[];
+    uid?: string;
+    uid_not?: string;
+    uid_in?: string[];
+    uid_not_in?: string[];
+    uid_lt?: string;
+    uid_lte?: string;
+    uid_gt?: string;
+    uid_gte?: string;
+    uid_contains?: string;
+    uid_not_contains?: string;
+    uid_starts_with?: string;
+    uid_not_starts_with?: string;
+    uid_ends_with?: string;
+    uid_not_ends_with?: string;
+    code?: string;
+    code_not?: string;
+    code_in?: string[];
+    code_not_in?: string[];
+    code_lt?: string;
+    code_lte?: string;
+    code_gt?: string;
+    code_gte?: string;
+    code_contains?: string;
+    code_not_contains?: string;
+    code_starts_with?: string;
+    code_not_starts_with?: string;
+    code_ends_with?: string;
+    code_not_ends_with?: string;
+    name?: string;
+    name_not?: string;
+    name_in?: string[];
+    name_not_in?: string[];
+    name_lt?: string;
+    name_lte?: string;
+    name_gt?: string;
+    name_gte?: string;
+    name_contains?: string;
+    name_not_contains?: string;
+    name_starts_with?: string;
+    name_not_starts_with?: string;
+    name_ends_with?: string;
+    name_not_ends_with?: string;
+    start?: DateTime;
+    start_not?: DateTime;
+    start_in?: DateTime[];
+    start_not_in?: DateTime[];
+    start_lt?: DateTime;
+    start_lte?: DateTime;
+    start_gt?: DateTime;
+    start_gte?: DateTime;
+    end?: DateTime;
+    end_not?: DateTime;
+    end_in?: DateTime[];
+    end_not_in?: DateTime[];
+    end_lt?: DateTime;
+    end_lte?: DateTime;
+    end_gt?: DateTime;
+    end_gte?: DateTime;
+    category?: string;
+    category_not?: string;
+    category_in?: string[];
+    category_not_in?: string[];
+    category_lt?: string;
+    category_lte?: string;
+    category_gt?: string;
+    category_gte?: string;
+    category_contains?: string;
+    category_not_contains?: string;
+    category_starts_with?: string;
+    category_not_starts_with?: string;
+    category_ends_with?: string;
+    category_not_ends_with?: string;
+    content?: string;
+    content_not?: string;
+    content_in?: string[];
+    content_not_in?: string[];
+    content_lt?: string;
+    content_lte?: string;
+    content_gt?: string;
+    content_gte?: string;
+    content_contains?: string;
+    content_not_contains?: string;
+    content_starts_with?: string;
+    content_not_starts_with?: string;
+    content_ends_with?: string;
+    content_not_ends_with?: string;
+    createdAt?: DateTime;
+    createdAt_not?: DateTime;
+    createdAt_in?: DateTime[];
+    createdAt_not_in?: DateTime[];
+    createdAt_lt?: DateTime;
+    createdAt_lte?: DateTime;
+    createdAt_gt?: DateTime;
+    createdAt_gte?: DateTime;
+    updatedAt?: DateTime;
+    updatedAt_not?: DateTime;
+    updatedAt_in?: DateTime[];
+    updatedAt_not_in?: DateTime[];
+    updatedAt_lt?: DateTime;
+    updatedAt_lte?: DateTime;
+    updatedAt_gt?: DateTime;
+    updatedAt_gte?: DateTime;
+    createdBy?: string;
+    createdBy_not?: string;
+    createdBy_in?: string[];
+    createdBy_not_in?: string[];
+    createdBy_lt?: string;
+    createdBy_lte?: string;
+    createdBy_gt?: string;
+    createdBy_gte?: string;
+    createdBy_contains?: string;
+    createdBy_not_contains?: string;
+    createdBy_starts_with?: string;
+    createdBy_not_starts_with?: string;
+    createdBy_ends_with?: string;
+    createdBy_not_ends_with?: string;
+    updatedBy?: string;
+    updatedBy_not?: string;
+    updatedBy_in?: string[];
+    updatedBy_not_in?: string[];
+    updatedBy_lt?: string;
+    updatedBy_lte?: string;
+    updatedBy_gt?: string;
+    updatedBy_gte?: string;
+    updatedBy_contains?: string;
+    updatedBy_not_contains?: string;
+    updatedBy_starts_with?: string;
+    updatedBy_not_starts_with?: string;
+    updatedBy_ends_with?: string;
+    updatedBy_not_ends_with?: string;
+}
+
+export class PromotionSubscriptionWhereInput {
+    AND?: PromotionSubscriptionWhereInput[];
+    OR?: PromotionSubscriptionWhereInput[];
+    NOT?: PromotionSubscriptionWhereInput[];
+    mutation_in?: MutationType[];
+    updatedFields_contains?: string;
+    updatedFields_contains_every?: string[];
+    updatedFields_contains_some?: string[];
+    node?: PromotionWhereInput;
+}
+
+export class PromotionUpdateInput {
+    code?: string;
+    name?: string;
+    start?: DateTime;
+    end?: DateTime;
+    category?: string;
+    content?: string;
+    createdBy?: string;
+    updatedBy?: string;
+    assignedTo?: UserUpdateOneRequiredWithoutPromotionsInput;
+    publications?: PublicationUpdateManyWithoutPromotionInput;
+    orders?: OrderUpdateManyWithoutPromotionsInput;
+}
+
+export class PromotionUpdateManyDataInput {
+    code?: string;
+    name?: string;
+    start?: DateTime;
+    end?: DateTime;
+    category?: string;
+    content?: string;
+    createdBy?: string;
+    updatedBy?: string;
+}
+
+export class PromotionUpdateManyMutationInput {
+    code?: string;
+    name?: string;
+    start?: DateTime;
+    end?: DateTime;
+    category?: string;
+    content?: string;
+    createdBy?: string;
+    updatedBy?: string;
+}
+
+export class PromotionUpdateManyWithoutAssignedToInput {
+    create?: PromotionCreateWithoutAssignedToInput[];
+    connect?: PromotionWhereUniqueInput[];
+    set?: PromotionWhereUniqueInput[];
+    disconnect?: PromotionWhereUniqueInput[];
+    delete?: PromotionWhereUniqueInput[];
+    update?: PromotionUpdateWithWhereUniqueWithoutAssignedToInput[];
+    updateMany?: PromotionUpdateManyWithWhereNestedInput[];
+    deleteMany?: PromotionScalarWhereInput[];
+    upsert?: PromotionUpsertWithWhereUniqueWithoutAssignedToInput[];
+}
+
+export class PromotionUpdateManyWithoutOrdersInput {
+    create?: PromotionCreateWithoutOrdersInput[];
+    connect?: PromotionWhereUniqueInput[];
+    set?: PromotionWhereUniqueInput[];
+    disconnect?: PromotionWhereUniqueInput[];
+    delete?: PromotionWhereUniqueInput[];
+    update?: PromotionUpdateWithWhereUniqueWithoutOrdersInput[];
+    updateMany?: PromotionUpdateManyWithWhereNestedInput[];
+    deleteMany?: PromotionScalarWhereInput[];
+    upsert?: PromotionUpsertWithWhereUniqueWithoutOrdersInput[];
+}
+
+export class PromotionUpdateManyWithWhereNestedInput {
+    where: PromotionScalarWhereInput;
+    data: PromotionUpdateManyDataInput;
+}
+
+export class PromotionUpdateOneRequiredWithoutPublicationsInput {
+    create?: PromotionCreateWithoutPublicationsInput;
+    connect?: PromotionWhereUniqueInput;
+    update?: PromotionUpdateWithoutPublicationsDataInput;
+    upsert?: PromotionUpsertWithoutPublicationsInput;
+}
+
+export class PromotionUpdateWithoutAssignedToDataInput {
+    code?: string;
+    name?: string;
+    start?: DateTime;
+    end?: DateTime;
+    category?: string;
+    content?: string;
+    createdBy?: string;
+    updatedBy?: string;
+    publications?: PublicationUpdateManyWithoutPromotionInput;
+    orders?: OrderUpdateManyWithoutPromotionsInput;
+}
+
+export class PromotionUpdateWithoutOrdersDataInput {
+    code?: string;
+    name?: string;
+    start?: DateTime;
+    end?: DateTime;
+    category?: string;
+    content?: string;
+    createdBy?: string;
+    updatedBy?: string;
+    assignedTo?: UserUpdateOneRequiredWithoutPromotionsInput;
+    publications?: PublicationUpdateManyWithoutPromotionInput;
+}
+
+export class PromotionUpdateWithoutPublicationsDataInput {
+    code?: string;
+    name?: string;
+    start?: DateTime;
+    end?: DateTime;
+    category?: string;
+    content?: string;
+    createdBy?: string;
+    updatedBy?: string;
+    assignedTo?: UserUpdateOneRequiredWithoutPromotionsInput;
+    orders?: OrderUpdateManyWithoutPromotionsInput;
+}
+
+export class PromotionUpdateWithWhereUniqueWithoutAssignedToInput {
+    where: PromotionWhereUniqueInput;
+    data: PromotionUpdateWithoutAssignedToDataInput;
+}
+
+export class PromotionUpdateWithWhereUniqueWithoutOrdersInput {
+    where: PromotionWhereUniqueInput;
+    data: PromotionUpdateWithoutOrdersDataInput;
+}
+
+export class PromotionUpsertWithoutPublicationsInput {
+    update: PromotionUpdateWithoutPublicationsDataInput;
+    create: PromotionCreateWithoutPublicationsInput;
+}
+
+export class PromotionUpsertWithWhereUniqueWithoutAssignedToInput {
+    where: PromotionWhereUniqueInput;
+    update: PromotionUpdateWithoutAssignedToDataInput;
+    create: PromotionCreateWithoutAssignedToInput;
+}
+
+export class PromotionUpsertWithWhereUniqueWithoutOrdersInput {
+    where: PromotionWhereUniqueInput;
+    update: PromotionUpdateWithoutOrdersDataInput;
+    create: PromotionCreateWithoutOrdersInput;
+}
+
+export class PromotionWhereInput {
+    AND?: PromotionWhereInput[];
+    OR?: PromotionWhereInput[];
+    NOT?: PromotionWhereInput[];
+    uid?: string;
+    uid_not?: string;
+    uid_in?: string[];
+    uid_not_in?: string[];
+    uid_lt?: string;
+    uid_lte?: string;
+    uid_gt?: string;
+    uid_gte?: string;
+    uid_contains?: string;
+    uid_not_contains?: string;
+    uid_starts_with?: string;
+    uid_not_starts_with?: string;
+    uid_ends_with?: string;
+    uid_not_ends_with?: string;
+    code?: string;
+    code_not?: string;
+    code_in?: string[];
+    code_not_in?: string[];
+    code_lt?: string;
+    code_lte?: string;
+    code_gt?: string;
+    code_gte?: string;
+    code_contains?: string;
+    code_not_contains?: string;
+    code_starts_with?: string;
+    code_not_starts_with?: string;
+    code_ends_with?: string;
+    code_not_ends_with?: string;
+    name?: string;
+    name_not?: string;
+    name_in?: string[];
+    name_not_in?: string[];
+    name_lt?: string;
+    name_lte?: string;
+    name_gt?: string;
+    name_gte?: string;
+    name_contains?: string;
+    name_not_contains?: string;
+    name_starts_with?: string;
+    name_not_starts_with?: string;
+    name_ends_with?: string;
+    name_not_ends_with?: string;
+    start?: DateTime;
+    start_not?: DateTime;
+    start_in?: DateTime[];
+    start_not_in?: DateTime[];
+    start_lt?: DateTime;
+    start_lte?: DateTime;
+    start_gt?: DateTime;
+    start_gte?: DateTime;
+    end?: DateTime;
+    end_not?: DateTime;
+    end_in?: DateTime[];
+    end_not_in?: DateTime[];
+    end_lt?: DateTime;
+    end_lte?: DateTime;
+    end_gt?: DateTime;
+    end_gte?: DateTime;
+    category?: string;
+    category_not?: string;
+    category_in?: string[];
+    category_not_in?: string[];
+    category_lt?: string;
+    category_lte?: string;
+    category_gt?: string;
+    category_gte?: string;
+    category_contains?: string;
+    category_not_contains?: string;
+    category_starts_with?: string;
+    category_not_starts_with?: string;
+    category_ends_with?: string;
+    category_not_ends_with?: string;
+    content?: string;
+    content_not?: string;
+    content_in?: string[];
+    content_not_in?: string[];
+    content_lt?: string;
+    content_lte?: string;
+    content_gt?: string;
+    content_gte?: string;
+    content_contains?: string;
+    content_not_contains?: string;
+    content_starts_with?: string;
+    content_not_starts_with?: string;
+    content_ends_with?: string;
+    content_not_ends_with?: string;
+    createdAt?: DateTime;
+    createdAt_not?: DateTime;
+    createdAt_in?: DateTime[];
+    createdAt_not_in?: DateTime[];
+    createdAt_lt?: DateTime;
+    createdAt_lte?: DateTime;
+    createdAt_gt?: DateTime;
+    createdAt_gte?: DateTime;
+    updatedAt?: DateTime;
+    updatedAt_not?: DateTime;
+    updatedAt_in?: DateTime[];
+    updatedAt_not_in?: DateTime[];
+    updatedAt_lt?: DateTime;
+    updatedAt_lte?: DateTime;
+    updatedAt_gt?: DateTime;
+    updatedAt_gte?: DateTime;
+    createdBy?: string;
+    createdBy_not?: string;
+    createdBy_in?: string[];
+    createdBy_not_in?: string[];
+    createdBy_lt?: string;
+    createdBy_lte?: string;
+    createdBy_gt?: string;
+    createdBy_gte?: string;
+    createdBy_contains?: string;
+    createdBy_not_contains?: string;
+    createdBy_starts_with?: string;
+    createdBy_not_starts_with?: string;
+    createdBy_ends_with?: string;
+    createdBy_not_ends_with?: string;
+    updatedBy?: string;
+    updatedBy_not?: string;
+    updatedBy_in?: string[];
+    updatedBy_not_in?: string[];
+    updatedBy_lt?: string;
+    updatedBy_lte?: string;
+    updatedBy_gt?: string;
+    updatedBy_gte?: string;
+    updatedBy_contains?: string;
+    updatedBy_not_contains?: string;
+    updatedBy_starts_with?: string;
+    updatedBy_not_starts_with?: string;
+    updatedBy_ends_with?: string;
+    updatedBy_not_ends_with?: string;
+    assignedTo?: UserWhereInput;
+    publications_every?: PublicationWhereInput;
+    publications_some?: PublicationWhereInput;
+    publications_none?: PublicationWhereInput;
+    orders_every?: OrderWhereInput;
+    orders_some?: OrderWhereInput;
+    orders_none?: OrderWhereInput;
+}
+
+export class PromotionWhereUniqueInput {
+    uid?: string;
+}
+
+export class PublicationCreateInput {
+    uid?: string;
+    type: PublicationType;
+    status?: PublicationStatus;
+    delay?: number;
+    publishAt?: DateTime;
+    createdBy?: string;
+    updatedBy?: string;
+    promotion: PromotionCreateOneWithoutPublicationsInput;
+}
+
+export class PublicationCreateManyWithoutPromotionInput {
+    create?: PublicationCreateWithoutPromotionInput[];
+    connect?: PublicationWhereUniqueInput[];
+}
+
+export class PublicationCreateWithoutPromotionInput {
+    uid?: string;
+    type: PublicationType;
+    status?: PublicationStatus;
+    delay?: number;
+    publishAt?: DateTime;
+    createdBy?: string;
+    updatedBy?: string;
+}
+
+export class PublicationScalarWhereInput {
+    AND?: PublicationScalarWhereInput[];
+    OR?: PublicationScalarWhereInput[];
+    NOT?: PublicationScalarWhereInput[];
+    uid?: string;
+    uid_not?: string;
+    uid_in?: string[];
+    uid_not_in?: string[];
+    uid_lt?: string;
+    uid_lte?: string;
+    uid_gt?: string;
+    uid_gte?: string;
+    uid_contains?: string;
+    uid_not_contains?: string;
+    uid_starts_with?: string;
+    uid_not_starts_with?: string;
+    uid_ends_with?: string;
+    uid_not_ends_with?: string;
+    type?: PublicationType;
+    type_not?: PublicationType;
+    type_in?: PublicationType[];
+    type_not_in?: PublicationType[];
+    status?: PublicationStatus;
+    status_not?: PublicationStatus;
+    status_in?: PublicationStatus[];
+    status_not_in?: PublicationStatus[];
+    delay?: number;
+    delay_not?: number;
+    delay_in?: number[];
+    delay_not_in?: number[];
+    delay_lt?: number;
+    delay_lte?: number;
+    delay_gt?: number;
+    delay_gte?: number;
+    publishAt?: DateTime;
+    publishAt_not?: DateTime;
+    publishAt_in?: DateTime[];
+    publishAt_not_in?: DateTime[];
+    publishAt_lt?: DateTime;
+    publishAt_lte?: DateTime;
+    publishAt_gt?: DateTime;
+    publishAt_gte?: DateTime;
+    createdAt?: DateTime;
+    createdAt_not?: DateTime;
+    createdAt_in?: DateTime[];
+    createdAt_not_in?: DateTime[];
+    createdAt_lt?: DateTime;
+    createdAt_lte?: DateTime;
+    createdAt_gt?: DateTime;
+    createdAt_gte?: DateTime;
+    updatedAt?: DateTime;
+    updatedAt_not?: DateTime;
+    updatedAt_in?: DateTime[];
+    updatedAt_not_in?: DateTime[];
+    updatedAt_lt?: DateTime;
+    updatedAt_lte?: DateTime;
+    updatedAt_gt?: DateTime;
+    updatedAt_gte?: DateTime;
+    createdBy?: string;
+    createdBy_not?: string;
+    createdBy_in?: string[];
+    createdBy_not_in?: string[];
+    createdBy_lt?: string;
+    createdBy_lte?: string;
+    createdBy_gt?: string;
+    createdBy_gte?: string;
+    createdBy_contains?: string;
+    createdBy_not_contains?: string;
+    createdBy_starts_with?: string;
+    createdBy_not_starts_with?: string;
+    createdBy_ends_with?: string;
+    createdBy_not_ends_with?: string;
+    updatedBy?: string;
+    updatedBy_not?: string;
+    updatedBy_in?: string[];
+    updatedBy_not_in?: string[];
+    updatedBy_lt?: string;
+    updatedBy_lte?: string;
+    updatedBy_gt?: string;
+    updatedBy_gte?: string;
+    updatedBy_contains?: string;
+    updatedBy_not_contains?: string;
+    updatedBy_starts_with?: string;
+    updatedBy_not_starts_with?: string;
+    updatedBy_ends_with?: string;
+    updatedBy_not_ends_with?: string;
+}
+
+export class PublicationSubscriptionWhereInput {
+    AND?: PublicationSubscriptionWhereInput[];
+    OR?: PublicationSubscriptionWhereInput[];
+    NOT?: PublicationSubscriptionWhereInput[];
+    mutation_in?: MutationType[];
+    updatedFields_contains?: string;
+    updatedFields_contains_every?: string[];
+    updatedFields_contains_some?: string[];
+    node?: PublicationWhereInput;
+}
+
+export class PublicationUpdateInput {
+    type?: PublicationType;
+    status?: PublicationStatus;
+    delay?: number;
+    publishAt?: DateTime;
+    createdBy?: string;
+    updatedBy?: string;
+    promotion?: PromotionUpdateOneRequiredWithoutPublicationsInput;
+}
+
+export class PublicationUpdateManyDataInput {
+    type?: PublicationType;
+    status?: PublicationStatus;
+    delay?: number;
+    publishAt?: DateTime;
+    createdBy?: string;
+    updatedBy?: string;
+}
+
+export class PublicationUpdateManyMutationInput {
+    type?: PublicationType;
+    status?: PublicationStatus;
+    delay?: number;
+    publishAt?: DateTime;
+    createdBy?: string;
+    updatedBy?: string;
+}
+
+export class PublicationUpdateManyWithoutPromotionInput {
+    create?: PublicationCreateWithoutPromotionInput[];
+    connect?: PublicationWhereUniqueInput[];
+    set?: PublicationWhereUniqueInput[];
+    disconnect?: PublicationWhereUniqueInput[];
+    delete?: PublicationWhereUniqueInput[];
+    update?: PublicationUpdateWithWhereUniqueWithoutPromotionInput[];
+    updateMany?: PublicationUpdateManyWithWhereNestedInput[];
+    deleteMany?: PublicationScalarWhereInput[];
+    upsert?: PublicationUpsertWithWhereUniqueWithoutPromotionInput[];
+}
+
+export class PublicationUpdateManyWithWhereNestedInput {
+    where: PublicationScalarWhereInput;
+    data: PublicationUpdateManyDataInput;
+}
+
+export class PublicationUpdateWithoutPromotionDataInput {
+    type?: PublicationType;
+    status?: PublicationStatus;
+    delay?: number;
+    publishAt?: DateTime;
+    createdBy?: string;
+    updatedBy?: string;
+}
+
+export class PublicationUpdateWithWhereUniqueWithoutPromotionInput {
+    where: PublicationWhereUniqueInput;
+    data: PublicationUpdateWithoutPromotionDataInput;
+}
+
+export class PublicationUpsertWithWhereUniqueWithoutPromotionInput {
+    where: PublicationWhereUniqueInput;
+    update: PublicationUpdateWithoutPromotionDataInput;
+    create: PublicationCreateWithoutPromotionInput;
+}
+
+export class PublicationWhereInput {
+    AND?: PublicationWhereInput[];
+    OR?: PublicationWhereInput[];
+    NOT?: PublicationWhereInput[];
+    uid?: string;
+    uid_not?: string;
+    uid_in?: string[];
+    uid_not_in?: string[];
+    uid_lt?: string;
+    uid_lte?: string;
+    uid_gt?: string;
+    uid_gte?: string;
+    uid_contains?: string;
+    uid_not_contains?: string;
+    uid_starts_with?: string;
+    uid_not_starts_with?: string;
+    uid_ends_with?: string;
+    uid_not_ends_with?: string;
+    type?: PublicationType;
+    type_not?: PublicationType;
+    type_in?: PublicationType[];
+    type_not_in?: PublicationType[];
+    status?: PublicationStatus;
+    status_not?: PublicationStatus;
+    status_in?: PublicationStatus[];
+    status_not_in?: PublicationStatus[];
+    delay?: number;
+    delay_not?: number;
+    delay_in?: number[];
+    delay_not_in?: number[];
+    delay_lt?: number;
+    delay_lte?: number;
+    delay_gt?: number;
+    delay_gte?: number;
+    publishAt?: DateTime;
+    publishAt_not?: DateTime;
+    publishAt_in?: DateTime[];
+    publishAt_not_in?: DateTime[];
+    publishAt_lt?: DateTime;
+    publishAt_lte?: DateTime;
+    publishAt_gt?: DateTime;
+    publishAt_gte?: DateTime;
+    createdAt?: DateTime;
+    createdAt_not?: DateTime;
+    createdAt_in?: DateTime[];
+    createdAt_not_in?: DateTime[];
+    createdAt_lt?: DateTime;
+    createdAt_lte?: DateTime;
+    createdAt_gt?: DateTime;
+    createdAt_gte?: DateTime;
+    updatedAt?: DateTime;
+    updatedAt_not?: DateTime;
+    updatedAt_in?: DateTime[];
+    updatedAt_not_in?: DateTime[];
+    updatedAt_lt?: DateTime;
+    updatedAt_lte?: DateTime;
+    updatedAt_gt?: DateTime;
+    updatedAt_gte?: DateTime;
+    createdBy?: string;
+    createdBy_not?: string;
+    createdBy_in?: string[];
+    createdBy_not_in?: string[];
+    createdBy_lt?: string;
+    createdBy_lte?: string;
+    createdBy_gt?: string;
+    createdBy_gte?: string;
+    createdBy_contains?: string;
+    createdBy_not_contains?: string;
+    createdBy_starts_with?: string;
+    createdBy_not_starts_with?: string;
+    createdBy_ends_with?: string;
+    createdBy_not_ends_with?: string;
+    updatedBy?: string;
+    updatedBy_not?: string;
+    updatedBy_in?: string[];
+    updatedBy_not_in?: string[];
+    updatedBy_lt?: string;
+    updatedBy_lte?: string;
+    updatedBy_gt?: string;
+    updatedBy_gte?: string;
+    updatedBy_contains?: string;
+    updatedBy_not_contains?: string;
+    updatedBy_starts_with?: string;
+    updatedBy_not_starts_with?: string;
+    updatedBy_ends_with?: string;
+    updatedBy_not_ends_with?: string;
+    promotion?: PromotionWhereInput;
+}
+
+export class PublicationWhereUniqueInput {
+    uid?: string;
+}
+
 export class UserCreateInput {
     uid?: string;
     extUid?: string;
     business: string;
     role?: string;
     orders?: OrderCreateManyWithoutAssignedToInput;
+    promotions?: PromotionCreateManyWithoutAssignedToInput;
     customers?: BpCreateManyWithoutCustomerOfInput;
 }
 
@@ -1642,12 +2546,18 @@ export class UserCreateOneWithoutOrdersInput {
     connect?: UserWhereUniqueInput;
 }
 
+export class UserCreateOneWithoutPromotionsInput {
+    create?: UserCreateWithoutPromotionsInput;
+    connect?: UserWhereUniqueInput;
+}
+
 export class UserCreateWithoutCustomersInput {
     uid?: string;
     extUid?: string;
     business: string;
     role?: string;
     orders?: OrderCreateManyWithoutAssignedToInput;
+    promotions?: PromotionCreateManyWithoutAssignedToInput;
 }
 
 export class UserCreateWithoutOrdersInput {
@@ -1655,6 +2565,16 @@ export class UserCreateWithoutOrdersInput {
     extUid?: string;
     business: string;
     role?: string;
+    promotions?: PromotionCreateManyWithoutAssignedToInput;
+    customers?: BpCreateManyWithoutCustomerOfInput;
+}
+
+export class UserCreateWithoutPromotionsInput {
+    uid?: string;
+    extUid?: string;
+    business: string;
+    role?: string;
+    orders?: OrderCreateManyWithoutAssignedToInput;
     customers?: BpCreateManyWithoutCustomerOfInput;
 }
 
@@ -1752,6 +2672,7 @@ export class UserUpdateInput {
     business?: string;
     role?: string;
     orders?: OrderUpdateManyWithoutAssignedToInput;
+    promotions?: PromotionUpdateManyWithoutAssignedToInput;
     customers?: BpUpdateManyWithoutCustomerOfInput;
 }
 
@@ -1791,17 +2712,34 @@ export class UserUpdateOneRequiredWithoutOrdersInput {
     upsert?: UserUpsertWithoutOrdersInput;
 }
 
+export class UserUpdateOneRequiredWithoutPromotionsInput {
+    create?: UserCreateWithoutPromotionsInput;
+    connect?: UserWhereUniqueInput;
+    update?: UserUpdateWithoutPromotionsDataInput;
+    upsert?: UserUpsertWithoutPromotionsInput;
+}
+
 export class UserUpdateWithoutCustomersDataInput {
     extUid?: string;
     business?: string;
     role?: string;
     orders?: OrderUpdateManyWithoutAssignedToInput;
+    promotions?: PromotionUpdateManyWithoutAssignedToInput;
 }
 
 export class UserUpdateWithoutOrdersDataInput {
     extUid?: string;
     business?: string;
     role?: string;
+    promotions?: PromotionUpdateManyWithoutAssignedToInput;
+    customers?: BpUpdateManyWithoutCustomerOfInput;
+}
+
+export class UserUpdateWithoutPromotionsDataInput {
+    extUid?: string;
+    business?: string;
+    role?: string;
+    orders?: OrderUpdateManyWithoutAssignedToInput;
     customers?: BpUpdateManyWithoutCustomerOfInput;
 }
 
@@ -1813,6 +2751,11 @@ export class UserUpdateWithWhereUniqueWithoutCustomersInput {
 export class UserUpsertWithoutOrdersInput {
     update: UserUpdateWithoutOrdersDataInput;
     create: UserCreateWithoutOrdersInput;
+}
+
+export class UserUpsertWithoutPromotionsInput {
+    update: UserUpdateWithoutPromotionsDataInput;
+    create: UserCreateWithoutPromotionsInput;
 }
 
 export class UserUpsertWithWhereUniqueWithoutCustomersInput {
@@ -1900,6 +2843,9 @@ export class UserWhereInput {
     orders_every?: OrderWhereInput;
     orders_some?: OrderWhereInput;
     orders_none?: OrderWhereInput;
+    promotions_every?: PromotionWhereInput;
+    promotions_some?: PromotionWhereInput;
+    promotions_none?: PromotionWhereInput;
     customers_every?: BpWhereInput;
     customers_some?: BpWhereInput;
     customers_none?: BpWhereInput;
@@ -1927,6 +2873,14 @@ export class AggregateOrder {
 }
 
 export class AggregatePrice {
+    count: number;
+}
+
+export class AggregatePromotion {
+    count: number;
+}
+
+export class AggregatePublication {
     count: number;
 }
 
@@ -2034,35 +2988,88 @@ export class ItemSubscriptionPayload {
 
 export abstract class IMutation {
     abstract createBp(data: BpCreateInput): Bp | Promise<Bp>;
+
     abstract createUser(data: UserCreateInput): User | Promise<User>;
+
     abstract createOrder(data: OrderCreateInput): Order | Promise<Order>;
+
     abstract createItem(data: ItemCreateInput): Item | Promise<Item>;
+
     abstract createPrice(data: PriceCreateInput): Price | Promise<Price>;
+
+    abstract createPromotion(data: PromotionCreateInput): Promotion | Promise<Promotion>;
+
+    abstract createPublication(data: PublicationCreateInput): Publication | Promise<Publication>;
+
     abstract updateBp(data: BpUpdateInput, where: BpWhereUniqueInput): Bp | Promise<Bp>;
+
     abstract updateUser(data: UserUpdateInput, where: UserWhereUniqueInput): User | Promise<User>;
+
     abstract updateOrder(data: OrderUpdateInput, where: OrderWhereUniqueInput): Order | Promise<Order>;
+
     abstract updateItem(data: ItemUpdateInput, where: ItemWhereUniqueInput): Item | Promise<Item>;
+
     abstract updatePrice(data: PriceUpdateInput, where: PriceWhereUniqueInput): Price | Promise<Price>;
+
+    abstract updatePromotion(data: PromotionUpdateInput, where: PromotionWhereUniqueInput): Promotion | Promise<Promotion>;
+
+    abstract updatePublication(data: PublicationUpdateInput, where: PublicationWhereUniqueInput): Publication | Promise<Publication>;
+
     abstract deleteBp(where: BpWhereUniqueInput): Bp | Promise<Bp>;
+
     abstract deleteUser(where: UserWhereUniqueInput): User | Promise<User>;
+
     abstract deleteOrder(where: OrderWhereUniqueInput): Order | Promise<Order>;
+
     abstract deleteItem(where: ItemWhereUniqueInput): Item | Promise<Item>;
+
     abstract deletePrice(where: PriceWhereUniqueInput): Price | Promise<Price>;
+
+    abstract deletePromotion(where: PromotionWhereUniqueInput): Promotion | Promise<Promotion>;
+
+    abstract deletePublication(where: PublicationWhereUniqueInput): Publication | Promise<Publication>;
+
     abstract upsertBp(where: BpWhereUniqueInput, create: BpCreateInput, update: BpUpdateInput): Bp | Promise<Bp>;
+
     abstract upsertUser(where: UserWhereUniqueInput, create: UserCreateInput, update: UserUpdateInput): User | Promise<User>;
+
     abstract upsertOrder(where: OrderWhereUniqueInput, create: OrderCreateInput, update: OrderUpdateInput): Order | Promise<Order>;
+
     abstract upsertItem(where: ItemWhereUniqueInput, create: ItemCreateInput, update: ItemUpdateInput): Item | Promise<Item>;
+
     abstract upsertPrice(where: PriceWhereUniqueInput, create: PriceCreateInput, update: PriceUpdateInput): Price | Promise<Price>;
+
+    abstract upsertPromotion(where: PromotionWhereUniqueInput, create: PromotionCreateInput, update: PromotionUpdateInput): Promotion | Promise<Promotion>;
+
+    abstract upsertPublication(where: PublicationWhereUniqueInput, create: PublicationCreateInput, update: PublicationUpdateInput): Publication | Promise<Publication>;
+
     abstract updateManyBps(data: BpUpdateManyMutationInput, where?: BpWhereInput): BatchPayload | Promise<BatchPayload>;
+
     abstract updateManyUsers(data: UserUpdateManyMutationInput, where?: UserWhereInput): BatchPayload | Promise<BatchPayload>;
+
     abstract updateManyOrders(data: OrderUpdateManyMutationInput, where?: OrderWhereInput): BatchPayload | Promise<BatchPayload>;
+
     abstract updateManyItems(data: ItemUpdateManyMutationInput, where?: ItemWhereInput): BatchPayload | Promise<BatchPayload>;
+
     abstract updateManyPrices(data: PriceUpdateManyMutationInput, where?: PriceWhereInput): BatchPayload | Promise<BatchPayload>;
+
+    abstract updateManyPromotions(data: PromotionUpdateManyMutationInput, where?: PromotionWhereInput): BatchPayload | Promise<BatchPayload>;
+
+    abstract updateManyPublications(data: PublicationUpdateManyMutationInput, where?: PublicationWhereInput): BatchPayload | Promise<BatchPayload>;
+
     abstract deleteManyBps(where?: BpWhereInput): BatchPayload | Promise<BatchPayload>;
+
     abstract deleteManyUsers(where?: UserWhereInput): BatchPayload | Promise<BatchPayload>;
+
     abstract deleteManyOrders(where?: OrderWhereInput): BatchPayload | Promise<BatchPayload>;
+
     abstract deleteManyItems(where?: ItemWhereInput): BatchPayload | Promise<BatchPayload>;
+
     abstract deleteManyPrices(where?: PriceWhereInput): BatchPayload | Promise<BatchPayload>;
+
+    abstract deleteManyPromotions(where?: PromotionWhereInput): BatchPayload | Promise<BatchPayload>;
+
+    abstract deleteManyPublications(where?: PublicationWhereInput): BatchPayload | Promise<BatchPayload>;
 }
 
 export class Order {
@@ -2072,6 +3079,7 @@ export class Order {
     issuedTo: Bp;
     assignedTo: User;
     items?: Item[];
+    promotions?: Promotion[];
     createdAt?: DateTime;
     updatedAt?: DateTime;
     createdBy?: string;
@@ -2154,31 +3162,158 @@ export class PriceSubscriptionPayload {
     previousValues?: PricePreviousValues;
 }
 
+export class Promotion {
+    uid: string;
+    code: string;
+    name: string;
+    start?: DateTime;
+    end?: DateTime;
+    category?: string;
+    content?: string;
+    assignedTo: User;
+    publications?: Publication[];
+    orders?: Order[];
+    createdAt?: DateTime;
+    updatedAt?: DateTime;
+    createdBy?: string;
+    updatedBy?: string;
+}
+
+export class PromotionConnection {
+    pageInfo: PageInfo;
+    edges: PromotionEdge[];
+    aggregate: AggregatePromotion;
+}
+
+export class PromotionEdge {
+    node: Promotion;
+    cursor: string;
+}
+
+export class PromotionPreviousValues {
+    uid: string;
+    code: string;
+    name: string;
+    start?: DateTime;
+    end?: DateTime;
+    category?: string;
+    content?: string;
+    createdAt?: DateTime;
+    updatedAt?: DateTime;
+    createdBy?: string;
+    updatedBy?: string;
+}
+
+export class PromotionSubscriptionPayload {
+    mutation: MutationType;
+    node?: Promotion;
+    updatedFields?: string[];
+    previousValues?: PromotionPreviousValues;
+}
+
+export class Publication {
+    uid: string;
+    type: PublicationType;
+    status?: PublicationStatus;
+    delay?: number;
+    publishAt?: DateTime;
+    promotion: Promotion;
+    createdAt?: DateTime;
+    updatedAt?: DateTime;
+    createdBy?: string;
+    updatedBy?: string;
+}
+
+export class PublicationConnection {
+    pageInfo: PageInfo;
+    edges: PublicationEdge[];
+    aggregate: AggregatePublication;
+}
+
+export class PublicationEdge {
+    node: Publication;
+    cursor: string;
+}
+
+export class PublicationPreviousValues {
+    uid: string;
+    type: PublicationType;
+    status?: PublicationStatus;
+    delay?: number;
+    publishAt?: DateTime;
+    createdAt?: DateTime;
+    updatedAt?: DateTime;
+    createdBy?: string;
+    updatedBy?: string;
+}
+
+export class PublicationSubscriptionPayload {
+    mutation: MutationType;
+    node?: Publication;
+    updatedFields?: string[];
+    previousValues?: PublicationPreviousValues;
+}
+
 export abstract class IQuery {
     abstract bps(where?: BpWhereInput, orderBy?: BpOrderByInput, skip?: number, after?: string, before?: string, first?: number, last?: number): Bp[] | Promise<Bp[]>;
+
     abstract users(where?: UserWhereInput, orderBy?: UserOrderByInput, skip?: number, after?: string, before?: string, first?: number, last?: number): User[] | Promise<User[]>;
+
     abstract orders(where?: OrderWhereInput, orderBy?: OrderOrderByInput, skip?: number, after?: string, before?: string, first?: number, last?: number): Order[] | Promise<Order[]>;
+
     abstract items(where?: ItemWhereInput, orderBy?: ItemOrderByInput, skip?: number, after?: string, before?: string, first?: number, last?: number): Item[] | Promise<Item[]>;
+
     abstract prices(where?: PriceWhereInput, orderBy?: PriceOrderByInput, skip?: number, after?: string, before?: string, first?: number, last?: number): Price[] | Promise<Price[]>;
+
+    abstract promotions(where?: PromotionWhereInput, orderBy?: PromotionOrderByInput, skip?: number, after?: string, before?: string, first?: number, last?: number): Promotion[] | Promise<Promotion[]>;
+
+    abstract publications(where?: PublicationWhereInput, orderBy?: PublicationOrderByInput, skip?: number, after?: string, before?: string, first?: number, last?: number): Publication[] | Promise<Publication[]>;
+
     abstract bp(where: BpWhereUniqueInput): Bp | Promise<Bp>;
+
     abstract user(where: UserWhereUniqueInput): User | Promise<User>;
+
     abstract order(where: OrderWhereUniqueInput): Order | Promise<Order>;
+
     abstract item(where: ItemWhereUniqueInput): Item | Promise<Item>;
+
     abstract price(where: PriceWhereUniqueInput): Price | Promise<Price>;
+
+    abstract promotion(where: PromotionWhereUniqueInput): Promotion | Promise<Promotion>;
+
+    abstract publication(where: PublicationWhereUniqueInput): Publication | Promise<Publication>;
+
     abstract bpsConnection(where?: BpWhereInput, orderBy?: BpOrderByInput, skip?: number, after?: string, before?: string, first?: number, last?: number): BpConnection | Promise<BpConnection>;
+
     abstract usersConnection(where?: UserWhereInput, orderBy?: UserOrderByInput, skip?: number, after?: string, before?: string, first?: number, last?: number): UserConnection | Promise<UserConnection>;
+
     abstract ordersConnection(where?: OrderWhereInput, orderBy?: OrderOrderByInput, skip?: number, after?: string, before?: string, first?: number, last?: number): OrderConnection | Promise<OrderConnection>;
+
     abstract itemsConnection(where?: ItemWhereInput, orderBy?: ItemOrderByInput, skip?: number, after?: string, before?: string, first?: number, last?: number): ItemConnection | Promise<ItemConnection>;
+
     abstract pricesConnection(where?: PriceWhereInput, orderBy?: PriceOrderByInput, skip?: number, after?: string, before?: string, first?: number, last?: number): PriceConnection | Promise<PriceConnection>;
+
+    abstract promotionsConnection(where?: PromotionWhereInput, orderBy?: PromotionOrderByInput, skip?: number, after?: string, before?: string, first?: number, last?: number): PromotionConnection | Promise<PromotionConnection>;
+
+    abstract publicationsConnection(where?: PublicationWhereInput, orderBy?: PublicationOrderByInput, skip?: number, after?: string, before?: string, first?: number, last?: number): PublicationConnection | Promise<PublicationConnection>;
+
     abstract node(id: string): Node | Promise<Node>;
 }
 
 export abstract class ISubscription {
     abstract bp(where?: BpSubscriptionWhereInput): BpSubscriptionPayload | Promise<BpSubscriptionPayload>;
+
     abstract user(where?: UserSubscriptionWhereInput): UserSubscriptionPayload | Promise<UserSubscriptionPayload>;
+
     abstract order(where?: OrderSubscriptionWhereInput): OrderSubscriptionPayload | Promise<OrderSubscriptionPayload>;
+
     abstract item(where?: ItemSubscriptionWhereInput): ItemSubscriptionPayload | Promise<ItemSubscriptionPayload>;
+
     abstract price(where?: PriceSubscriptionWhereInput): PriceSubscriptionPayload | Promise<PriceSubscriptionPayload>;
+
+    abstract promotion(where?: PromotionSubscriptionWhereInput): PromotionSubscriptionPayload | Promise<PromotionSubscriptionPayload>;
+
+    abstract publication(where?: PublicationSubscriptionWhereInput): PublicationSubscriptionPayload | Promise<PublicationSubscriptionPayload>;
 }
 
 export class User {
@@ -2187,6 +3322,7 @@ export class User {
     business: string;
     role?: string;
     orders?: Order[];
+    promotions?: Promotion[];
     customers?: Bp[];
     createdAt?: DateTime;
     updatedAt?: DateTime;

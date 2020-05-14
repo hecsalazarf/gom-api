@@ -1,5 +1,6 @@
-import { OrderWhereInput, BpWhereInput } from '../prisma.binding';
+import { OrderWhereInput, BpWhereInput, PromotionWhereInput } from '../prisma.binding';
 import { PrismaService } from '../prisma.service';
+
 
 /**
  * Custom implementation of Prisma existence check since the one provided by
@@ -23,6 +24,14 @@ export class Exists {
 
   public async Bp(where: BpWhereInput): Promise<boolean> {
     const res = await this.prisma.query.bps({
+      where,
+      first: 1, // we only need one
+    }, '{ uid }'); // no data needed
+    return res.length > 0; // true if bp exists
+  }
+
+  public async Promotion(where: PromotionWhereInput): Promise<boolean> {
+    const res = await this.prisma.query.promotions({
       where,
       first: 1, // we only need one
     }, '{ uid }'); // no data needed

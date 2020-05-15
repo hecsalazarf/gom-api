@@ -9,10 +9,10 @@
       "request": "attach",
       "name": "Attach to Nestjs",
       "restart": true,
-      // "preLaunchTask": "nestjs:debug",
-      // "stopOnEntry": false,
-      "protocol": "inspector"
+      "protocol": "inspector",
     },
+    /* 
+    LAUNCH MODE DISABLED DUE TO INCOMPATIBILITIES WITH NESTJS V7.0
     {
       // Nodemon v2.0.2 has an issue that makes debugging crash after
       // watch-mode reboot, throwing "address already in use".
@@ -31,6 +31,6 @@
       "restart": true,
       "smartStep": true,
       "console": "integratedTerminal"
-    }
+    } */
   ]
 }

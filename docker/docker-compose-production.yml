@@ -119,6 +119,7 @@ services:
     ports:
       - '3000:3000'
     environment:
+      NODE_ENV: production
       #APP_KEY: hola
       APP_KEY_FILE: /run/secrets/gom_app_key
       #AUTH0_CLIENT_ID: aOojWYLK4U0XN1S5NB2hNGPhqHkw6eOf
@@ -144,7 +145,6 @@ services:
       replicas: 1
     networks:
       - multihost
-    command: [ "pm2-runtime", "start", "ecosystem.config.js", "--env", "staging" ] #Use it only on development or staging environments
     logging:
       driver: "json-file"
       options:

@@ -1,4 +1,4 @@
-# compiled output
+# Node modules
 /node_modules
 
 # Logs
@@ -38,3 +38,6 @@ jenkins/
 # Archive files
 **/*.tar
 **/*.tar.gz
+
+# Git directory
+.git/

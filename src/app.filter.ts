@@ -20,17 +20,20 @@ export class HttpExceptionFilter<T> extends BaseExceptionFilter {
     }
   }
 
-  private transformHttpError(exception: any): HttpException {
+  private transformHttpError(exception: HttpError): HttpException {
     return new HttpException({
-      code: exception.code,
+      statusCode: exception.status,
+      error: exception.code,
       message: exception.message,
     }, exception.status);
   }
 
   private createLogText(exception: HttpException, ip: string): string {
     let text: string;
-    if (typeof exception.message === 'object') {
-      const { error, message } = exception.message;
+    const response = exception.getResponse();
+    if (typeof response === 'object') {
+      // @ts-ignore
+      const { error, message } = response;
       if (!message && !error) {
         text = `${JSON.stringify(exception.message)} | ${ip}`;
       } else {

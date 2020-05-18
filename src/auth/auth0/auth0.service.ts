@@ -1,4 +1,4 @@
-import { Injectable, HttpService, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable, HttpService, HttpException, InternalServerErrorException } from '@nestjs/common';
 import jwksRsa from 'jwks-rsa';
 import { CredentialsDto } from '../dto';
 import { Auth0ConfigDto } from './dto';
@@ -66,14 +66,12 @@ export class Auth0Service {
     } catch (error) {
       if (error.response) {
         throw new HttpException({
+          statusCode: error.response.status,
           error: error.response.data.error,
           message: error.response.data.error_description,
         }, error.response.status);
       }
-      throw new HttpException({
-        error: 'oauth_service_error',
-        message: 'Oauth service not available',
-      }, HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new InternalServerErrorException('Oauth service not available', 'oauth_service_error');
     }
 
     return result.data;

@@ -16,17 +16,13 @@ WORKDIR /home/node/gomapi
 
 # Bundle APP files
 COPY dist ./dist/
-COPY package.json* ecosystem.config.js ./
+COPY package.json* ./
 COPY config ./config/
     
     # Make entrypoint executable
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh \
     # Install bash for entrypoint execution
     && apk update && apk add bash \
-    # Install PM2 globally with log rotation module
-    && npm install pm2@4.2.0 -g && pm2 install pm2-logrotate \
-    # Configure PM2 log rotation module
-    && pm2 set pm2-logrotate:max_size 1M \
     # Install app dependencies
     && npm install --production \
     # Change owner of working directory
@@ -42,4 +38,4 @@ ENTRYPOINT ["docker-entrypoint.sh"]
 EXPOSE 3000
 
 # Default command
-CMD [ "pm2-runtime", "start", "ecosystem.config.js", "--env", "production" ]
+CMD [ "node", "dist/main.js" ]

@@ -1,4 +1,4 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable, ForbiddenException } from '@nestjs/common';
 import * as Jwt from 'jsonwebtoken';
 import { PrismaService } from '../../db/prisma/prisma.service';
 import { CredentialsDto } from '../dto';
@@ -38,11 +38,11 @@ export class LocalAuthService {
     }`;
     const bp = await this.prisma.query.bp(args, query); // retrieve basic BP info
     if (!bp || bp.phone !== credentials.phone) {
-      throw new HttpException({
+      throw new ForbiddenException({
         error: 'invalid_grant',
         message: 'Invalid credentials',
         exists: !!bp, // if bp exists
-      }, HttpStatus.FORBIDDEN);
+      });
     }
     return bp;
   }

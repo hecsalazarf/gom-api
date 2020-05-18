@@ -98,7 +98,8 @@ export class AuthService {
     const rules = permissions.map((permission: string): RawRule => {
       const defs = permission.split(':');
       return {
-        actions: defs[0],
+        // @ts-ignore // Types not matching after upgrade to casl v4
+        action: defs[0],
         subject: defs[1],
       };
     });

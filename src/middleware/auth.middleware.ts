@@ -14,10 +14,7 @@ export class AuthMiddleware implements NestMiddleware {
    * @param {Error} error Error to be thrown
    */
   private throwError(error: Error): void {
-    throw new ForbiddenException({
-      code: 'jwt_error',
-      message: error.message,
-    });
+    throw new ForbiddenException(error.message, 'jwt_error');
   }
 
   /**

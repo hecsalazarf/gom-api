@@ -16,7 +16,7 @@ WORKDIR /home/node/gomapi
 
 # Bundle APP files
 COPY dist ./dist/
-COPY package.json* ./
+COPY package*.json ./
 COPY config ./config/
     
     # Make entrypoint executable

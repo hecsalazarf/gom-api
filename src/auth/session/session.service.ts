@@ -15,7 +15,6 @@ export class SessionService {
 
   constructor(redisInstance: Redis, private readonly config: SessionConfigDto) {
     const Store = connectRedis(session);
-    // @ts-ignore
     this.redisStore = new Store({ client: redisInstance }); // create redis store
     this.sessionHandler = this.createSessionHandler(); // create session handler
   }
@@ -30,7 +29,7 @@ export class SessionService {
     const options: session.SessionOptions = {
       secret: this.config.secret,
       name: this.config.name,
-      // @ts-ignore
+      // @ts-ignore: No types provided by dependency
       cookie: this.config.options,
       resave: false, // Do not save back the session if it was not modified
       saveUninitialized: false, // Do not save "uninitialized" sessions

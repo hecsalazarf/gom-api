@@ -78,7 +78,7 @@ export class AuthService {
         reject(new Error('Token malformed'));
       }
       const service = this.getServiceByIssuer(unverified.iss); // get service based on issuer
-      Jwt.verify(token, service.key, service.verifyOptions, (err: object, decoded: object) => {
+      Jwt.verify(token, service.key, service.verifyOptions, (err, decoded) => {
         if (err) {
           reject(err);
         } else {
@@ -98,7 +98,6 @@ export class AuthService {
     const rules = permissions.map((permission: string): RawRule => {
       const defs = permission.split(':');
       return {
-        // @ts-ignore // Types not matching after upgrade to casl v4
         action: defs[0],
         subject: defs[1],
       };

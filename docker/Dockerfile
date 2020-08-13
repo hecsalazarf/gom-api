@@ -16,7 +16,7 @@ WORKDIR /home/node/gomapi
 
 # Bundle APP files
 COPY dist ./dist/
-COPY package.json* ./
+COPY package*.json ./
 COPY config ./config/
     
     # Make entrypoint executable
@@ -25,6 +25,8 @@ RUN chmod +x /usr/local/bin/docker-entrypoint.sh \
     && apk update && apk add bash \
     # Install app dependencies
     && npm install --production \
+    # Clean npm cache
+    && npm cache clean --force \
     # Change owner of working directory
     && chown -R node:node ../gomapi
 

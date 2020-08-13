@@ -32,7 +32,7 @@ export class HttpExceptionFilter<T> extends BaseExceptionFilter {
     let text: string;
     const response = exception.getResponse();
     if (typeof response === 'object') {
-      // @ts-ignore
+      // @ts-ignore: TODO Add types to response
       const { error, message } = response;
       if (!message && !error) {
         text = `${JSON.stringify(exception.message)} | ${ip}`;

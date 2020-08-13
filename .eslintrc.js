@@ -33,12 +33,27 @@ module.exports = {
     'comma-spacing': 'error',
     'keyword-spacing': 'error',
     'eol-last': 'error',
-    '@typescript-eslint/ban-ts-ignore': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
-    '@typescript-eslint/camelcase': 'off',
     '@typescript-eslint/indent': ['error', 2],
     '@typescript-eslint/quotes': ['error', 'single'],
     '@typescript-eslint/brace-style': ['error'],
-    '@typescript-eslint/semi': ['error']
-  }
+    '@typescript-eslint/semi': ['error'],
+    // FOLLOWING RULES DISABLE RECOMMENDED BEST PRACTICES
+    // ADDED AFTER UPGRADE TO v3
+    // TODO: Study alternatives not to use them
+    '@typescript-eslint/ban-ts-comment': ['warn', {
+      'ts-expect-error': 'allow-with-description',
+      'ts-ignore': 'allow-with-description',
+      'ts-nocheck': 'allow-with-description',
+      'ts-check': 'allow-with-description',
+        minimumDescriptionLength: 3,
+    }],
+    '@typescript-eslint/no-unsafe-call': 'off',
+    '@typescript-eslint/no-unsafe-assignment': 'off',
+    '@typescript-eslint/restrict-template-expressions': ['error', {
+      allowAny: true,
+    }],
+    '@typescript-eslint/no-unsafe-member-access': 'off',
+    '@typescript-eslint/no-unsafe-return': 'warn',
+  },
 };

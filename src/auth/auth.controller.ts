@@ -19,7 +19,7 @@ export class AuthController {
   }
 
   @Post('login')
-  async signIn(@Body(new ValidationPipe()) body: CredentialsDto, @Req() req: Request, @Res() res: Response): Promise<void | object> {
+  async signIn(@Body(new ValidationPipe()) body: CredentialsDto, @Req() req: Request, @Res() res: Response): Promise<void | Record<string, unknown>> {
     // get login limiters
     const [consecutiveFails, slowBrute] = await this.loginLimitter.getRateLimitRes(body.username, req.ip);
     // compute retry sesconds
@@ -68,7 +68,7 @@ export class AuthController {
       });
 
       // After a login, refresh the CSRF token
-      // @ts-ignore //
+      // @ts-ignore: No types provided by dependency
       res.cookie(this.auth.csrfName, req.csrfToken(), this.auth.csrfOptions);
       const { nickname, name, picture, email, sub, seller, business } = this.auth.decode(token.id_token);
       res.status(HttpStatus.OK);
@@ -95,7 +95,7 @@ export class AuthController {
 
   @Get('ping')
   @HttpCode(HttpStatus.OK)
-  ping(): object {
+  ping(): Record<string, unknown> {
     return {
       success: true,
     };

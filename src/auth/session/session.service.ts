@@ -29,7 +29,7 @@ export class SessionService {
     const options: session.SessionOptions = {
       secret: this.config.secret,
       name: this.config.name,
-      // @ts-ignore: No types provided by dependency
+      // @ts-expect-error: No types provided by dependency
       cookie: this.config.options,
       resave: false, // Do not save back the session if it was not modified
       saveUninitialized: false, // Do not save "uninitialized" sessions
@@ -71,7 +71,7 @@ export class SessionService {
       if (sid === false) {
         reject(new Error('Invalid signature'));
       }
-      // @ts-ignore // ignore types mismatch
+      // @ts-expect-error // ignore types mismatch
       this.store.get(sid, (error, res) => {
         if (error) {
           reject(error);

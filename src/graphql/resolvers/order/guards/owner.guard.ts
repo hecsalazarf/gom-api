@@ -15,7 +15,7 @@ export class OrderOwnerGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const gqlCtx = GqlExecutionContext.create(context);
-    // @ts-ignore: Nest does not expose gqlCtx.handler
+    // @ts-expect-error: Nest does not expose gqlCtx.handler
     const permission: string[] = this.reflector.get('permission', gqlCtx.handler); // get metadata from handler (resolver)
     if (typeof permission === 'undefined') {
       // if no permission whatsoever, allow execution by default

@@ -11,16 +11,6 @@ import { Subscription } from './subscription';
 export class SubsRepository {
   constructor(private readonly redis: Redis) { }
 
-  public static factory = {
-    provide: SubsRepository,
-    useFactory: async (config: ConfigService, redis: RedisService): Promise<SubsRepository> => {
-      const redisConfig: RedisConfigDto = await config.validate('web-push.redis', RedisConfigDto);
-      const redisInstance = await redis.createInstance('web-push', redisConfig);
-      return new SubsRepository(redisInstance);
-    },
-    inject: [ConfigService, RedisService],
-  };
-
   /**
    * Create redis hash input from subscription info
    * @param {PushSubscription} subscription Subscription info
@@ -140,3 +130,13 @@ export class SubsRepository {
     return true;
   }
 }
+
+export const SubsRepoFactory = {
+  provide: SubsRepository,
+  useFactory: async (config: ConfigService, redis: RedisService): Promise<SubsRepository> => {
+    const redisConfig: RedisConfigDto = await config.validate('web-push.redis', RedisConfigDto);
+    const redisInstance = await redis.createInstance('web-push', redisConfig);
+    return new SubsRepository(redisInstance);
+  },
+  inject: [ConfigService, RedisService],
+};

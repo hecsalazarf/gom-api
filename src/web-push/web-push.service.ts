@@ -40,18 +40,6 @@ export class WebPushService {
   }
 
   /**
-   * Factory object required by Nestjs to instantiate WebPushService
-   */
-  public static factory = {
-    provide: WebPushService,
-    useFactory: async (config: ConfigService, mq: MqService, subsRepo: SubsRepository): Promise<WebPushService> => {
-      const vapid: VapidDto = await config.validate('web-push.vapid', VapidDto);
-      return new WebPushService(vapid, mq, subsRepo);
-    },
-    inject: [ConfigService, MqService, SubsRepository],
-  };
-
-  /**
    * Init tasks processor and queue
    * @param {MqService} mq Message Queue service
    */
@@ -145,7 +133,7 @@ export class WebPushService {
    * Send notification using the WebPush API
    * @param {Array<PushSubscription>} subscriptions Subscriptions array
    */
-  private async sendNotification(subscriptions: Array<PushSubscription>, payload: string | Buffer):  Promise<Array<SendResult | WebPushError>> {
+  private async sendNotification(subscriptions: Array<PushSubscription>, payload: string | Buffer): Promise<Array<SendResult | WebPushError>> {
     // send notification to subscriptions
     const promises = subscriptions.map(sub => WebPush.sendNotification(sub, payload));
     // wait until subscriptions are executed. Catch all errors
@@ -253,3 +241,15 @@ export class WebPushService {
     return this.subsRepo.save(subs);
   }
 }
+
+/**
+   * Factory object required by Nestjs to instantiate WebPushService
+   */
+export const WebPushServiceFactory = {
+  provide: WebPushService,
+  useFactory: async (config: ConfigService, mq: MqService, subsRepo: SubsRepository): Promise<WebPushService> => {
+    const vapid: VapidDto = await config.validate('web-push.vapid', VapidDto);
+    return new WebPushService(vapid, mq, subsRepo);
+  },
+  inject: [ConfigService, MqService, SubsRepository],
+};

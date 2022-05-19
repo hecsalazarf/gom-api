@@ -224,7 +224,7 @@ Seller login with username and password
 {
 	"grantType": "password",
 	"username":"test@test.net",
-	"password": "Quiron00"
+	"password": "yourpassword"
 }
 ```
 ##### Reponse

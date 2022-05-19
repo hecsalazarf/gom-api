@@ -68,7 +68,7 @@ export class AuthController {
       });
 
       // After a login, refresh the CSRF token
-      // @ts-ignore: No types provided by dependency
+      // @ts-expect-error: No types provided by dependency
       res.cookie(this.auth.csrfName, req.csrfToken(), this.auth.csrfOptions);
       const { nickname, name, picture, email, sub, seller, business } = this.auth.decode(token.id_token);
       res.status(HttpStatus.OK);

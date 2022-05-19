@@ -224,7 +224,7 @@ Seller login with username and password
 {
 	"grantType": "password",
 	"username":"test@test.net",
-	"password": "Quiron00"
+	"password": "yourpassword"
 }
 ```
 ##### Reponse
@@ -321,7 +321,7 @@ To change the default logical databases, set the configuration property `redis.d
 
 ## Versioning
 
-0.5.2
+0.5.3
 
 ## Authors
 

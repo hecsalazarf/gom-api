@@ -122,12 +122,12 @@ services:
       NODE_ENV: production
       #APP_KEY: hola
       APP_KEY_FILE: /run/secrets/gom_app_key
-      #AUTH0_CLIENT_ID: aOojWYLK4U0XN1S5NB2hNGPhqHkw6eOf
+      #AUTH0_CLIENT_ID: AUTH0_CLIENT_ID
       AUTH0_CLIENT_ID_FILE: /run/secrets/gom_auth0_client_id
-      #AUTH0_CLIENT_SECRET: aSSqHDfO0YhovFOLEDdH7Xf2w7vR91w4DX0ybza59OQUV1DeHwZZq5PpShFrPjzJ
+      #AUTH0_CLIENT_SECRET: AUTH0_CLIENT_SECRET
       AUTH0_CLIENT_SECRET_FILE: /run/secrets/gom_auth0_client_secret
-      #VAPID_PRIVATE_KEY: 4DztwpAycGt6VZ1EwIfxxkIWyqk65AkGWLovcQ56Ns4
-      #VAPID_PUBLIC_KEY: BJo1ZeE62MZqVkZN8g9TOSFXOCtxmpmejfId8JpLT5C52ASUqhabfpVpHqQrySWhD0PCgEWohR1vKpbRJ48boWA
+      #VAPID_PRIVATE_KEY: VAPID_PRIVATE_KEY
+      #VAPID_PUBLIC_KEY: VAPID_PUBLIC_KEY_FILE
       VAPID_PRIVATE_KEY_FILE: /run/secrets/gom_vapid_private_key
       VAPID_PUBLIC_KEY_FILE: /run/secrets/gom_vapid_public_key
       REDIS_HOST: redis

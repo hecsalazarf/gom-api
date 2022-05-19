@@ -4,8 +4,8 @@ module.exports = {
     auth0: {
       tokenUrl: 'https://dev-gom.auth0.com/oauth/token',
       issuer: 'https://dev-gom.auth0.com/',
-      clientId: 'aOojWYLK4U0XN1S5NB2hNGPhqHkw6eOf',
-      clientSecret: 'aSSqHDfO0YhovFOLEDdH7Xf2w7vR91w4DX0ybza59OQUV1DeHwZZq5PpShFrPjzJ',
+      clientId: '<AUTH0_CLIENT_ID>',
+      clientSecret: '<AUTH0_CLIENT_SECRET | AUTH0_CLIENT_SECRET_FILE>',
       audience: 'https://gql.gom.com',
       scope: 'openid offline_access',
       jwksEndpoint: 'https://dev-gom.auth0.com/.well-known/jwks.json'
@@ -44,8 +44,8 @@ module.exports = {
     },
     vapid: {
       subject: 'https://dev.gom.com',
-      privateKey: '4DztwpAycGt6VZ1EwIfxxkIWyqk65AkGWLovcQ56Ns4',
-      publicKey: 'BJo1ZeE62MZqVkZN8g9TOSFXOCtxmpmejfId8JpLT5C52ASUqhabfpVpHqQrySWhD0PCgEWohR1vKpbRJ48boWA'
+      privateKey: '<VAPID_PRIVATE_KEY | VAPID_PRIVATE_KEY_FILE>',
+      publicKey: '<VAPID_PUBLIC_KEY | VAPID_PUBLIC_KEY_FILE>'
     }
   },
   session: {
